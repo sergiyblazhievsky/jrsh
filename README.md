@@ -1,4 +1,4 @@
 JasperReport Server Command Line Tool
 =====================================
 
-Simple CMD Tool for JRS.
+Simple CMDL Tool for JRS.
