@@ -1,10 +1,12 @@
-    package com.jaspersoft.client.tool;
+package com.jaspersoft.cli.tool;
+
+import com.jaspersoft.cli.tool.core.CLIEngine;
 
 /**
  * @author Alexander Krasnyanskiy
  */
 public class Runner {
     public static void main(String[] args) {
-        new Cli(args).parse();
+        new CLIEngine(args).run();
     }
 }

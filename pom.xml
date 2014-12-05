@@ -15,6 +15,7 @@
     </properties>
 
 
+    <!-- Repositories -->
     <repositories>
         <repository>
             <id>jaspersoft</id>
@@ -25,16 +26,12 @@
 
 
     <dependencies>
-
-
         <!-- JRS Client -->
         <dependency>
             <groupId>com.jaspersoft</groupId>
             <artifactId>jrs-rest-java-client</artifactId>
             <version>${rest-client.version}</version>
         </dependency>
-
-
 
         <!-- Apache CLI -->
         <dependency>
@@ -45,8 +42,7 @@
     </dependencies>
 
 
-    <!-- java -cp yourJarName.jar your.package..your.MainClass -->
-
+    <!-- Build -->
     <build>
         <plugins>
             <plugin>
@@ -63,6 +59,11 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.jaspersoft.cli.tool.Runner</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>

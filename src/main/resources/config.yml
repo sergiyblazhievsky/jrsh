@@ -1,0 +1,15 @@
+#
+# REST Client Configuration
+#
+# @author Alexander Krasnyanskiy
+#
+---
+server:
+  url: http://54.242.71.33/jasperserver-pro
+  version: 5.6.0
+
+  headers:
+    accept: JSON
+    content-type: JSON
+
+
