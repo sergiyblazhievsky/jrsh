@@ -17,20 +17,20 @@ import static java.lang.System.out;
 import static java.util.logging.Level.SEVERE;
 
 /**
- * The main class for the JRS Command Line Interface (CLI).
+ * The core class for JRS CLI.
  *
  * @author Alexander Krasnyanskiy
  * @since 1.0
  */
-public class CLIEngine extends ClientSimpleOperation implements Toolkit {
+public class CliEngine extends ClientSimpleOperation implements Toolkit {
 
 
-    private static final Logger log = Logger.getLogger(CLIEngine.class.getName());
+    private static final Logger log = Logger.getLogger(CliEngine.class.getName());
     private Options options = new Options();
     private String[] args;
 
 
-    public CLIEngine(String[] args) {
+    public CliEngine(String[] args) {
         this.args = args;
         options.addOption("h", "help", false, "show help.");
         options.addOption("url", "server-url", true, "JasperReport Server URL");
@@ -96,10 +96,10 @@ public class CLIEngine extends ClientSimpleOperation implements Toolkit {
     @Override
     public void importData(Option[] options) {
         if (session == null) {
-            throw new RuntimeException("Error!");
+            throw new RuntimeException("Session cannot be null.");
         } else {
             importResource(this.getClass().getClassLoader().getResourceAsStream(options[0].getValue()));
-            clearArgs();
+            cleanArgs();
             run();
         }
     }
@@ -125,7 +125,7 @@ public class CLIEngine extends ClientSimpleOperation implements Toolkit {
             if (opt.equals("u")) name = val;
         }
         session = new ClientConfigurationSessionFactory().configure(url, name, pass);
-        clearArgs();
+        cleanArgs();
         run();
     }
 
@@ -144,7 +144,7 @@ public class CLIEngine extends ClientSimpleOperation implements Toolkit {
         // todo: show some useful info
     }
 
-    private void clearArgs() {
+    private void cleanArgs() {
         args = null;
     }
 }

@@ -4,6 +4,7 @@ import org.apache.commons.cli.Option;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 1.0
  */
 public interface Toolkit {
 

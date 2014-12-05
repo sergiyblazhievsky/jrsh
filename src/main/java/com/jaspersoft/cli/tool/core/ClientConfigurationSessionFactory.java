@@ -8,24 +8,19 @@ import com.jaspersoft.jasperserver.jaxrs.client.core.config.ConfigType;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 1.0
  */
 public class ClientConfigurationSessionFactory implements Configurable<Session> {
-
-    /**
-     * Default credentials for JRS
-     */
-    private static final String USERNAME = "superuser";
-    private static final String PASSWORD = "superuser";
 
     @Override
     public Session configure() {
         RestClientConfiguration configuration = new RestClientConfiguration(ConfigType.YML);
         JasperserverRestClient client = new JasperserverRestClient(configuration);
-        return client.authenticate(USERNAME, PASSWORD);
+        return client.authenticate("superuser", "superuser");
     }
 
     @Override
-    public Session configureWithCredentials(String username, String password) {
+    public Session configure(String username, String password) {
         RestClientConfiguration configuration = new RestClientConfiguration(ConfigType.YML);
         JasperserverRestClient client = new JasperserverRestClient(configuration);
         return client.authenticate(username, password);

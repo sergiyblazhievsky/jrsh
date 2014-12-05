@@ -15,6 +15,7 @@ import static java.lang.Thread.sleep;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 1.0
  */
 public class ClientSimpleOperation implements ClientOperation {
 
@@ -81,7 +82,7 @@ public class ClientSimpleOperation implements ClientOperation {
         if (state != null) {
             return session.exportService().task(state.getId()).state().entity().getPhase();
         }
-        throw new RuntimeException("state is null");
+        throw new RuntimeException("State cannot be null.");
     }
 
     public Session getSession() {

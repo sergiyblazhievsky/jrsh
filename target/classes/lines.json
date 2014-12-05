@@ -1,0 +1,4 @@
+{
+    "params" : "Program arguments: -i sample.zip -server http://localhost:8080/jrs-pro"
+
+}
