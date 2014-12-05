@@ -1,9 +1,6 @@
 # Created by .gitignore support plugin (hsz.mobi)
 ### Java template
-*.class
-
 # Package Files #
-*.jar
 *.war
 *.ear
 
@@ -42,3 +39,5 @@ out/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
+
+target
