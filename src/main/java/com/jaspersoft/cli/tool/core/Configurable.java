@@ -1,4 +1,4 @@
-package com.jaspersoft.cli.tool.api;
+package com.jaspersoft.cli.tool.core;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 
@@ -12,7 +12,7 @@ public interface Configurable<T extends Session> {
 
 
     /**
-     * Configure environment with default credentials and read server
+     * Configure environment with default credentials and read connect
      * configuration context from a YML file.
      * @return created Session object
      */
@@ -20,7 +20,7 @@ public interface Configurable<T extends Session> {
 
 
     /**
-     * Configure environment with provided credentials and read server
+     * Configure environment with provided credentials and read connect
      * configuration context from a YML file.
      * @return created Session object
      */
@@ -28,7 +28,7 @@ public interface Configurable<T extends Session> {
 
 
     /**
-     * Configure environment with provided credentials and server url.
+     * Configure environment with provided credentials and connect url.
      * @param serverUrl given JRS URL
      * @param username username form JRS authentication
      * @param password password form JRS authentication

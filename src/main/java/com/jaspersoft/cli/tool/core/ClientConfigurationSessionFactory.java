@@ -1,6 +1,5 @@
 package com.jaspersoft.cli.tool.core;
 
-import com.jaspersoft.cli.tool.api.Configurable;
 import com.jaspersoft.jasperserver.jaxrs.client.core.JasperserverRestClient;
 import com.jaspersoft.jasperserver.jaxrs.client.core.RestClientConfiguration;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;

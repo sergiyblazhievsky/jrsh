@@ -1,4 +1,4 @@
-package com.jaspersoft.cli.tool.api.operation;
+package com.jaspersoft.cli.tool.core;
 
 import com.jaspersoft.jasperserver.dto.resources.ClientResource;
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.importservice.ImportParameter;
@@ -9,17 +9,12 @@ import java.util.Map;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 1.0
  */
 public interface ClientOperation {
 
     ClientResource getResource(String uri);
     void importResource(InputStream resource);
     void importResource(InputStream resource, Map<ImportParameter, Boolean> parameters);
-
-    /**
-     * Imports resource.
-     * @param resource zip archive
-     */
     void importResource(File resource);
-
 }

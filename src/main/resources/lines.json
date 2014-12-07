@@ -1,5 +1,0 @@
-{
-    "params": "Program arguments: -i sample.zip -server http://localhost:8080/jrs-pro",
-    "url": "server -url http://54.242.71.33/jasperserver-pro -u superuser -p superuser",
-    "file": "jsrc-it-data-for-import-service-test.zip"
-}

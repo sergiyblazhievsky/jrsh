@@ -1,6 +1,8 @@
 package com.jaspersoft.cli.tool.core;
 
-import com.jaspersoft.cli.tool.api.toolkit.Toolkit;
+import com.jaspersoft.cli.tool.core.tree.DtoToTreeConverter;
+import com.jaspersoft.jasperserver.dto.resources.ClientResourceLookup;
+import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -8,13 +10,16 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
+import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter.FOLDER_URI;
 import static java.lang.System.exit;
 import static java.lang.System.in;
 import static java.lang.System.out;
-import static java.util.logging.Level.SEVERE;
 
 /**
  * The core class for JRS CLI.
@@ -22,129 +27,130 @@ import static java.util.logging.Level.SEVERE;
  * @author Alexander Krasnyanskiy
  * @since 1.0
  */
-public class CliEngine extends ClientSimpleOperation implements Toolkit {
+public class CliEngine extends ClientRestServiceOperation implements Toolkit {
 
-
-    private static final Logger log = Logger.getLogger(CliEngine.class.getName());
     private Options options = new Options();
     private String[] args;
 
-
     public CliEngine(String[] args) {
         this.args = args;
-        options.addOption("h", "help", false, "show help.");
-        options.addOption("url", "server-url", true, "JasperReport Server URL");
+        options.addOption("url", true, "jrs url");
         options.addOption("u", "user", true, "username");
         options.addOption("p", "password", true, "password");
-        options.addOption("f", "path-to-file", true, "path to resource file");
+        options.addOption("f", "file", true, "zip file");
+        options.addOption("pf", "print from specified folder", true, "print resources tree from the specified folder");
+        options.addOption("pr", "print from the root", false, "print resources tree from the root");
     }
 
-
     @Override
-    public void run() {
+    public void process() {
         CommandLineParser parser = new BasicParser();
-
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.getArgs().length == 0) {
-                help();
-                reedStdin();
+                readCommand();
             } else {
-                String singleCommand = cmd.getArgs()[0];
-                Option[] opts = cmd.getOptions();
-                switch (singleCommand) {
-                    case "server":
-                        server(opts);
-                        break;
-                    case "import":
-                        importData(opts);
-                        break;
-                    case "exit":
-                        exit(0x01);
+                String[] commands = cmd.getArgs();
+                Map<String, String> options = toMap(cmd.getOptions());
+                switch (commands[0]) {
+                    case "import": importData(options); break;
+                    case "tree":   tree(options); break;
+                    case "help":   help(); break;
+                    case "exit":   exit(0x01);
                 }
             }
         } catch (ParseException e) {
             help();
-            log(e);
         }
     }
 
-
     @Override
-    public void reedStdin() {
-        out.print("Please enter next command: ");
+    public void readCommand() {
+        out.print("Please enter a command: ");
         Scanner scanner = new Scanner(in);
         if (scanner.hasNext()) {
             args = scanner.nextLine().split("\\s+");
             if (args.length > 0) {
-                run();
+                process();
             } else {
                 try {
-                    throw new ParseException("You haven't specified the command parameters.");
+                    throw new ParseException("You haven't specified parameters of command.");
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    help();
                 }
             }
         }
     }
 
     @Override
-    public void log(Exception e) {
-        log.log(SEVERE, "Error", e);
-    }
-
-    @Override
-    public void importData(Option[] options) {
+    public void importData(Map<String, String> options) {
+        session = connect(options.get("url"), options.get("p"), options.get("u"));
         if (session == null) {
             throw new RuntimeException("Session cannot be null.");
         } else {
-            importResource(this.getClass().getClassLoader().getResourceAsStream(options[0].getValue()));
+            importResource(this.getClass().getClassLoader().getResourceAsStream(options.get("f")));
             cleanArgs();
-            run();
         }
     }
 
     @Override
-    public void server(Option[] options) {
+    public Session connect(String url, String usr, String pwd) {
+        return new ClientConfigurationSessionFactory().configure(url, usr, pwd);
+    }
 
-        String url = null,
-               pass = null,
-               name = null;
-
-        for (Option option : options) {
-            String opt = option.getOpt();
-            String val = option.getValue();
-            if (opt.equals("url")) {
-                url = val;
-                continue;
+    @Override
+    public void tree(Map<String, String> options) {
+        List<String> converted = new ArrayList<>();
+        session = connect(options.get("url"), options.get("p"), options.get("u"));
+        if (options.get("pr") != null){
+            List<ClientResourceLookup> lookup = session.resourcesService()
+                    .resources().search()
+                    .entity()
+                    .getResourceLookups();
+            for (ClientResourceLookup lkp : lookup) {
+                converted.add(lkp.getUri());
             }
-            if (opt.equals("p")) {
-                pass = val;
-                continue;
+            new DtoToTreeConverter().tree(converted).print();
+        } else {
+            List<ClientResourceLookup> lookup = session.resourcesService()
+                    .resources().parameter(FOLDER_URI, options.get("pf"))
+                    .search().entity()
+                    .getResourceLookups();
+            for (ClientResourceLookup lkp : lookup) {
+                converted.add(lkp.getUri());
             }
-            if (opt.equals("u")) name = val;
+            new DtoToTreeConverter().tree(converted, options.get("pf")).print();
         }
-        session = new ClientConfigurationSessionFactory().configure(url, name, pass);
         cleanArgs();
-        run();
-    }
-
-    @Override
-    public void version() {
-        // todo: get JRS version
-    }
-
-    @Override
-    public void profile() {
-        // todo: add profile
     }
 
     @Override
     public void help() {
-        // todo: show some useful info
+        out.println("Usage: jrs <command> [<args>]\n" +
+                    "\n" +
+                    "   where <args> include:\n" +
+                    "     -u\t  JRS username\n" +
+                    "     -p\t  JRS password \n" +
+                    "     -url JRS url \n" +
+                    "     -f\t  path to zipped resource archive\n");
+        cleanArgs();
     }
+
+    @Override
+    public void version() {}
+
+    @Override
+    public void profile() {}
 
     private void cleanArgs() {
         args = null;
+    }
+
+    private Map<String, String> toMap(Option[] options) {
+        HashMap<String, String> opts = new HashMap<>();
+        for (Option option : options) {
+            opts.put(option.getOpt(), option.getValue());
+        }
+        return opts;
     }
 }

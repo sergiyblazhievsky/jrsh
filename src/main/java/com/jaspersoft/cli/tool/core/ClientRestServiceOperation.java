@@ -1,6 +1,5 @@
 package com.jaspersoft.cli.tool.core;
 
-import com.jaspersoft.cli.tool.api.operation.ClientOperation;
 import com.jaspersoft.jasperserver.dto.resources.ClientResource;
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.importservice.ImportParameter;
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.importservice.ImportTaskRequestAdapter;
@@ -17,11 +16,15 @@ import static java.lang.Thread.sleep;
  * @author Alexander Krasnyanskiy
  * @since 1.0
  */
-public class ClientSimpleOperation implements ClientOperation {
+public class ClientRestServiceOperation implements ClientOperation {
 
     protected Session session;
 
-    public ClientSimpleOperation() {
+    public ClientRestServiceOperation() {
+    }
+
+    public ClientRestServiceOperation(Session session) {
+        this.session = session;
     }
 
     @Override
@@ -83,13 +86,5 @@ public class ClientSimpleOperation implements ClientOperation {
             return session.exportService().task(state.getId()).state().entity().getPhase();
         }
         throw new RuntimeException("State cannot be null.");
-    }
-
-    public Session getSession() {
-        return session;
-    }
-
-    public void setSession(Session session) {
-        this.session = session;
     }
 }

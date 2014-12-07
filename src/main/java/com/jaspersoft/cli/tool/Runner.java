@@ -10,6 +10,6 @@ import com.jaspersoft.cli.tool.core.CliEngine;
  */
 public class Runner {
     public static void main(String[] args) {
-        new CliEngine(args).run();
+        new CliEngine(args).process();
     }
 }
