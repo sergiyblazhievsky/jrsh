@@ -11,9 +11,9 @@ import static java.util.regex.Pattern.quote;
  * @author Alexander Krasnyanskiy
  * @since 1.0
  */
-public class DtoToTreeConverter {
+public class DtoToTreeConverter implements IConverter{
 
-    public TreeNode tree(List<String> arr) {
+    public TreeNode toTree(List<String> arr) {
         TreeNode root = new TreeNode("root", new ArrayList<TreeNode>());
         TreeNode tempRoot = root;
         for (String line : arr) {
@@ -35,7 +35,7 @@ public class DtoToTreeConverter {
         return root;
     }
 
-    public TreeNode tree(List<String> arr, String path) {
+    public TreeNode toTree(List<String> arr, String path) {
         TreeNode root = new TreeNode("root", new ArrayList<TreeNode>());
         TreeNode tempRoot = root;
         for (String line : arr) {
@@ -65,7 +65,7 @@ public class DtoToTreeConverter {
         return from;
     }
 
-    private static List<String> convert(String s) {
+    public List<String> convert(String s) {
         if (s.startsWith("/") && s.endsWith("/")) {
             s = s.substring(1, s.length() - 1);
         }

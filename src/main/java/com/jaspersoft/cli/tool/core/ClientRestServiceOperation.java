@@ -1,6 +1,7 @@
 package com.jaspersoft.cli.tool.core;
 
 import com.jaspersoft.jasperserver.dto.resources.ClientResource;
+import com.jaspersoft.jasperserver.dto.resources.ClientResourceLookup;
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.importservice.ImportParameter;
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.importservice.ImportTaskRequestAdapter;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
@@ -8,15 +9,18 @@ import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter.FOLDER_URI;
 import static java.lang.Thread.sleep;
 
 /**
  * @author Alexander Krasnyanskiy
  * @since 1.0
  */
-public class ClientRestServiceOperation implements ClientOperation {
+public class ClientRestServiceOperation implements IClientOperation {
 
     protected Session session;
 
@@ -67,6 +71,32 @@ public class ClientRestServiceOperation implements ClientOperation {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<String> resourceAsList() {
+        List<String> converted = new ArrayList<>();
+        List<ClientResourceLookup> lookup = session.resourcesService()
+                .resources().search()
+                .entity()
+                .getResourceLookups();
+        for (ClientResourceLookup lkp : lookup) {
+            converted.add(lkp.getUri());
+        }
+        return converted;
+    }
+
+    @Override
+    public List<String> resourceAsList(Map<String, String> options){
+        List<String> converted = new ArrayList<>();
+        List<ClientResourceLookup> lookup = session.resourcesService()
+                .resources().parameter(FOLDER_URI, options.get("pf"))
+                .search().entity()
+                .getResourceLookups();
+        for (ClientResourceLookup lkp : lookup) {
+            converted.add(lkp.getUri());
+        }
+        return converted;
     }
 
     private void waitForUpload(StateDto state) throws InterruptedException {

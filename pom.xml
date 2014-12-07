@@ -13,7 +13,9 @@
     <properties>
         <rest-client.version>5.6.0b-SNAPSHOT</rest-client.version>
         <apache.commons.cli>1.2</apache.commons.cli>
-        <jackson.core>2.4.4</jackson.core>
+        <testng.version>6.8.8</testng.version>
+        <easymock.version>3.2</easymock.version>
+        <powermock.version>1.5.5</powermock.version>
     </properties>
 
 
@@ -38,9 +40,28 @@
             <version>${apache.commons.cli}</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${jackson.core}</version>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-testng</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-easymock</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

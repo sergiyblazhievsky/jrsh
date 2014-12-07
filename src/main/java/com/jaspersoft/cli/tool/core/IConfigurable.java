@@ -8,7 +8,7 @@ import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
  * @author Alexander Krasnyanskiy
  * @since 1.0
  */
-public interface Configurable<T extends Session> {
+public interface IConfigurable<T extends Session> {
 
 
     /**

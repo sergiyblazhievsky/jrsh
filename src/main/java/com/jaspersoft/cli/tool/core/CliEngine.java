@@ -1,7 +1,6 @@
 package com.jaspersoft.cli.tool.core;
 
 import com.jaspersoft.cli.tool.core.tree.DtoToTreeConverter;
-import com.jaspersoft.jasperserver.dto.resources.ClientResourceLookup;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -10,13 +9,10 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter.FOLDER_URI;
 import static java.lang.System.exit;
 import static java.lang.System.in;
 import static java.lang.System.out;
@@ -27,7 +23,7 @@ import static java.lang.System.out;
  * @author Alexander Krasnyanskiy
  * @since 1.0
  */
-public class CliEngine extends ClientRestServiceOperation implements Toolkit {
+public class CliEngine extends ClientRestServiceOperation implements IToolkit {
 
     private Options options = new Options();
     private String[] args;
@@ -60,6 +56,7 @@ public class CliEngine extends ClientRestServiceOperation implements Toolkit {
                 }
             }
         } catch (ParseException e) {
+            out.println("Wrong command or option. See help info below:");
             help();
         }
     }
@@ -100,26 +97,15 @@ public class CliEngine extends ClientRestServiceOperation implements Toolkit {
 
     @Override
     public void tree(Map<String, String> options) {
-        List<String> converted = new ArrayList<>();
+
         session = connect(options.get("url"), options.get("p"), options.get("u"));
-        if (options.containsKey("pr")){
-            List<ClientResourceLookup> lookup = session.resourcesService()
-                    .resources().search()
-                    .entity()
-                    .getResourceLookups();
-            for (ClientResourceLookup lkp : lookup) {
-                converted.add(lkp.getUri());
-            }
-            new DtoToTreeConverter().tree(converted).print();
-        } else {
-            List<ClientResourceLookup> lookup = session.resourcesService()
-                    .resources().parameter(FOLDER_URI, options.get("pf"))
-                    .search().entity()
-                    .getResourceLookups();
-            for (ClientResourceLookup lkp : lookup) {
-                converted.add(lkp.getUri());
-            }
-            new DtoToTreeConverter().tree(converted, options.get("pf")).print();
+        DtoToTreeConverter converter = new DtoToTreeConverter();
+
+        if (options.containsKey("pr")) {
+            converter.toTree(resourceAsList()).print();
+        } else if (options.get("pf") != null) {
+            String fromFolder = options.get("pf");
+            converter.toTree(resourceAsList(options), fromFolder).print();
         }
         cleanArgs();
     }
@@ -127,20 +113,22 @@ public class CliEngine extends ClientRestServiceOperation implements Toolkit {
     @Override
     public void help() {
         out.println("Usage: jrs <command> [<args>]\n" +
-                    "\n" +
-                    "   where <args> include:\n" +
-                    "     -u\t  JRS username\n" +
-                    "     -p\t  JRS password \n" +
-                    "     -url JRS url \n" +
-                    "     -f\t  path to zipped resource archive\n");
+                "\n" +
+                "   where <args> include:\n" +
+                "     -u\t  JRS username\n" +
+                "     -p\t  JRS password \n" +
+                "     -url JRS url \n" +
+                "     -f\t  path to zipped resource archive\n");
         cleanArgs();
     }
 
     @Override
-    public void version() {}
+    public void version() {
+    }
 
     @Override
-    public void profile() {}
+    public void profile() {
+    }
 
     private void cleanArgs() {
         args = null;

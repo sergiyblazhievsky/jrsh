@@ -9,7 +9,7 @@ import com.jaspersoft.jasperserver.jaxrs.client.core.config.ConfigType;
  * @author Alexander Krasnyanskiy
  * @since 1.0
  */
-public class ClientConfigurationSessionFactory implements Configurable<Session> {
+public class ClientConfigurationSessionFactory implements IConfigurable<Session> {
 
     @Override
     public Session configure() {

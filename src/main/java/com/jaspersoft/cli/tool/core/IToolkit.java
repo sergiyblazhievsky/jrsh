@@ -8,7 +8,7 @@ import java.util.Map;
  * @author Alexander Krasnyanskiy
  * @since 1.0
  */
-public interface Toolkit {
+public interface IToolkit {
     void process();
     void help();
     void importData(Map<String, String> options);

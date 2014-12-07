@@ -5,16 +5,18 @@ import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.imports
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author Alexander Krasnyanskiy
  * @since 1.0
  */
-public interface ClientOperation {
-
+public interface IClientOperation {
     ClientResource getResource(String uri);
     void importResource(InputStream resource);
     void importResource(InputStream resource, Map<ImportParameter, Boolean> parameters);
     void importResource(File resource);
+    List<String> resourceAsList();
+    List<String> resourceAsList(Map<String, String> options);
 }
