@@ -102,7 +102,7 @@ public class CliEngine extends ClientRestServiceOperation implements Toolkit {
     public void tree(Map<String, String> options) {
         List<String> converted = new ArrayList<>();
         session = connect(options.get("url"), options.get("p"), options.get("u"));
-        if (options.get("pr") != null){
+        if (options.containsKey("pr")){
             List<ClientResourceLookup> lookup = session.resourcesService()
                     .resources().search()
                     .entity()
