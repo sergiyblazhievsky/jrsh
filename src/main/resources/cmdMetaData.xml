@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<context-tree description="context tree for CLI Tool">
+    <command description="root" name="jrs" class="com.jaspersoft.cli.tool.core.v2.command.impl.JrsCommand">
+        <subcommands>
+            <command name="import" class="com.jaspersoft.cli.tool.core.v2.command.impl.ImportCommand">
+                <subcommands>
+                    <command name="export" class="com.jaspersoft.cli.tool.core.v2.command.impl.ExportCommand"/>
+                    <command name="import" class="com.jaspersoft.cli.tool.core.v2.command.impl.ImportCommand"/>
+                </subcommands>
+            </command>
+            <command name="help" class="com.jaspersoft.cli.tool.core.v2.command.impl.HelpCommand"/>
+            <command name="tree" class="com.jaspersoft.cli.tool.core.v2.command.impl.TreeCommand">
+                <subcommands>
+                    <command name="import" class="com.jaspersoft.cli.tool.core.v2.command.impl.ImportCommand"/>
+                </subcommands>
+            </command>
+            <command name="version" class="com.jaspersoft.cli.tool.core.v2.command.impl.VersionCommand"/>
+        </subcommands>
+    </command>
+</context-tree>

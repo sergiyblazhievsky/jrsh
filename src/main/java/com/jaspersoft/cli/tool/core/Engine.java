@@ -9,6 +9,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -17,19 +18,14 @@ import static java.lang.System.exit;
 import static java.lang.System.in;
 import static java.lang.System.out;
 
-/**
- * The core class for JRS CLI.
- *
- * @author Alexander Krasnyanskiy
- * @since 1.0
- */
-public class CliEngine extends ClientRestServiceOperation implements IToolkit {
+public class Engine extends ServiceOperation {
+
 
     private Options options = new Options();
     private String[] args;
 
-    public CliEngine(String[] args) {
-        this.args = args;
+
+    public Engine() {
         options.addOption("url", true, "jrs url");
         options.addOption("u", "user", true, "username");
         options.addOption("p", "password", true, "password");
@@ -38,8 +34,9 @@ public class CliEngine extends ClientRestServiceOperation implements IToolkit {
         options.addOption("pr", "print from the root", false, "print resources tree from the root");
     }
 
-    @Override
-    public void process() {
+
+    public void run(String[] args) {
+        this.args = args;
         CommandLineParser parser = new BasicParser();
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -49,10 +46,17 @@ public class CliEngine extends ClientRestServiceOperation implements IToolkit {
                 String[] commands = cmd.getArgs();
                 Map<String, String> options = toMap(cmd.getOptions());
                 switch (commands[0]) {
-                    case "import": importData(options); break;
-                    case "tree":   tree(options); break;
-                    case "help":   help(); break;
-                    case "exit":   exit(0x01);
+                    case "import":
+                        importData(options);
+                        break;
+                    case "tree":
+                        tree(options);
+                        break;
+                    case "help":
+                        help();
+                        break;
+                    case "exit":
+                        exit(0x01);
                 }
             }
         } catch (ParseException e) {
@@ -61,41 +65,35 @@ public class CliEngine extends ClientRestServiceOperation implements IToolkit {
         }
     }
 
-    @Override
     public void readCommand() {
         out.print("Please enter a command: ");
         Scanner scanner = new Scanner(in);
         if (scanner.hasNext()) {
             args = scanner.nextLine().split("\\s+");
             if (args.length > 0) {
-                process();
+                run(args);
             } else {
-                try {
-                    throw new ParseException("You haven't specified parameters of command.");
-                } catch (ParseException e) {
-                    help();
-                }
+                help();
             }
         }
     }
 
-    @Override
     public void importData(Map<String, String> options) {
         session = connect(options.get("url"), options.get("p"), options.get("u"));
         if (session == null) {
             throw new RuntimeException("Session cannot be null.");
         } else {
-            importResource(this.getClass().getClassLoader().getResourceAsStream(options.get("f")));
+            String path = options.get("f");
+            File zip = new File(path);
+            importResource(zip);
             cleanArgs();
         }
     }
 
-    @Override
     public Session connect(String url, String usr, String pwd) {
         return new ClientConfigurationSessionFactory().configure(url, usr, pwd);
     }
 
-    @Override
     public void tree(Map<String, String> options) {
 
         session = connect(options.get("url"), options.get("p"), options.get("u"));
@@ -110,7 +108,6 @@ public class CliEngine extends ClientRestServiceOperation implements IToolkit {
         cleanArgs();
     }
 
-    @Override
     public void help() {
         out.println("Usage: jrs <command> [<args>]\n" +
                 "\n" +
@@ -118,16 +115,11 @@ public class CliEngine extends ClientRestServiceOperation implements IToolkit {
                 "     -u\t  JRS username\n" +
                 "     -p\t  JRS password \n" +
                 "     -url JRS url \n" +
-                "     -f\t  path to zipped resource archive\n");
+                "     -f\t  path to zipped resource archive\n" +
+                "     -pf\t print from specified folder option\n" +
+                "     -pr\t print from the root option");
+
         cleanArgs();
-    }
-
-    @Override
-    public void version() {
-    }
-
-    @Override
-    public void profile() {
     }
 
     private void cleanArgs() {

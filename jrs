@@ -1,2 +1,2 @@
 #!/bin/sh
-java -jar target/jrs-command-line-tool-1.0-SNAPSHOT-jar-with-dependencies.jar "$@"
+java -jar lib/jrs-command-line-tool-1.0-SNAPSHOT-jar-with-dependencies.jar "$@"

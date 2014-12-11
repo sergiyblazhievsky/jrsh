@@ -1,15 +1,10 @@
 package com.jaspersoft.cli.tool;
 
-import com.jaspersoft.cli.tool.core.CliEngine;
+import com.jaspersoft.cli.tool.core.Engine;
 
-/**
- * Application runner.
- *
- * @author Alexander Krasnyanskiy
- * @since 1.0
- */
+// GenericRunner
 public class Runner {
     public static void main(String[] args) {
-        new CliEngine(args).process();
+        new Engine().run(args);
     }
 }
