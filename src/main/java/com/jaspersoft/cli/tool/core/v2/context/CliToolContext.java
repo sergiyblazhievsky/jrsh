@@ -11,15 +11,15 @@ import com.jaspersoft.cli.tool.core.v2.command.Command;
 public interface CliToolContext {
 
     /**
-     * Return a component.
+     * Returns component.
      * @param name a key of the component
      * @return command component
      */
     public Command getCommand(String name);
 
     /**
-     * As the previous method this one returns a component command,
-     * but smart lookup to get the command.
+     * As the previous method this one returns a command,
+     * but used a smart lookup to get the command.
      * @param commandClass class of component
      * @param <T> type of command
      * @return command component
