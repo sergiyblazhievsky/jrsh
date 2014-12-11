@@ -17,7 +17,7 @@ import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 /**
- * Central class to provide configuration for an CLI Tool.
+ * Central class to provide configuration for CLI Tool.
  *
  * @author A. Krasnyanskiy
  * @since 1.0
