@@ -26,7 +26,7 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 public class ClassPathXmlCliToolConfigurationContext implements CliToolContext {
 
     /**
-     * Commands DI container.
+     * Command container.
      */
     private Map<String, Command> dependencies = new HashMap<>();
 
