@@ -3,6 +3,7 @@ package com.jaspersoft.cli.tool.command.common;
 import com.beust.jcommander.JCommander;
 import com.jaspersoft.cli.tool.command.AbstractCommand;
 import com.jaspersoft.cli.tool.command.Command;
+import com.jaspersoft.cli.tool.command.factory.CommandFactory;
 import lombok.Data;
 
 import java.util.Map;
@@ -15,45 +16,37 @@ import static java.util.Arrays.asList;
 /**
  * This class is responsible for building a queue of commands with due
  * consideration of CLI tool rules:
- * Command -> SubCommand -> SubCommand of SubCommand and so on.
+ *      > Command
+ *          > SubCommand
+ *              > SubCommand of SubCommand
+ *                  > and so on.
  *
  * @author A. Krasnyanskiy
  */
 @Data
 public class CommandBuilder {
 
-    private Map<String, Command> commands = new TreeMap<>(); // fixme: remove the comparator is doesn't work
+    private Map<String, Command> commands = new TreeMap<>();
 
     /**
-     * Builds commands via factory {@link com.jaspersoft.cli.tool.command.factory.CommandFactory}
+     * Builds chain of commands via {@link CommandFactory}
      * and populates the command holder map.
      *
      * @return the root command
      */
     public JCommander build() {
 
-        // todo: add or replace with xml context configuration | this is a high priority task
-        commands = create(/*new HashSet<>(*/asList("jrs", "import", "list", "info", "apply", "revert", "child", "export")/*)*/);
+        commands = CommandFactory.create(asList("jrs", "import", "show", "info"));
 
-        //
-        // builds command sequence (cmd queue | CLI rules) considering the level of command
-        //
         JCommander baseCmd = new JCommander();
-        JCommander jrsCmd = addCommand(baseCmd, "jrs", 1, commands.get("jrs"));
-        JCommander importCmd = addCommand(jrsCmd, "import", 2, commands.get("import"));
-        JCommander listCmd = addCommand(jrsCmd, "list", 2, commands.get("list"));
-        JCommander infoCmd = addCommand(jrsCmd, "info", 2, commands.get("info"));
-        JCommander applyCmd = addCommand(listCmd, "apply", 3, commands.get("apply"));
-        JCommander revertCmd = addCommand(listCmd, "revert", 3, commands.get("revert"));
-        JCommander exportCmd = addCommand(infoCmd, "export", 3, commands.get("export"));
-        JCommander childCmd = addCommand(applyCmd, "child", 4, commands.get("child"));
-
-
+        JCommander jrsCmd = addCommand(baseCmd, "jrs", commands.get("jrs"));
+        JCommander importCmd = addCommand(jrsCmd, "import", commands.get("import"));
+        JCommander listCmd = addCommand(jrsCmd, "show", commands.get("show"));
+        JCommander infoCmd = addCommand(jrsCmd, "info", commands.get("info"));
         return baseCmd;
     }
 
-    private JCommander addCommand(JCommander parentCommand, String commandName, int order, Object parentSubCommand) {
-        ((AbstractCommand) parentSubCommand).setOrder(order);
+    private JCommander addCommand(JCommander parentCommand, String commandName, Object parentSubCommand) {
         parentCommand.addCommand(commandName, parentSubCommand);
         return parentCommand.getCommands().get(commandName);
     }

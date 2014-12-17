@@ -12,7 +12,7 @@ import java.util.Map;
  * Main class of whole app. It manages the creation of app components
  * and interaction between them.
  *
- * @author Alex Krasnyanskiy
+ * @author A. Krasnyanskiy
  * @since 1.0
  */
 public class Application {
@@ -22,7 +22,10 @@ public class Application {
         JCommander rootCommand = builder.build();
         rootCommand.parse(ArgumentsConverter.convert(args));
 
-        Map<String, Command> executableCommandQueue = builder.filter(rootCommand).getCommands();
+
+        Map<String, Command> executableCommandQueue =
+                builder.filter(rootCommand).getCommands();
+
 
         CommandProcessor processor = new CommandProcessor();
         processor.processInOrder(executableCommandQueue);

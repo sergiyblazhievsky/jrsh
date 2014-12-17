@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
- * Abstract holder for {@link com.jaspersoft.jasperserver.jaxrs.client.core.Session} instance, which is
+ * Abstract holder for {@link Session} instance, which is
  * used by all concrete commands.
  *
  * @author Alex Krasnyanskiy
@@ -16,11 +16,11 @@ import lombok.experimental.Accessors;
 public abstract class AbstractCommand<T> implements Command<T>, Comparable<AbstractCommand> {
 
     private boolean isActive;
-    private int order;
-    protected static Session jrsRestClientSession;
+    private int level;
+    protected static Session clientSession; // todo: move to factory
 
     @Override
     public int compareTo(AbstractCommand command) {
-        return this.order - command.order;
+        return this.level - command.level;
     }
 }

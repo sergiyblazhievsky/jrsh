@@ -3,6 +3,7 @@ package com.jaspersoft.cli.tool.command.impl;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.jaspersoft.cli.tool.command.AbstractCommand;
+import com.jaspersoft.cli.tool.command.factory.SessionFactory;
 import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
 import lombok.Data;
 
@@ -17,21 +18,13 @@ import static java.lang.Thread.sleep;
 @Parameters(commandDescription = "import")
 public class ImportCommand extends AbstractCommand<Void> {
 
-    @Parameter(names = {"--file", "-f"}, required = true)
+    @Parameter(names = {"--zip", "-z"}, required = true)
     public String file;
 
-    //
-    // fixme: recursion?!
-    //
     @Override
     public Void execute() {
-        File zip = new File(file);
-        StateDto state = jrsRestClientSession.importService().newTask().create(zip).entity();
-        try {
-            waitForUpload(state);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        StateDto state = SessionFactory.getInstance().importService().newTask().create(new File(file)).entity();
+        waitForUpload(state);
         return null;
     }
 
@@ -39,16 +32,19 @@ public class ImportCommand extends AbstractCommand<Void> {
      * Waits until job has been executed.
      *
      * @param state state of the job
-     * @throws InterruptedException
      */
-    private void waitForUpload(StateDto state) throws InterruptedException {
+    private void waitForUpload(StateDto state) {
         String currentPhase;
         do {
             currentPhase = getPhase(state);
             if (currentPhase.equals("finished")) {
                 break;
             }
-            sleep(500);
+            try {
+                sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } while (true);
     }
 
@@ -60,7 +56,7 @@ public class ImportCommand extends AbstractCommand<Void> {
      */
     private String getPhase(StateDto state) {
         if (state != null) {
-            return jrsRestClientSession.exportService().task(state.getId()).state().entity().getPhase();
+            return clientSession.exportService().task(state.getId()).state().entity().getPhase();
         }
         throw new RuntimeException("State cannot be null.");
     }
