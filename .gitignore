@@ -1,7 +1,5 @@
 # Created by .gitignore support plugin (hsz.mobi)
 ### Java template
-*.class
-
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
@@ -50,6 +48,7 @@ hs_err_pid*
 
 # IntelliJ
 out/
+target
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

@@ -1,2 +1,0 @@
--s http://54.167.46.45/jasperserver-pro -u superuser -p superuser list --path /public/diagnostic
--s http://54.167.46.45/jasperserver-pro -u superuser -p superuser import --file /Users/alexkrasnyaskiy/IdeaProjects/jrs-command-line-tool/src/main/resources/import.zip
