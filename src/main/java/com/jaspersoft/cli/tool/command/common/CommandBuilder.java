@@ -16,17 +16,17 @@ import static java.util.Arrays.asList;
 /**
  * This class is responsible for building a queue of commands with due
  * consideration of CLI tool rules:
- *      > Command
- *          > SubCommand
- *              > SubCommand of SubCommand
- *                  > and so on.
+ * > Command
+ * > SubCommand
+ * > SubCommand of SubCommand
+ * > and so on.
  *
  * @author A. Krasnyanskiy
  */
 @Data
 public class CommandBuilder {
 
-    private Map<String, Command> commands = new TreeMap<>();
+    private Map<String, AbstractCommand> commands = new TreeMap<>();
 
     /**
      * Builds chain of commands via {@link CommandFactory}
@@ -36,19 +36,28 @@ public class CommandBuilder {
      */
     public JCommander build() {
 
-        commands = CommandFactory.create(asList("jrs", "import", "show", "info"));
+        //
+        // configure all commands storage
+        //
+        commands = CommandFactory.create("jrs", "import", "show", "info", "server-info", "repo");
 
+        //
+        // build chain of commands (sequence)
+        //
         JCommander baseCmd = new JCommander();
-        JCommander jrsCmd = addCommand(baseCmd, "jrs", commands.get("jrs"));
-        JCommander importCmd = addCommand(jrsCmd, "import", commands.get("import"));
-        JCommander listCmd = addCommand(jrsCmd, "show", commands.get("show"));
-        JCommander infoCmd = addCommand(jrsCmd, "info", commands.get("info"));
+        JCommander jrsCmd = addCommand(baseCmd, commands.get("jrs"));
+        JCommander importCmd = addCommand(jrsCmd, commands.get("import"));
+        JCommander showCmd = addCommand(jrsCmd, commands.get("show"));
+        JCommander infoCmd = addCommand(jrsCmd, commands.get("info"));
+        JCommander resourcesCmd = addCommand(showCmd, commands.get("repo"));
+        JCommander serverInfoCmd = addCommand(showCmd, commands.get("server-info"));
+
         return baseCmd;
     }
 
-    private JCommander addCommand(JCommander parentCommand, String commandName, Object parentSubCommand) {
-        parentCommand.addCommand(commandName, parentSubCommand);
-        return parentCommand.getCommands().get(commandName);
+    private JCommander addCommand(JCommander parentCommand, AbstractCommand parentSubCommand) {
+        parentCommand.addCommand(parentSubCommand.getCommandName(), parentSubCommand);
+        return parentCommand.getCommands().get(parentSubCommand.getCommandName());
     }
 
     /**
@@ -59,9 +68,9 @@ public class CommandBuilder {
      */
     public CommandBuilder filter(JCommander rootCmd) {
         markCmd(rootCmd);
-        Map<String, Command> filtered = new TreeMap<>();
-        for (Entry<String, Command> entry : commands.entrySet()) {
-            AbstractCommand cmd = ((AbstractCommand) entry.getValue());
+        Map<String, AbstractCommand> filtered = new TreeMap<>();
+        for (Entry<String, AbstractCommand> entry : commands.entrySet()) {
+            AbstractCommand cmd = entry.getValue();
             if (cmd.isActive()) {
                 filtered.put(entry.getKey(), entry.getValue());
             }
@@ -73,7 +82,7 @@ public class CommandBuilder {
     private void markCmd(JCommander rootCmd) {
         String cmdName = rootCmd.getParsedCommand();
         if (cmdName != null) {
-            ((AbstractCommand) commands.get(cmdName)).setActive(true);
+            commands.get(cmdName).setActive(true);
             if (rootCmd.getCommands().containsKey(cmdName)) {
                 markCmd(rootCmd.getCommands().get(cmdName));
             }

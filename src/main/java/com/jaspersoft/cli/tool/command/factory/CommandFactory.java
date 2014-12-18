@@ -1,11 +1,9 @@
 package com.jaspersoft.cli.tool.command.factory;
 
-import com.jaspersoft.cli.tool.command.Command;
-import com.jaspersoft.cli.tool.command.impl.ImportCommand;
-import com.jaspersoft.cli.tool.command.impl.JrsCommand;
-import com.jaspersoft.cli.tool.command.impl.ShowCommand;
-import com.jaspersoft.cli.tool.command.impl.ServerInfoCommand;
+import com.jaspersoft.cli.tool.command.AbstractCommand;
+import com.jaspersoft.cli.tool.command.impl.*;
 import com.jaspersoft.cli.tool.exception.IllegalCommandNameException;
+import com.jaspersoft.cli.tool.exception.UnsupportedCommandException;
 
 import java.util.Collection;
 import java.util.Map;
@@ -26,28 +24,22 @@ public class CommandFactory {
      * @param commandName name of the command
      * @return created command instance
      */
-    public static Command create(String commandName) {
+    public static AbstractCommand create(String commandName) {
         switch (commandName) {
             case "jrs":
-                return new JrsCommand().setLevel(1);
+                return new JrsCommand("jrs", 1);
             case "import":
-                return new ImportCommand().setLevel(2);
+                return new ImportCommand("import", 2);
             case "show":
-                return new ShowCommand().setLevel(2);
-            case "info":
-                return new ServerInfoCommand().setLevel(2);
-            // fixme: delete these dummy commands
-//            case "apply":
-//                return new ApplyCommand();
-//            case "revert":
-//                return new RevertCommand();
-//            case "child":
-//                return new ChildCommand();
-//            case "export":
-//                return new DummyExportCommand();
-            // todo: implement them 8>
-//            case "profile":
-//                throw new UnimplementedCommandException();
+                return new ShowCommand("show", 2);
+            case "repo":
+                return new ShowRepoCommand("repo", 3);
+            case "server-info":
+                return new ShowServerInfoCommand("server-info", 3);
+            case "profile":
+                throw new UnsupportedCommandException();
+            case "debug":
+                throw new UnsupportedCommandException();
             default:
                 throw new IllegalCommandNameException();
         }
@@ -56,11 +48,11 @@ public class CommandFactory {
     /**
      * Creates a map of commands.
      *
-     * @param commandNames collection of command names
+     * @param commandNames array of command names
      * @return created command holder map
      */
-    public static Map<String, Command> create(Collection<String> commandNames) {
-        Map<String, Command> commands = new TreeMap<>();
+    public static Map<String, AbstractCommand> create(String... commandNames) {
+        Map<String, AbstractCommand> commands = new TreeMap<>();
         for (String cmdName : commandNames) {
             commands.put(cmdName, create(cmdName));
         }

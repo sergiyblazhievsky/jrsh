@@ -3,11 +3,11 @@ package com.jaspersoft.cli.tool.exception;
 /**
  * @author Alex Krasnyanskiy
  */
-public class UnimplementedCommandException extends RuntimeException {
+public class UnsupportedCommandException extends RuntimeException {
 
     private final static String MESSAGE = "Sorry, but this command not yet implemented.";
 
-    public UnimplementedCommandException() {
+    public UnsupportedCommandException() {
         super(MESSAGE);
     }
 

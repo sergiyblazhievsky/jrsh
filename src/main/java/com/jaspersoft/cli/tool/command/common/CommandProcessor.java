@@ -1,5 +1,6 @@
 package com.jaspersoft.cli.tool.command.common;
 
+import com.jaspersoft.cli.tool.command.AbstractCommand;
 import com.jaspersoft.cli.tool.command.Command;
 
 import java.util.Collection;
@@ -17,9 +18,9 @@ public class CommandProcessor {
      *
      * @param executableCommandQueue command storage
      */
-    public void processInOrder(Map<String, Command> executableCommandQueue) {
-        Collection<Command> commands = executableCommandQueue.values();
-        TreeSet<Command> set = new TreeSet<>(commands);
+    public void processInOrder(Map<String, AbstractCommand> executableCommandQueue) {
+        Collection<AbstractCommand> commands = executableCommandQueue.values();
+        TreeSet<AbstractCommand> set = new TreeSet<>(commands);
         for (Command command : set) {
             command.execute();
         }

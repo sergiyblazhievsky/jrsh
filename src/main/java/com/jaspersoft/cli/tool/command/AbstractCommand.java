@@ -1,7 +1,7 @@
 package com.jaspersoft.cli.tool.command;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 /**
@@ -15,9 +15,15 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public abstract class AbstractCommand<T> implements Command<T>, Comparable<AbstractCommand> {
 
+    private String commandName;
     private boolean isActive;
     private int level;
-    protected static Session clientSession; // todo: move to factory
+    //protected static Session clientSession; // todo: move to factory
+
+    public AbstractCommand(String commandName, Integer level) {
+        this.commandName = commandName;
+        this.level = level;
+    }
 
     @Override
     public int compareTo(AbstractCommand command) {

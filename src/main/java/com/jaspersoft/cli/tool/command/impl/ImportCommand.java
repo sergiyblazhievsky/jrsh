@@ -6,6 +6,8 @@ import com.jaspersoft.cli.tool.command.AbstractCommand;
 import com.jaspersoft.cli.tool.command.factory.SessionFactory;
 import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 
 import java.io.File;
 
@@ -15,8 +17,13 @@ import static java.lang.Thread.sleep;
  * @author Alex Krasnyanskiy
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Parameters(commandDescription = "import")
 public class ImportCommand extends AbstractCommand<Void> {
+
+    public ImportCommand(String commandName, Integer level) {
+        super(commandName, level);
+    }
 
     @Parameter(names = {"--zip", "-z"}, required = true)
     public String file;
@@ -56,7 +63,7 @@ public class ImportCommand extends AbstractCommand<Void> {
      */
     private String getPhase(StateDto state) {
         if (state != null) {
-            return clientSession.exportService().task(state.getId()).state().entity().getPhase();
+            return SessionFactory.getInstance().exportService().task(state.getId()).state().entity().getPhase();
         }
         throw new RuntimeException("State cannot be null.");
     }
