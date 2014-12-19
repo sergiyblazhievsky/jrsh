@@ -19,7 +19,7 @@ Show resources tree starting from specific root.
 jrs -s "http://54.163.3.100/jasperserver-pro" -u "admin" -p "secret" \
 show resources --path "/public/monitoring/reports"
 ```
-Or show such serser information details as edition and version.
+Or you can also show such useful server meta information as edition or version.
 
 ```bash
 jrs -s "http://54.163.3.100/jasperserver-pro" -u "admin" -p "secret" \
