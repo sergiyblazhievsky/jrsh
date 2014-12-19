@@ -9,7 +9,7 @@ notifications:
     - igor.nesterenko@globallogic.com
     - borys.timakov@globallogic.com
 
-sudo: false;
+#sudo: false;
 
 branches:
   only:
