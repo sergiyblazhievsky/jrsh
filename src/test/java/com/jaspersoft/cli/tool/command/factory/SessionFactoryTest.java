@@ -59,11 +59,7 @@ public class SessionFactoryTest extends PowerMockTestCase {
 
     @Test(dependsOnMethods = "should_return_new_session_instance")
     public void should_return_session_object() throws Exception {
-
-        // when
         Session retrieved = SessionFactory.getInstance();
-
-        // than
         Assert.assertNotNull(retrieved);
     }
 

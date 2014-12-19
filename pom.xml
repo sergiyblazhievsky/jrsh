@@ -17,8 +17,9 @@
         <fasterxml.version>2.4.4</fasterxml.version>
         <maven.compiler.plugin.version>3.2</maven.compiler.plugin.version>
         <lombok.version>1.14.4</lombok.version>
-        <coveralls.plugin.version>2.0.0</coveralls.plugin.version>
-        <cobertura.maven.plugin.version>2.5.2</cobertura.maven.plugin.version>
+        <coveralls.plugin.version>3.0.1</coveralls.plugin.version>
+        <cobertura.maven.plugin.version>2.6</cobertura.maven.plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <testng.version>6.8.8</testng.version>
         <easymock.version>3.2</easymock.version>
         <powermock.version>1.5.5</powermock.version>
@@ -102,6 +103,7 @@
                 <configuration>
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
             <plugin>
@@ -147,6 +149,7 @@
                 <version>${coveralls.plugin.version}</version>
                 <configuration>
                     <branch>master</branch>
+                    <repoToken>COUt2qTNpRLBrBpxn6MYomyALx3pgGndV</repoToken>
                 </configuration>
             </plugin>
         </plugins>

@@ -108,6 +108,7 @@ public class ImportCommandTest extends PowerMockTestCase {
         inOrder.verify(importTaskRequestAdapterMock, times(1)).create(fileMock);
         inOrder.verify(operationResultMockForImport, times(1)).entity();
 
+        // todo: add order here if possible
         Mockito.verify(sessionMock, times(3)).exportService();
         Mockito.verify(exportServiceMock, times(3)).task("2f097a8a-7200-42ea-a9d8-d1762d3c7861");
         Mockito.verify(exportRequestAdapterMock, times(3)).state();
