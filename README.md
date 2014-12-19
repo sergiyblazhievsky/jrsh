@@ -10,7 +10,7 @@ JRSH is a [CLI](https://en.wikipedia.org/wiki/Command-line_interface) tool. It's
 
 ## Usage examples
 
-The following code snippets demostrate some simple operations.
+The following code snippets show some simple operations.
 
 ### Show operation
 
