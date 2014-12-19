@@ -6,6 +6,7 @@ jdk:
 notifications:
   email:
   - o.krasnianskyi@globallogic.com
+  - krasnyanskiy.alex@gmail.com
   - igor.nesterenko@globallogic.com
   - borys.timakov@globallogic.com
 
