@@ -5,10 +5,13 @@ jdk:
 
 notifications:
   email:
-  - o.krasnianskyi@globallogic.com
-  - krasnyanskiy.alex@gmail.com
-  - igor.nesterenko@globallogic.com
-  - borys.timakov@globallogic.com
+    recipients:
+      - o.krasnianskyi@globallogic.com
+      - igor.nesterenko@globallogic.com
+      - borys.timakov@globallogic.com
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/57ba0193a1606d865761
 
 #env:
 #  global:
