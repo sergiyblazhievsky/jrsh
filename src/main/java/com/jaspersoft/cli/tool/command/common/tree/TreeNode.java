@@ -1,5 +1,7 @@
 package com.jaspersoft.cli.tool.command.common.tree;
 
+import lombok.Getter;
+
 import java.util.List;
 
 /**
@@ -7,45 +9,10 @@ import java.util.List;
  * @author Alex Krasnyanskiy
  * @since 1.0
  */
-//@Data
-//@AllArgsConstructor
 public class TreeNode {
-
-
-    /**
-     * Name of the Node
-     */
-    //private String name;
-
-    /**
-     * Children nodes.
-     */
-    //private List<TreeNode> children;
-
-    /**
-     * Init tree building method.
-     */
-    //public void print() {
-    //    print("", true);
-    //}
-
-    /**
-     * Print JRS resources tree recursively.
-     * @param prefix used for building a visual structure of the tree
-     * @param isTail flag which indicates is our has children (tail)
-     */
-    /*
-    private void print(String prefix, boolean isTail) {
-        System.out.println(prefix + (isTail ? "└── " : "├── ") + name);
-        for (int i = 0; i < children.size() - 1; i++) {
-            children.get(i).print(prefix + (isTail ? "    " : "│   "), false);
-        }
-        if (children.size() > 0) {
-            children.get(children.size() - 1).print(prefix + (isTail ? "    " : "│   "), true);
-        }
-    }
-    */
+    @Getter
     private String name;
+    @Getter
     private List<TreeNode> children;
 
     public TreeNode(String name, List<TreeNode> children) {
@@ -67,21 +34,21 @@ public class TreeNode {
         }
     }
 
-    public List<TreeNode> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<TreeNode> children) {
-        this.children = children;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+//    public List<TreeNode> getChildren() {
+//        return children;
+//    }
+//
+//    public void setChildren(List<TreeNode> children) {
+//        this.children = children;
+//    }
+//
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     @Override
     public boolean equals(Object o) {

@@ -5,8 +5,8 @@ import com.jaspersoft.cli.tool.command.impl.ShowCommand.OutputFormat;
 import com.jaspersoft.cli.tool.exception.UnknownFormatOptionException;
 
 /**
- * @author Alex Krasnyanskiy
- */
+* @author Alex Krasnyanskiy
+*/
 public class OptionConverter implements IStringConverter<OutputFormat> {
     @Override
     public OutputFormat convert(String value) {

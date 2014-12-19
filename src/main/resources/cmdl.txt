@@ -4,9 +4,13 @@
 
 -s "http://172.28.146.32:8080/jasperserver-pro" -u "superuser" -p "superuser" show server-info --version --edition
 -s "http://172.28.146.32:8080/jasperserver-pro" -u "superuser" -p "superuser" show server-info --version
--s "http://172.28.146.32:8080/jasperserver-pro" -u "superuser" -p "superuser" show resources
--s "http://172.28.146.32:8080/jasperserver-pro" -u "superuser" -p "superuser" show resources --path /public/monitoring/reports
+-s "http://172.28.146.32:8080/jasperserver-pro" -u "superuser" -p "superuser" show repo
+-s "http://172.28.146.32:8080/jasperserver-pro" -u "superuser" -p "superuser" show repo --path /public/monitoring/reports
 
 
 
 -s http://54.221.48.79/jasperserver-pro --username superuser --password superuser import --zip import.zip
+
+
+
+--server "http://172.28.146.32:8080/jasperserver-pro" --username "superuser" --password "superuser" import "/Users/alexkrasnyaskiy/IdeaProjects/jrs-command-line-tool/src/main/resources/import.zip"

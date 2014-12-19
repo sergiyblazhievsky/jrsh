@@ -13,6 +13,7 @@ import static java.util.regex.Pattern.quote;
  */
 public class TreeConverter {
 
+    /*
     public TreeNode toTree(List<String> arr) {
         TreeNode root = new TreeNode("root", new ArrayList<TreeNode>());
         TreeNode tempRoot = root;
@@ -34,6 +35,7 @@ public class TreeConverter {
         }
         return root;
     }
+    */
 
     public TreeNode toTree(List<String> arr, String path) {
         TreeNode root = new TreeNode("root", new ArrayList<TreeNode>());
@@ -65,7 +67,7 @@ public class TreeConverter {
         return from;
     }
 
-    public List<String> convert(String s) {
+    private List<String> convert(String s) {
         if (s.startsWith("/") && s.endsWith("/")) {
             s = s.substring(1, s.length() - 1);
         }
