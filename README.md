@@ -35,7 +35,7 @@ import --zip "/Users/alexkrasnyanskiy/test/test-import-data.zip"
 
 ## How to install
 
-To install [Command Line Tool](https://github.com/Krasnyanskiy/jrs-command-line-tool), just pen a terminal window by typing Ctrls-Alt-T and invoke
+To install [JRSH](https://github.com/Krasnyanskiy/jrs-command-line-tool), just pen a terminal window by typing Ctrls-Alt-T and invoke
 ```java
 mvn clean install
 ```
