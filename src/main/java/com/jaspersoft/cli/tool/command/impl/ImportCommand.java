@@ -10,6 +10,8 @@ import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Thread.sleep;
 
@@ -20,8 +22,9 @@ import static java.lang.Thread.sleep;
 @EqualsAndHashCode(callSuper = false)
 @Parameters(commandDescription = "import")
 public class ImportCommand extends AbstractCommand<Void> {
-
-    @Parameter(names = {"--zip", "-z"}, required = true)
+    @Parameter
+    private List<String> unnamed = new ArrayList<>();
+    @Parameter(names = {"--zip", "-z"}, required = false)
     public String file;
 
     public ImportCommand(String commandName, Integer level) {
@@ -30,14 +33,18 @@ public class ImportCommand extends AbstractCommand<Void> {
 
     @Override
     public Void execute() {
-        StateDto state = SessionFactory.getInstance().importService().newTask().create(new File(file)).entity();
+        StateDto state = null;
+        if (file != null){
+            state = SessionFactory.getInstance().importService().newTask().create(new File(file)).entity();
+        } else if (!unnamed.isEmpty()){
+            state = SessionFactory.getInstance().importService().newTask().create(new File(unnamed.get(0))).entity();
+        }
         waitForUpload(state);
         return null;
     }
 
     /**
      * Waits until job has been executed.
-     *
      * @param state state of the job
      */
     @SneakyThrows
@@ -50,7 +57,6 @@ public class ImportCommand extends AbstractCommand<Void> {
 
     /**
      * Retrieves current phase for the job.
-     *
      * @param state state of the job
      * @return phase
      */

@@ -14,7 +14,6 @@ import static com.jaspersoft.cli.tool.command.impl.ShowCommand.OutputFormat.LIST
 @Data
 @Parameters(commandDescription = "show")
 public class ShowCommand extends AbstractCommand<Void> {
-
     @Parameter(names = "--format", required = false, converter = OptionConverter.class)
     private OutputFormat format = LIST_TEXT;
 

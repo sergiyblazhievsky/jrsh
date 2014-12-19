@@ -50,7 +50,7 @@ public class SessionFactoryTest extends PowerMockTestCase {
         PowerMockito.doReturn(sessionMock).when(restClientMock).authenticate("superuser", "superuser");
 
         // when
-        Session retrieved = SessionFactory.create("http://54.221.48.79/jasperserver-pro", "superuser", "superuser");
+        Session retrieved = SessionFactory.create("http://54.221.48.79/jasperserver-pro", "superuser", "superuser", null);
 
         // than
         Assert.assertNotNull(retrieved);

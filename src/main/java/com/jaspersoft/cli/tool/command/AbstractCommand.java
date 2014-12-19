@@ -18,7 +18,7 @@ public abstract class AbstractCommand<T> implements Command<T>, Comparable<Abstr
     private String commandName;
     private boolean isActive;
     private int level;
-    //protected static Session clientSession; // todo: move to factory
+    protected boolean hasOptions;
 
     public AbstractCommand(String commandName, Integer level) {
         this.commandName = commandName;

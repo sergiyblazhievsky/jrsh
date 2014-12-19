@@ -9,7 +9,6 @@ import com.jaspersoft.cli.tool.exception.WrongPathException;
 import com.jaspersoft.jasperserver.dto.resources.ClientResourceLookup;
 import com.jaspersoft.jasperserver.jaxrs.client.core.exceptions.ResourceNotFoundException;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -22,7 +21,6 @@ import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.Res
 @Data
 @Parameters(commandDescription = "resources")
 public class ShowRepoCommand extends ShowCommand {
-
     @Parameter(names = "--path", required = false)
     private String path = "";
 
@@ -35,9 +33,12 @@ public class ShowRepoCommand extends ShowCommand {
         try {
             List<ClientResourceLookup> resources = SessionFactory.getInstance()
                     .resourcesService().resources()
-                    .parameter(FOLDER_URI, path.equals("") ? "/" : path).search().entity().getResourceLookups();
+                    .parameter(FOLDER_URI, path.equals("") ? "/" : path).search()
+                    .entity().getResourceLookups();
+
             List<String> list = newArrayList();
             TreeConverter converter = new TreeConverter();
+
             for (ClientResourceLookup lookup : resources) {
                 list.add(lookup.getUri());
             }

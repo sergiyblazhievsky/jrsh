@@ -2,8 +2,7 @@ package com.jaspersoft.cli.tool;
 
 import com.beust.jcommander.JCommander;
 import com.jaspersoft.cli.tool.command.AbstractCommand;
-import com.jaspersoft.cli.tool.command.Command;
-import com.jaspersoft.cli.tool.command.common.ArgumentsConverter;
+import com.jaspersoft.cli.tool.command.common.ArgumentAppender;
 import com.jaspersoft.cli.tool.command.common.CommandBuilder;
 import com.jaspersoft.cli.tool.command.common.CommandProcessor;
 
@@ -21,7 +20,7 @@ public class Application {
 
         CommandBuilder builder = new CommandBuilder();
         JCommander rootCommand = builder.build();
-        rootCommand.parse(ArgumentsConverter.convert(args));
+        rootCommand.parse(ArgumentAppender.append(args));
 
 
         Map<String, AbstractCommand> executableCommandQueue =

@@ -52,7 +52,7 @@ public class JrsCommandTest extends PowerMockTestCase {
         jrsCmd.setDebug(true);
 
         PowerMockito.mockStatic(SessionFactory.class);
-        PowerMockito.when(SessionFactory.create("http://54.221.48.79/jasperserver-pro", "superuser", "superuser"))
+        PowerMockito.when(SessionFactory.create("http://54.221.48.79/jasperserver-pro", "superuser", "superuser", null))
                 .thenReturn(sessionMock);
 
         // when
@@ -60,7 +60,7 @@ public class JrsCommandTest extends PowerMockTestCase {
 
         // than
         PowerMockito.verifyStatic(times(1));
-        SessionFactory.create("http://54.221.48.79/jasperserver-pro", "superuser", "superuser");
+        SessionFactory.create("http://54.221.48.79/jasperserver-pro", "superuser", "superuser", null);
 
         Assert.assertEquals(jrsCmd.getPassword(), "superuser");
         Assert.assertEquals(jrsCmd.getUsername(), "superuser");

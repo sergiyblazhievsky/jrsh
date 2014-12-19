@@ -14,7 +14,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Parameters(commandDescription = "serverInfo")
 public class ShowServerInfoCommand extends ShowCommand {
-
     @Parameter(names = "--build", required = false)
     private boolean build;
     @Parameter(names = "--edition-name", required = false)
@@ -38,7 +37,7 @@ public class ShowServerInfoCommand extends ShowCommand {
     public Void execute() {
         ServerInfo entity = SessionFactory.getInstance().serverInfoService().details().entity();
         print(entity);
-        return /*super.execute()*/null;
+        return null;
     }
 
     private void print(ServerInfo info) {
@@ -51,4 +50,9 @@ public class ShowServerInfoCommand extends ShowCommand {
         if (datetimeFormatPattern) System.out.format("datetime format pattern: %s%n", info.getDatetimeFormatPattern());
     }
 
+//    private boolean hasOptions(ShowServerInfoCommand cmd) {
+//        return cmd.isBuild() || cmd.isEditionName() || cmd.isEdition() ||
+//                cmd.isVersion() || cmd.isFeatures() || cmd.isLicenseType() ||
+//                cmd.isDatetimeFormatPattern();
+//    }
 }

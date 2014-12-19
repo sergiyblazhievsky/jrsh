@@ -10,26 +10,26 @@ import lombok.Data;
  * @author Alex Krasnyanskiy
  */
 @Data
-//@EqualsAndHashCode(callSuper = false)
 @Parameters(commandDescription = "jrs root command")
 public class JrsCommand extends AbstractCommand<Void> {
-
-    @Parameter(names = {"-s", "--server"}, required = false)
+    @Parameter(names = {"-s", "--server"}, required = true)
     private String url;
-    @Parameter(names = {"-u", "--username"}, required = false)
+    @Parameter(names = {"-u", "--username"}, required = true)
     private String username;
-    @Parameter(names = {"-p", "--password"}, required = false)
+    @Parameter(names = {"-p", "--password"}, required = true /*password = true*/)
     private String password;
+    @Parameter(names = {"-o", "--organization"}, required = false)
+    private String organization;
     @Parameter(names = {"-d", "--debug"}, required = false)
     private boolean debug;
 
-    public JrsCommand(String commandName, Integer level){
+    public JrsCommand(String commandName, Integer level) {
         super(commandName, level);
     }
 
     @Override
     public Void execute() {
-        SessionFactory.create(url, username, password);
+        SessionFactory.create(url, username, password, organization);
         return null;
     }
 }

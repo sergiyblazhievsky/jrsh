@@ -33,14 +33,10 @@ public class CommandBuilder {
      */
     public JCommander build() {
 
-        //
         // configured commands storage
-        //
         commands = CommandFactory.create("jrs", "import", "show", "server-info", "repo");
 
-        //
         // builded chain of commands (sequence | tree)
-        //
         JCommander baseCmd = new JCommander();
         JCommander jrsCmd = addCommand(baseCmd, commands.get("jrs"));
         JCommander importCmd = addCommand(jrsCmd, commands.get("import"));

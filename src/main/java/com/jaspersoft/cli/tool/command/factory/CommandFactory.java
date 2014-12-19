@@ -46,7 +46,7 @@ public class CommandFactory {
     }
 
     /**
-     * Creates a map of commands.
+     * Creates command map.
      *
      * @param commandNames array of command names
      * @return created command holder map
