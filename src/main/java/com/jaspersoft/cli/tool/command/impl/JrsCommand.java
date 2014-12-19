@@ -5,13 +5,12 @@ import com.beust.jcommander.Parameters;
 import com.jaspersoft.cli.tool.command.AbstractCommand;
 import com.jaspersoft.cli.tool.command.factory.SessionFactory;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * @author Alex Krasnyanskiy
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+//@EqualsAndHashCode(callSuper = false)
 @Parameters(commandDescription = "jrs root command")
 public class JrsCommand extends AbstractCommand<Void> {
 

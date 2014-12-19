@@ -7,7 +7,7 @@ import com.jaspersoft.cli.tool.command.factory.SessionFactory;
 import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
 import java.io.File;
 
@@ -21,12 +21,12 @@ import static java.lang.Thread.sleep;
 @Parameters(commandDescription = "import")
 public class ImportCommand extends AbstractCommand<Void> {
 
+    @Parameter(names = {"--zip", "-z"}, required = true)
+    public String file;
+
     public ImportCommand(String commandName, Integer level) {
         super(commandName, level);
     }
-
-    @Parameter(names = {"--zip", "-z"}, required = true)
-    public String file;
 
     @Override
     public Void execute() {
@@ -40,18 +40,11 @@ public class ImportCommand extends AbstractCommand<Void> {
      *
      * @param state state of the job
      */
+    @SneakyThrows
     private void waitForUpload(StateDto state) {
-        String currentPhase;
         do {
-            currentPhase = getPhase(state);
-            if (currentPhase.equals("finished")) {
-                break;
-            }
-            try {
-                sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            if ("finished".equals(getPhase(state))) break;
+            sleep(500);
         } while (true);
     }
 
@@ -62,9 +55,6 @@ public class ImportCommand extends AbstractCommand<Void> {
      * @return phase
      */
     private String getPhase(StateDto state) {
-        if (state != null) {
-            return SessionFactory.getInstance().exportService().task(state.getId()).state().entity().getPhase();
-        }
-        throw new RuntimeException("State cannot be null.");
+        return SessionFactory.getInstance().exportService().task(state.getId()).state().entity().getPhase();
     }
 }

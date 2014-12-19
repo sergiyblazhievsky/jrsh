@@ -8,8 +8,10 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 
+/**
+ * Unit tests for {@link ShowCommand}
+ */
 public class ShowCommandTest {
-
     private ShowCommand showCmd;
 
     @BeforeMethod

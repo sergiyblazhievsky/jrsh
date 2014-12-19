@@ -22,15 +22,6 @@ public class SessionFactory {
         return session;
     }
 
-    /*
-    // todo : remove
-    public static Session createIndependentSession(String url, String username, String password) {
-        RestClientConfiguration configuration = new RestClientConfiguration(url);
-        JasperserverRestClient client = new JasperserverRestClient(configuration);
-        return client.authenticate(username, password);
-    }
-    */
-
     public static Session getInstance() {
         if (session == null) {
             throw new MissingConnectionInformationException();

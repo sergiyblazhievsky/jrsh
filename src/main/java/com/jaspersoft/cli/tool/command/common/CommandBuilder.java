@@ -16,10 +16,7 @@ import static java.util.Arrays.asList;
 /**
  * This class is responsible for building a queue of commands with due
  * consideration of CLI tool rules:
- * > Command
- * > SubCommand
- * > SubCommand of SubCommand
- * > and so on.
+ * command => subcommand => subcommand-of-subcommand => and so on.
  *
  * @author A. Krasnyanskiy
  */
@@ -37,18 +34,17 @@ public class CommandBuilder {
     public JCommander build() {
 
         //
-        // configure all commands storage
+        // configured commands storage
         //
-        commands = CommandFactory.create("jrs", "import", "show", "info", "server-info", "repo");
+        commands = CommandFactory.create("jrs", "import", "show", "server-info", "repo");
 
         //
-        // build chain of commands (sequence)
+        // builded chain of commands (sequence | tree)
         //
         JCommander baseCmd = new JCommander();
         JCommander jrsCmd = addCommand(baseCmd, commands.get("jrs"));
         JCommander importCmd = addCommand(jrsCmd, commands.get("import"));
         JCommander showCmd = addCommand(jrsCmd, commands.get("show"));
-        JCommander infoCmd = addCommand(jrsCmd, commands.get("info"));
         JCommander resourcesCmd = addCommand(showCmd, commands.get("repo"));
         JCommander serverInfoCmd = addCommand(showCmd, commands.get("server-info"));
 
@@ -61,7 +57,9 @@ public class CommandBuilder {
     }
 
     /**
-     * Excludes unused commands from the map of commands.
+     * Excludes unused commands from the map of commands. We need this method
+     * for the reason that JCommander invert the order of commands. Instead of
+     * [first > second > third] it returns [third > second > first].
      *
      * @param rootCmd the command from which we should start traversing
      * @return this
@@ -79,6 +77,10 @@ public class CommandBuilder {
         return this;
     }
 
+    /**
+     * Simple command marker which is used for sorting.
+     * @param rootCmd unsorted command chain
+     */
     private void markCmd(JCommander rootCmd) {
         String cmdName = rootCmd.getParsedCommand();
         if (cmdName != null) {
