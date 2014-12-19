@@ -1,0 +1,20 @@
+language: java
+
+jdk:
+  - oraclejdk7
+
+notifications:
+  email:
+    - o.krasnianskyi@globallogic.com
+    - igor.nesterenko@globallogic.com
+    - borys.timakov@globallogic.com
+
+sudo: false;
+
+branches:
+  only:
+    - master
+
+cache:
+  directories:
+    - $HOME/.m2
