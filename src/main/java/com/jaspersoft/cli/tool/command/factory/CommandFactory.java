@@ -30,16 +30,14 @@ public class CommandFactory {
                 return new JrsCommand("jrs", 1);
             case "import":
                 return new ImportCommand("import", 2);
+            case "help":
+                return new HelpCommand("help", 2);
             case "show":
                 return new ShowCommand("show", 2);
             case "repo":
                 return new ShowRepoCommand("repo", 3);
             case "server-info":
                 return new ShowServerInfoCommand("server-info", 3);
-            case "profile":
-                throw new UnsupportedCommandException();
-            case "debug":
-                throw new UnsupportedCommandException();
             default:
                 throw new IllegalCommandNameException();
         }

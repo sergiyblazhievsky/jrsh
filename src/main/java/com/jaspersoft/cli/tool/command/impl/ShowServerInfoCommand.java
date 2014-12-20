@@ -7,13 +7,17 @@ import com.jaspersoft.jasperserver.jaxrs.client.dto.common.ServerInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import static java.lang.System.out;
+
 /**
  * @author Alex Krasnyanskiy
+ * @since 1.0
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Parameters(commandDescription = "serverInfo")
+@Parameters(commandDescription = "server info command")
 public class ShowServerInfoCommand extends ShowCommand {
+
     @Parameter(names = "--build", required = false)
     private boolean build;
     @Parameter(names = "--edition-name", required = false)
@@ -41,18 +45,28 @@ public class ShowServerInfoCommand extends ShowCommand {
     }
 
     private void print(ServerInfo info) {
-        if (build) System.out.format("build: %s%n", info.getBuild());
-        if (editionName) System.out.format("edition name: %s%n", info.getEditionName());
-        if (edition) System.out.format("build: %s%n", info.getEdition());
-        if (version) System.out.format("version: %s%n", info.getVersion());
-        if (features) System.out.format("features: %s%n", info.getFeatures());
-        if (licenseType) System.out.format("license type: %s%n", info.getLicenseType());
-        if (datetimeFormatPattern) System.out.format("datetime format pattern: %s%n", info.getDatetimeFormatPattern());
+        if (hasOptions()) {
+            if (build) out.format("build: %s%n", info.getBuild());
+            if (editionName) out.format("edition name: %s%n", info.getEditionName());
+            if (edition) out.format("build: %s%n", info.getEdition());
+            if (version) out.format("version: %s%n", info.getVersion());
+            if (features) out.format("features: %s%n", info.getFeatures());
+            if (licenseType) out.format("license type: %s%n", info.getLicenseType());
+            if (datetimeFormatPattern) out.format("datetime format pattern: %s%n", info.getDatetimeFormatPattern());
+        } else {
+            out.format("build: %s%n", info.getBuild());
+            out.format("edition name: %s%n", info.getEditionName());
+            out.format("build: %s%n", info.getEdition());
+            out.format("version: %s%n", info.getVersion());
+            out.format("features: %s%n", info.getFeatures());
+            out.format("license type: %s%n", info.getLicenseType());
+            out.format("datetime format pattern: %s%n", info.getDatetimeFormatPattern());
+        }
     }
 
-//    private boolean hasOptions(ShowServerInfoCommand cmd) {
-//        return cmd.isBuild() || cmd.isEditionName() || cmd.isEdition() ||
-//                cmd.isVersion() || cmd.isFeatures() || cmd.isLicenseType() ||
-//                cmd.isDatetimeFormatPattern();
-//    }
+    private boolean hasOptions() {
+        return this.isBuild() || this.isEditionName() || this.isEdition() ||
+                this.isVersion() || this.isFeatures() || this.isLicenseType() ||
+                this.isDatetimeFormatPattern();
+    }
 }

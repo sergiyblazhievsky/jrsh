@@ -22,6 +22,7 @@ import static java.lang.Thread.sleep;
 @EqualsAndHashCode(callSuper = false)
 @Parameters(commandDescription = "import")
 public class ImportCommand extends AbstractCommand<Void> {
+
     @Parameter
     private List<String> unnamed = new ArrayList<>();
     @Parameter(names = {"--zip", "-z"}, required = false)

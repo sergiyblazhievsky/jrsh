@@ -30,7 +30,6 @@ public class SessionFactory {
         session = organizationName != null
                 ? client.authenticate(username + "|" + organizationName, password)
                 : client.authenticate(username, password);
-
         return session;
     }
 

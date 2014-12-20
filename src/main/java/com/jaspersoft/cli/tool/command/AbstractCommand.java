@@ -1,7 +1,7 @@
 package com.jaspersoft.cli.tool.command;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
-import lombok.*;
+import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
@@ -15,10 +15,13 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public abstract class AbstractCommand<T> implements Command<T>, Comparable<AbstractCommand> {
 
+    public enum OutputFormat {
+        JSON, TEXT, LIST_TEXT
+    }
+
     private String commandName;
     private boolean isActive;
     private int level;
-    protected boolean hasOptions;
 
     public AbstractCommand(String commandName, Integer level) {
         this.commandName = commandName;

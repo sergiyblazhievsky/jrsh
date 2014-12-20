@@ -5,18 +5,21 @@ import com.beust.jcommander.Parameters;
 import com.jaspersoft.cli.tool.command.AbstractCommand;
 import com.jaspersoft.cli.tool.command.factory.SessionFactory;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author Alex Krasnyanskiy
  */
 @Data
-@Parameters(commandDescription = "jrs root command")
+@EqualsAndHashCode(callSuper = false)
+@Parameters(commandDescription = "root command")
 public class JrsCommand extends AbstractCommand<Void> {
-    @Parameter(names = {"-s", "--server"}, required = true)
+
+    @Parameter(names = {"-s", "--server"}, required = false /* FALSE because we could have HELP as next command */)
     private String url;
-    @Parameter(names = {"-u", "--username"}, required = true)
+    @Parameter(names = {"-u", "--username"}, required = false)
     private String username;
-    @Parameter(names = {"-p", "--password"}, required = true /*password = true*/)
+    @Parameter(names = {"-p", "--password"}, required = false)
     private String password;
     @Parameter(names = {"-o", "--organization"}, required = false)
     private String organization;
@@ -29,7 +32,9 @@ public class JrsCommand extends AbstractCommand<Void> {
 
     @Override
     public Void execute() {
-        SessionFactory.create(url, username, password, organization);
+        if (url != null && username != null && password != null) {
+            SessionFactory.create(url, username, password, organization);
+        }
         return null;
     }
 }

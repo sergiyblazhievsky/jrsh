@@ -21,6 +21,7 @@ import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.Res
 @Data
 @Parameters(commandDescription = "resources")
 public class ShowRepoCommand extends ShowCommand {
+
     @Parameter(names = "--path", required = false)
     private String path = "";
 

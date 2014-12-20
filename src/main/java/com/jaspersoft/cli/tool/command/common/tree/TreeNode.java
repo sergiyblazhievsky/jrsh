@@ -34,12 +34,12 @@ public class TreeNode {
         }
     }
 
-//    public List<TreeNode> getChildren() {
-//        return children;
+//    public List<TreeNode> getHasChildren() {
+//        return hasChildren;
 //    }
 //
-//    public void setChildren(List<TreeNode> children) {
-//        this.children = children;
+//    public void setHasChildren(List<TreeNode> hasChildren) {
+//        this.hasChildren = hasChildren;
 //    }
 //
 //    public String getName() {

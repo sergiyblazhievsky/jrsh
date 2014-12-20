@@ -4,7 +4,7 @@ package com.jaspersoft.cli.tool.command.common;
  * @author Alex Krasnyanskiy
  * @since 1.0
  */
-public class ArgumentAppender {
+public class DefaultArgumentAppender {
 
     /**
      * Add jrs command name to args array

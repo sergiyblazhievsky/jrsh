@@ -20,14 +20,14 @@ public class TreeConverter {
         for (String line : arr) {
             List<String> lines = convert(line);
             for (String val : lines) {
-                List<TreeNode> children = tempRoot.getChildren();
-                if (children != null) {
-                    if (!children.contains(new TreeNode(val, new ArrayList<TreeNode>()))) {
+                List<TreeNode> hasChildren = tempRoot.getHasChildren();
+                if (hasChildren != null) {
+                    if (!hasChildren.contains(new TreeNode(val, new ArrayList<TreeNode>()))) {
                         TreeNode tempNode = new TreeNode(val, new ArrayList<TreeNode>());
-                        children.add(tempNode);
+                        hasChildren.add(tempNode);
                         tempRoot = tempNode;
                     } else {
-                        tempRoot = children.get(children.indexOf(new TreeNode(val, new ArrayList<TreeNode>())));
+                        tempRoot = hasChildren.get(hasChildren.indexOf(new TreeNode(val, new ArrayList<TreeNode>())));
                     }
                 }
             }

@@ -4,18 +4,24 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.jaspersoft.cli.tool.command.AbstractCommand;
 import com.jaspersoft.cli.tool.command.common.OptionConverter;
+import com.jaspersoft.cli.tool.exception.UnspecifiedSubcommandException;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import static com.jaspersoft.cli.tool.command.impl.ShowCommand.OutputFormat.LIST_TEXT;
+import static com.jaspersoft.cli.tool.command.AbstractCommand.OutputFormat.LIST_TEXT;
 
 /**
  * @author Alex Krasnyanskiy
+ * @since 1.0
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Parameters(commandDescription = "show")
 public class ShowCommand extends AbstractCommand<Void> {
+
     @Parameter(names = "--format", required = false, converter = OptionConverter.class)
     private OutputFormat format = LIST_TEXT;
+    private static boolean isParent;
 
     public ShowCommand(String commandName, Integer level) {
         super(commandName, level);
@@ -23,10 +29,11 @@ public class ShowCommand extends AbstractCommand<Void> {
 
     @Override
     public Void execute() {
+        if (!isParent) throw new UnspecifiedSubcommandException();
         return null;
     }
 
-    public enum OutputFormat {
-        JSON, TEXT, LIST_TEXT
+    public static void establishPaternity() {
+        isParent = true;
     }
 }
