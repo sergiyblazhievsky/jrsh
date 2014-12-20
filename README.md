@@ -14,7 +14,7 @@ The following code snippets show some simple operations.
 
 ### Show operation
 
-Show resources tree starting from specific root.
+Show resources tree starting from specified folder.
 ```bash
 jrs -s "http://54.163.3.100/jasperserver-pro" -u "admin" -p "secret" \
 show resources --path "/public/monitoring/reports"
