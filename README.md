@@ -1,4 +1,4 @@
-JRSH (JasperReport Shell)
+JRSH (JasperServerShell)
 =====================================
 [![Build Status](https://travis-ci.org/Krasnyanskiy/jrs-command-line-tool.svg?branch=master)](https://travis-ci.org/Krasnyanskiy/jrs-command-line-tool) [![Coverage Status](https://img.shields.io/coveralls/Krasnyanskiy/jrs-command-line-tool.svg)](https://coveralls.io/r/Krasnyanskiy/jrs-command-line-tool?branch=master)
 
@@ -6,7 +6,7 @@ JRSH (JasperReport Shell)
 
 # Overview
 
-JRSH is a [CLI](https://en.wikipedia.org/wiki/Command-line_interface) tool. It's designed for fast and easy interaction with JasperResport Web Services across various operating systems such as OS X, Linux, Windows, and many others. If you like Unix shell, you'll like this tool as well.
+JRSH is a [CLI](https://en.wikipedia.org/wiki/Command-line_interface) tool. It's designed for fast and easy interaction with JasperServer across various operating systems such as OS X, Linux, Windows, and many others. If you like Unix shell, you'll like this tool as well.
 
 ## Usage examples
 
@@ -17,7 +17,7 @@ The following code snippets show some simple operations.
 Show resources tree starting from specified folder.
 ```bash
 jrs -s "http://54.163.3.100/jasperserver-pro" -u "admin" -p "secret" \
-show resources --path "/public/monitoring/reports"
+show repo --path "/public/monitoring/reports"
 ```
 Or you can also show such useful server meta information as edition or version.
 
