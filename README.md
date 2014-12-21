@@ -30,7 +30,7 @@ show server-info --version --edition
 
 ```bash
 jrs -s "http://54.163.3.100/jasperserver-pro" -u "admin" -p "secret" \
-import --zip "/Users/alexkrasnyanskiy/test/test-import-data.zip"
+import "/Users/alexkrasnyanskiy/test/test-import-data.zip"
 ```
 
 ## How to install
