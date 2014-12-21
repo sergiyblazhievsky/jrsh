@@ -32,7 +32,7 @@ command:
 # import resources (default)
 #---------------------------
 command:
-  --server http://172.28.146.32:8080/jasperserver-pro --username superuser --password superuser import /Users/alexkrasnyaskiy/IdeaProjects/jrs-command-line-tool/src/main/resources/import.zip
+  --server http://172.28.146.32:8080/jasperserver-pro --username superuser --password superuser import /Users/alexkrasnyaskiy/IdeaProjects/jrs.sh-command-line-tool/src/main/resources/import.zip
 
 
 

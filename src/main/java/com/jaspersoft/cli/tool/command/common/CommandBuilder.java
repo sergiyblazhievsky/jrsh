@@ -7,10 +7,14 @@ import com.jaspersoft.cli.tool.command.impl.ShowCommand;
 import com.jaspersoft.cli.tool.command.impl.ShowRepoCommand;
 import com.jaspersoft.cli.tool.command.impl.ShowServerInfoCommand;
 import lombok.Data;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
 
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+
+import static java.lang.System.exit;
 
 /**
  * This class is responsible for building a queue of commands with due
@@ -20,10 +24,11 @@ import java.util.TreeMap;
  * @author A. Krasnyanskiy
  */
 @Data
+@Log4j
 public class CommandBuilder {
 
     private Map<String, AbstractCommand> commands = new TreeMap<>();
-    private JCommander baseCmd = new JCommander();
+    private JCommander baseCmd = new JCommander(); // available commands in the app
 
     /**
      * Build chain of commands.
@@ -31,19 +36,25 @@ public class CommandBuilder {
      * @param args app arguments
      */
     public CommandBuilder(String... args) {
+        init(args);
+    }
 
-        // Available commands in the app
-        commands = CommandFactory.create("jrs", "help", "import", "show", "server-info", "repo");
+    private void init(String[] args) {
+        try {
+            commands = CommandFactory.create("jrs.sh", "help", "import", "show", "server-info", "repo");
+            // Set chain of commands (sequence | tree)
+            JCommander jrsCmd = addCommand(baseCmd, commands.get("jrs.sh"));
+            addCommand(jrsCmd, commands.get("help"));
+            addCommand(jrsCmd, commands.get("import"));
+            JCommander showCmd = addCommand(jrsCmd, commands.get("show"));
+            addCommand(showCmd, commands.get("repo"));
+            addCommand(showCmd, commands.get("server-info"));
 
-        // Set chain of commands (sequence | tree)
-        JCommander jrsCmd = addCommand(baseCmd, commands.get("jrs"));
-        addCommand(jrsCmd, commands.get("help"));
-        addCommand(jrsCmd, commands.get("import"));
-        JCommander showCmd = addCommand(jrsCmd, commands.get("show"));
-        addCommand(showCmd, commands.get("repo"));
-        addCommand(showCmd, commands.get("server-info"));
-
-        baseCmd.parse(DefaultArgumentAppender.append(args));
+            baseCmd.parse(DefaultArgumentAppender.append(args));
+        } catch (RuntimeException e) {
+            //log.error(e.getMessage());
+            exit(1);
+        }
     }
 
     // Command binder

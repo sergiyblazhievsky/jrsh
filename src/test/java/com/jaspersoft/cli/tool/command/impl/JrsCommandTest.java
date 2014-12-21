@@ -29,7 +29,7 @@ public class JrsCommandTest extends PowerMockTestCase {
     @BeforeMethod
     public void before() {
         initMocks(this);
-        jrsCmd = new JrsCommand("jrs", 1);
+        jrsCmd = new JrsCommand("jrs.sh", 1);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class JrsCommandTest extends PowerMockTestCase {
 
     @Test
     public void should_set_correct_command_name() {
-        Assert.assertEquals(jrsCmd.getCommandName(), "jrs");
+        Assert.assertEquals(jrsCmd.getCommandName(), "jrs.sh");
     }
 
     @Test

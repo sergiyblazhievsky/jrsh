@@ -1,2 +1,0 @@
-#!/bin/sh
-java -jar jrs-command-line-tool-1.0-SNAPSHOT-jar-with-dependencies.jar "$@" echo $?

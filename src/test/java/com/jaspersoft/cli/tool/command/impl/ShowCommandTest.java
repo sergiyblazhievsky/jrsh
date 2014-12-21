@@ -5,6 +5,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static com.jaspersoft.cli.tool.command.AbstractCommand.OutputFormat.LIST_TEXT;
+import static com.jaspersoft.cli.tool.command.impl.ShowCommand.establishPaternity;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 
@@ -26,6 +27,7 @@ public class ShowCommandTest {
 
     @Test
     public void should_return_null() {
+        establishPaternity();
         assertNull(showCmd.execute());
     }
 

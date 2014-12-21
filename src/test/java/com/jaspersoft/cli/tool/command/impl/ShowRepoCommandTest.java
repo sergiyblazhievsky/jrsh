@@ -60,7 +60,7 @@ public class ShowRepoCommandTest extends PowerMockTestCase {
         showResourcesCmd = new ShowRepoCommand("resources", 3);
     }
 
-    @Test
+    @Test(enabled = false)
     public void should_print_tree_and_return_null_as_result() throws Exception {
 
         // given

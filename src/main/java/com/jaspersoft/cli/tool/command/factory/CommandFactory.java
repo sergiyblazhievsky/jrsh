@@ -26,8 +26,8 @@ public class CommandFactory {
      */
     public static AbstractCommand create(String commandName) {
         switch (commandName) {
-            case "jrs":
-                return new JrsCommand("jrs", 1);
+            case "jrs.sh":
+                return new JrsCommand("jrs.sh", 1);
             case "import":
                 return new ImportCommand("import", 2);
             case "help":

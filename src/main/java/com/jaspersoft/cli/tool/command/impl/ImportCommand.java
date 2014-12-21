@@ -4,6 +4,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.jaspersoft.cli.tool.command.AbstractCommand;
 import com.jaspersoft.cli.tool.command.factory.SessionFactory;
+import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.importservice.ImportParameter;
 import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,7 +37,7 @@ public class ImportCommand extends AbstractCommand<Void> {
     public Void execute() {
         StateDto state = null;
         if (file != null){
-            state = SessionFactory.getInstance().importService().newTask().create(new File(file)).entity();
+            state = SessionFactory.getInstance().importService().newTask().parameter(ImportParameter.UPDATE, true).create(new File(file)).entity();
         } else if (!unnamed.isEmpty()){
             state = SessionFactory.getInstance().importService().newTask().create(new File(unnamed.get(0))).entity();
         }

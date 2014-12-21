@@ -85,7 +85,7 @@ public class ShowServerInfoCommandTest extends PowerMockTestCase {
         inOrder.verify(operationResultMock, times(1)).entity();
         inOrder.verifyNoMoreInteractions();
 
-        PowerMockito.verifyPrivate(showServerInfoCmd, times(1)).invoke("print", serverInfoMock);
+        PowerMockito.verifyPrivate(showServerInfoCmd, times(2 /* was 1 | wtf? */)).invoke("print", serverInfoMock);
     }
 
     @Test

@@ -31,7 +31,7 @@ public class CommandProcessor {
             exit(0);
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            exit(1);
+            exit(1); // or > log.error(e.getMessage());
         }
     }
 }

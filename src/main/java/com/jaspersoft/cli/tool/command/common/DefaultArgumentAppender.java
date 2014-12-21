@@ -7,13 +7,13 @@ package com.jaspersoft.cli.tool.command.common;
 public class DefaultArgumentAppender {
 
     /**
-     * Add jrs command name to args array
+     * Add jrs.sh command name to args array
      * @param args passed args
-     * @return new array with `jrs` command name
+     * @return new array with `jrs.sh` command name
      */
     public static String[] append(String... args) {
         String[] converted = new String[args.length + 1];
-        converted[0] = "jrs";
+        converted[0] = "jrs.sh";
         for (int i = 0, j = 1; i < args.length; i++, j++) {
             converted[j] = args[i];
         }

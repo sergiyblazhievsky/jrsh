@@ -9,6 +9,7 @@ import com.jaspersoft.cli.tool.exception.WrongPathException;
 import com.jaspersoft.jasperserver.dto.resources.ClientResourceLookup;
 import com.jaspersoft.jasperserver.jaxrs.client.core.exceptions.ResourceNotFoundException;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.Res
  * @author Alex Krasnyanskiy
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Parameters(commandDescription = "resources")
 public class ShowRepoCommand extends ShowCommand {
 

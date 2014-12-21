@@ -48,7 +48,7 @@ public class ShowServerInfoCommand extends ShowCommand {
         if (hasOptions()) {
             if (build) out.format("build: %s%n", info.getBuild());
             if (editionName) out.format("edition name: %s%n", info.getEditionName());
-            if (edition) out.format("build: %s%n", info.getEdition());
+            if (edition) out.format("edition: %s%n", info.getEdition());
             if (version) out.format("version: %s%n", info.getVersion());
             if (features) out.format("features: %s%n", info.getFeatures());
             if (licenseType) out.format("license type: %s%n", info.getLicenseType());
@@ -56,7 +56,7 @@ public class ShowServerInfoCommand extends ShowCommand {
         } else {
             out.format("build: %s%n", info.getBuild());
             out.format("edition name: %s%n", info.getEditionName());
-            out.format("build: %s%n", info.getEdition());
+            out.format("edition: %s%n", info.getEdition());
             out.format("version: %s%n", info.getVersion());
             out.format("features: %s%n", info.getFeatures());
             out.format("license type: %s%n", info.getLicenseType());

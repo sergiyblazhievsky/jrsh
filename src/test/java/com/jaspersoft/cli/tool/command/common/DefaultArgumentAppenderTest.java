@@ -13,7 +13,7 @@ public class DefaultArgumentAppenderTest {
         String[] retrieved = DefaultArgumentAppender.append("command", "--key", "100500");
         Assert.assertNotNull(retrieved);
         Assert.assertSame(retrieved.length, 4);
-        Assert.assertEquals(retrieved[0], "jrs");
+        Assert.assertEquals(retrieved[0], "jrs.sh");
     }
 
 }
