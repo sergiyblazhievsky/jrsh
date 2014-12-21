@@ -3,9 +3,7 @@ package com.jaspersoft.cli.tool.command.factory;
 import com.jaspersoft.cli.tool.command.AbstractCommand;
 import com.jaspersoft.cli.tool.command.impl.*;
 import com.jaspersoft.cli.tool.exception.IllegalCommandNameException;
-import com.jaspersoft.cli.tool.exception.UnsupportedCommandException;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -26,8 +24,8 @@ public class CommandFactory {
      */
     public static AbstractCommand create(String commandName) {
         switch (commandName) {
-            case "jrs.sh":
-                return new JrsCommand("jrs.sh", 1);
+            case "jrs":
+                return new JrsCommand("jrs", 1);
             case "import":
                 return new ImportCommand("import", 2);
             case "help":
@@ -35,9 +33,9 @@ public class CommandFactory {
             case "show":
                 return new ShowCommand("show", 2);
             case "repo":
-                return new ShowRepoCommand("repo", 3);
+                return new RepoShowCommand("repo", 3);
             case "server-info":
-                return new ShowServerInfoCommand("server-info", 3);
+                return new ServerInfoShowCommand("server-info", 3);
             default:
                 throw new IllegalCommandNameException();
         }

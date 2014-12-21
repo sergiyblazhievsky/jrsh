@@ -16,7 +16,7 @@ import static java.lang.System.out;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Parameters(commandDescription = "server info command")
-public class ShowServerInfoCommand extends ShowCommand {
+public class ServerInfoShowCommand extends ShowCommand {
 
     @Parameter(names = "--build", required = false)
     private boolean build;
@@ -33,7 +33,7 @@ public class ShowServerInfoCommand extends ShowCommand {
     @Parameter(names = "--pattern", required = false)
     private boolean datetimeFormatPattern;
 
-    public ShowServerInfoCommand(String commandName, Integer level) {
+    public ServerInfoShowCommand(String commandName, Integer level) {
         super(commandName, level);
     }
 

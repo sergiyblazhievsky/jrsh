@@ -8,34 +8,10 @@ import static java.util.Arrays.asList;
 import static java.util.regex.Pattern.quote;
 
 /**
- * @author Alexander Krasnyanskiy
+ * @author Alex Krasnyanskiy
  * @since 1.0
  */
 public class TreeConverter {
-
-    /*
-    public TreeNode toTree(List<String> arr) {
-        TreeNode root = new TreeNode("root", new ArrayList<TreeNode>());
-        TreeNode tempRoot = root;
-        for (String line : arr) {
-            List<String> lines = convert(line);
-            for (String val : lines) {
-                List<TreeNode> hasChildren = tempRoot.getHasChildren();
-                if (hasChildren != null) {
-                    if (!hasChildren.contains(new TreeNode(val, new ArrayList<TreeNode>()))) {
-                        TreeNode tempNode = new TreeNode(val, new ArrayList<TreeNode>());
-                        hasChildren.add(tempNode);
-                        tempRoot = tempNode;
-                    } else {
-                        tempRoot = hasChildren.get(hasChildren.indexOf(new TreeNode(val, new ArrayList<TreeNode>())));
-                    }
-                }
-            }
-            tempRoot = root;
-        }
-        return root;
-    }
-    */
 
     public TreeNode toTree(List<String> arr, String path) {
         TreeNode root = new TreeNode("root", new ArrayList<TreeNode>());

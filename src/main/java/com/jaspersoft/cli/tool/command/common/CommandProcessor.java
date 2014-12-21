@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeSet;
 
+import static com.jaspersoft.cli.tool.command.common.JCommanderContext.getInstance;
 import static java.lang.System.exit;
 
 /**
@@ -31,7 +32,8 @@ public class CommandProcessor {
             exit(0);
         } catch (RuntimeException e) {
             log.error(e.getMessage());
-            exit(1); // or > log.error(e.getMessage());
+            getInstance().usage();
+            exit(1);
         }
     }
 }

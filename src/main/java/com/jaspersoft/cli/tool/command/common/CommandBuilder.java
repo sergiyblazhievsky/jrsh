@@ -3,11 +3,10 @@ package com.jaspersoft.cli.tool.command.common;
 import com.beust.jcommander.JCommander;
 import com.jaspersoft.cli.tool.command.AbstractCommand;
 import com.jaspersoft.cli.tool.command.factory.CommandFactory;
+import com.jaspersoft.cli.tool.command.impl.RepoShowCommand;
+import com.jaspersoft.cli.tool.command.impl.ServerInfoShowCommand;
 import com.jaspersoft.cli.tool.command.impl.ShowCommand;
-import com.jaspersoft.cli.tool.command.impl.ShowRepoCommand;
-import com.jaspersoft.cli.tool.command.impl.ShowServerInfoCommand;
 import lombok.Data;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j;
 
 import java.util.Map;
@@ -17,21 +16,21 @@ import java.util.TreeMap;
 import static java.lang.System.exit;
 
 /**
- * This class is responsible for building a queue of commands with due
- * consideration of CLI tool rules:
- * command => subcommand => subcommand-of-subcommand => and so on.
+ * This class is responsible for building the queue of commands due
+ * consideration of command connection rules.
  *
- * @author A. Krasnyanskiy
+ * @author Alex Krasnyanskiy
+ * @since 1.0
  */
 @Data
 @Log4j
 public class CommandBuilder {
 
     private Map<String, AbstractCommand> commands = new TreeMap<>();
-    private JCommander baseCmd = new JCommander(); // available commands in the app
+    private JCommander baseCmd = JCommanderContext.getInstance();
 
     /**
-     * Build chain of commands.
+     * Chain maker for commands.
      *
      * @param args app arguments
      */
@@ -41,9 +40,9 @@ public class CommandBuilder {
 
     private void init(String[] args) {
         try {
-            commands = CommandFactory.create("jrs.sh", "help", "import", "show", "server-info", "repo");
+            commands = CommandFactory.create("jrs", "help", "import", "show", "server-info", "repo");
             // Set chain of commands (sequence | tree)
-            JCommander jrsCmd = addCommand(baseCmd, commands.get("jrs.sh"));
+            JCommander jrsCmd = addCommand(baseCmd, commands.get("jrs"));
             addCommand(jrsCmd, commands.get("help"));
             addCommand(jrsCmd, commands.get("import"));
             JCommander showCmd = addCommand(jrsCmd, commands.get("show"));
@@ -52,7 +51,8 @@ public class CommandBuilder {
 
             baseCmd.parse(DefaultArgumentAppender.append(args));
         } catch (RuntimeException e) {
-            //log.error(e.getMessage());
+            log.info(e.getMessage());
+            baseCmd.usage();
             exit(1);
         }
     }
@@ -107,10 +107,11 @@ public class CommandBuilder {
      * @param cmd current command
      */
     private void establishPaternity(AbstractCommand cmd) {
-        if (cmd instanceof ShowRepoCommand) {
+        if (cmd instanceof RepoShowCommand) {
             ShowCommand.establishPaternity();
+            return;
         }
-        if (cmd instanceof ShowServerInfoCommand) {
+        if (cmd instanceof ServerInfoShowCommand) {
             ShowCommand.establishPaternity();
         }
     }

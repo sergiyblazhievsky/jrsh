@@ -13,7 +13,7 @@ public class DefaultArgumentAppender {
      */
     public static String[] append(String... args) {
         String[] converted = new String[args.length + 1];
-        converted[0] = "jrs.sh";
+        converted[0] = "jrs";
         for (int i = 0, j = 1; i < args.length; i++, j++) {
             converted[j] = args[i];
         }

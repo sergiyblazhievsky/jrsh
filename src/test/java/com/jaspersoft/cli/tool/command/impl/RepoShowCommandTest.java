@@ -32,10 +32,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
- * Unit tests for {@link ShowRepoCommand}
+ * Unit tests for {@link RepoShowCommand}
  */
-@PrepareForTest({SessionFactory.class, ShowRepoCommand.class, TreeConverter.class})
-public class ShowRepoCommandTest extends PowerMockTestCase {
+@PrepareForTest({SessionFactory.class, RepoShowCommand.class, TreeConverter.class})
+public class RepoShowCommandTest extends PowerMockTestCase {
 
     @Mock
     private Session sessionMock;
@@ -52,12 +52,12 @@ public class ShowRepoCommandTest extends PowerMockTestCase {
     @Mock
     private ResourcesService resourcesServiceMock;
 
-    private ShowRepoCommand showResourcesCmd;
+    private RepoShowCommand showResourcesCmd;
 
     @BeforeMethod
     public void before() {
         initMocks(this);
-        showResourcesCmd = new ShowRepoCommand("resources", 3);
+        showResourcesCmd = new RepoShowCommand("resources", 3);
     }
 
     @Test(enabled = false)

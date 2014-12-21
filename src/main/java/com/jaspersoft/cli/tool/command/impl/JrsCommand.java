@@ -7,6 +7,8 @@ import com.jaspersoft.cli.tool.command.factory.SessionFactory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import static com.jaspersoft.cli.tool.command.common.JCommanderContext.getInstance;
+
 /**
  * @author Alex Krasnyanskiy
  */
@@ -25,6 +27,8 @@ public class JrsCommand extends AbstractCommand<Void> {
     private String organization;
     @Parameter(names = {"-d", "--debug"}, required = false)
     private boolean debug;
+    @Parameter(names = {"-h", "--help"}, required = false)
+    private boolean help;
 
     public JrsCommand(String commandName, Integer level) {
         super(commandName, level);
@@ -32,9 +36,8 @@ public class JrsCommand extends AbstractCommand<Void> {
 
     @Override
     public Void execute() {
-        if (url != null && username != null && password != null) {
-            SessionFactory.create(url, username, password, organization);
-        }
+        if (help) getInstance().usage();
+        else SessionFactory.create(url, username, password, organization);
         return null;
     }
 }

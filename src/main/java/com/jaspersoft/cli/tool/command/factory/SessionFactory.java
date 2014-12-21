@@ -17,24 +17,28 @@ public class SessionFactory {
 
     /**
      * Creates client session with the consideration of specified organization.
-     * @param url JRS url
-     * @param username JRS username
-     * @param password JRS password
+     *
+     * @param url              JRS url
+     * @param username         JRS username
+     * @param password         JRS password
      * @param organizationName organization name
      * @return Session instance
      */
     public static Session create(String url, String username, String password, String organizationName) {
-        RestClientConfiguration configuration = new RestClientConfiguration(url);
-        JasperserverRestClient client = new JasperserverRestClient(configuration);
-
-        session = organizationName != null
-                ? client.authenticate(username + "|" + organizationName, password)
-                : client.authenticate(username, password);
-        return session;
+        if (url != null && username != null && password != null) {
+            RestClientConfiguration configuration = new RestClientConfiguration(url);
+            JasperserverRestClient client = new JasperserverRestClient(configuration);
+            return session = organizationName != null
+                    ? client.authenticate(username + "|" + organizationName, password)
+                    : client.authenticate(username, password);
+        } else {
+            throw new MissingConnectionInformationException(); /*return null;*/
+        }
     }
 
     /**
      * Smart getter for class variable.
+     *
      * @return instance of the factory
      */
     public static Session getInstance() {

@@ -22,10 +22,10 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
- * Unit tests for {@link ShowServerInfoCommand}
+ * Unit tests for {@link ServerInfoShowCommand}
  */
-@PrepareForTest({ShowServerInfoCommand.class, SessionFactory.class})
-public class ShowServerInfoCommandTest extends PowerMockTestCase {
+@PrepareForTest({ServerInfoShowCommand.class, SessionFactory.class})
+public class ServerInfoShowCommandTest extends PowerMockTestCase {
 
     @Mock
     private Session sessionMock;
@@ -36,12 +36,12 @@ public class ShowServerInfoCommandTest extends PowerMockTestCase {
     @Mock
     private ServerInfo serverInfoMock;
 
-    private ShowServerInfoCommand showServerInfoCmd;
+    private ServerInfoShowCommand showServerInfoCmd;
 
     @BeforeMethod
     public void before() {
         initMocks(this);
-        showServerInfoCmd = PowerMockito.spy(new ShowServerInfoCommand("server-info", 3));
+        showServerInfoCmd = PowerMockito.spy(new ServerInfoShowCommand("server-info", 3));
     }
 
     @Test

@@ -22,12 +22,12 @@ import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.Res
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Parameters(commandDescription = "resources")
-public class ShowRepoCommand extends ShowCommand {
+public class RepoShowCommand extends ShowCommand {
 
     @Parameter(names = "--path", required = false)
     private String path = "";
 
-    public ShowRepoCommand(String commandName, Integer level) {
+    public RepoShowCommand(String commandName, Integer level) {
         super(commandName, level);
     }
 

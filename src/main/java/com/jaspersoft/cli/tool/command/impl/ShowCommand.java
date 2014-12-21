@@ -1,14 +1,10 @@
 package com.jaspersoft.cli.tool.command.impl;
 
-import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.jaspersoft.cli.tool.command.AbstractCommand;
-import com.jaspersoft.cli.tool.command.common.OptionConverter;
 import com.jaspersoft.cli.tool.exception.UnspecifiedSubcommandException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import static com.jaspersoft.cli.tool.command.AbstractCommand.OutputFormat.LIST_TEXT;
 
 /**
  * @author Alex Krasnyanskiy
@@ -19,8 +15,8 @@ import static com.jaspersoft.cli.tool.command.AbstractCommand.OutputFormat.LIST_
 @Parameters(commandDescription = "show")
 public class ShowCommand extends AbstractCommand<Void> {
 
-    @Parameter(names = "--format", required = false, converter = OptionConverter.class)
-    private OutputFormat format = LIST_TEXT;
+    //@Parameter(names = "--format", required = false, converter = OptionConverter.class)
+    //private OutputFormat format = LIST_TEXT;
     private static boolean isParent;
 
     public ShowCommand(String commandName, Integer level) {

@@ -4,35 +4,35 @@
 # show general server info
 #-------------------------
 command:
-  --server http://54.90.191.114/jasperserver-pro --username superuser --password superuser show server-info
+  ./jrs.sh --server http://54.90.191.114/jasperserver-pro --username superuser --password superuser show server-info ; echo $?
 
 
 #---------------------------------------
 # show server details: edition, features
 #---------------------------------------
 command:
-  --server http://54.90.191.114/jasperserver-pro --username superuser --password superuser show server-info --edition --features
+  ./jrs.sh --server http://54.90.191.114/jasperserver-pro --username superuser --password superuser show server-info --edition --features
 
 
 #------------------------------
 # show resources tree form root
 #------------------------------
 command:
-  --server http://54.90.191.114/jasperserver-pro --username superuser --password superuser show repo
+  ./jrs.sh --server http://54.90.191.114/jasperserver-pro --username superuser --password superuser show repo
 
 
 #------------------------------------------
 # show resources tree form specified folder
 #------------------------------------------
 command:
-  --server http://54.90.191.114/jasperserver-pro --username superuser --password superuser show repo --path /organizations/MyOrg/temp/Reports
+  ./jrs.sh --server http://54.90.191.114/jasperserver-pro --username superuser --password superuser show repo --path /organizations/MyOrg/temp/Reports
 
 
 #---------------------------
 # import resources (default)
 #---------------------------
 command:
-  --server http://54.90.191.114/jasperserver-pro --username superuser --password superuser import /Users/alexkrasnyaskiy/IdeaProjects/jrs.sh-command-line-tool/src/main/resources/import.zip
+  ./jrs.sh --server http://54.90.191.114/jasperserver-pro --username superuser --password superuser import /Users/alexkrasnyaskiy/IdeaProjects/jrs.sh-command-line-tool/src/main/resources/import.zip
 
 
 
