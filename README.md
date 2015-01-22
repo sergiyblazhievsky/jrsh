@@ -6,11 +6,11 @@ JRSH (JasperServerShell)
 
 # Overview
 
-JRSH is a [CLI](https://en.wikipedia.org/wiki/Command-line_interface) tool. It's designed for fast and easy interaction with JasperServer across various operating systems such as OS X, Linux, Windows, and many others. If you like Unix shell, you'll like this tool as well.
+JRSH is a [CLI](https://en.wikipedia.org/wiki/Command-line_interface) tool. It's designed for fast and easy interaction with JasperServer across various operating systems such as OS X, Linux, Windows. If you like Unix shell, you'll like this tool as well.
 
 ## Usage examples
 
-The following code snippets show some simple operations.
+The following code snippets show a few simple operations.
 
 ### Show operation
 
