@@ -7,7 +7,6 @@ import static java.lang.System.out;
  */
 public class ProfileCommand extends Command {
 
-
     public ProfileCommand() {
         name = "profile";
         description = "Show current profile information.";
