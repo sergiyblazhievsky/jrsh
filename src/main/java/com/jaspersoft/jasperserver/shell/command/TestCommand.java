@@ -20,8 +20,11 @@ public class TestCommand extends Command {
 
     @Override
     void run() {
-        OperationResult<ReportExecutionListWrapper> x = SessionFactory.getInstance().reportingService().runningReportsAndJobs().find();
-        ReportExecutionListWrapper y = x.getEntity();
+        OperationResult<ReportExecutionListWrapper> result = SessionFactory.getInstance()
+                .reportingService().runningReportsAndJobs()
+                .find();
+
+        result.getEntity();
         System.out.println("Done!");
     }
 }

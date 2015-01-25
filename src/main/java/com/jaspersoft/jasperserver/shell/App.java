@@ -23,69 +23,42 @@ import static java.util.Arrays.asList;
  * @author Alexander Krasnyanskiy
  */
 public class App {
+
     public static void main(String[] args) {
 
         App app = new App();
         Context context = new Context();
+        Queue<Command> queue = null;
+
         CommandParser parser = new CommandParser(new CommandParameterValidator());
         parser.setContext(context);
-
-        LogManager.getLogManager().reset(); // shut down Jersey logger
+        LogManager.getLogManager().reset();
 
         if (args.length < 1) {
-
             out.println("Welcome to JRSH v1.0!\n");
-
             while (true) {
                 String input = app.readLine();
-
-
                 if ("".equals(input)) continue;
-
-
-                Queue<Command> queue;
-
                 try {
                     queue = parser.parse(input);
-
-
-                    queue.stream().filter(c -> c != null).forEach(c -> c.setMode(SHELL)); // fixme => think about refactoring
-
-
+                    queue.stream().filter(c -> c != null).forEach(c -> c.setMode(SHELL));
                 } catch (InterfaceException e) {
                     if (e instanceof MandatoryParameterException) {
-
-
-                        // => if there is no mandatory parameters then show help for that command
                         Command cmd = create("help");
-                        cmd.parameter("anonymous").setValues(asList(/* command = */e.getMessage()));
+                        cmd.parameter("anonymous").setValues(asList(e.getMessage()));
                         cmd.execute();
-                    } else {
-                        out.printf("error: %s\n", e.getMessage());
-                    }
-
+                    } else out.printf("error: %s\n", e.getMessage());
                     continue;
                 }
-
                 try {
-                    // execute the commands sequence
-                    queue.stream().filter(c -> c != null).forEach(Command::execute); //queue.forEach(Command::execute);
+                    queue.stream().filter(c -> c != null).forEach(Command::execute);
                 } catch (ServerException e) {
                     out.printf("error: %s\n", e.getMessage());
-                }
-
-
-                // => catch
-                // todo: убрать этот catch вместе с <A1>
-
-                catch (InterfaceException e) {
-                    System.out.println(e.getMessage());
+                } catch (InterfaceException e) {
+                    out.println(e.getMessage());
                 }
             }
         } else {
-            // Tool Mode
-            // todo => ?
-            Queue<Command> queue = null;
             try {
                 queue = parser.parse(args);
                 queue.stream().filter(c -> c != null).forEach(c -> c.setMode(TOOL));

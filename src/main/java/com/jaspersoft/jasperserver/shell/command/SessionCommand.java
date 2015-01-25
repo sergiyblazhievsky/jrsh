@@ -15,7 +15,7 @@ public class SessionCommand extends Command {
 
     @Override
     void run() {
-        if (profile.getUrl() == null && profile.getUsername() == null) { // mandatory profile properties
+        if (profile.getUrl() == null && profile.getUsername() == null) {
             out.println("There's no active session.");
         } else {
             out.printf("\nserver url:\t\t%s\nusername:\t\t%s\norganization:\t%s\nsession uptime:\t%s\n\n",

@@ -26,11 +26,8 @@ public final class CommandFactory {
             case "logout": return new LogoutCommand();
             case "import": return new ImportCommand();
             case "export": return new ExportCommand();
-
-            // help | ?
             case "?": return new HelpCommand();
             case "help": return new HelpCommand();
-
             case "profile": return new ProfileCommand();
             case "session": return new SessionCommand();
             case "test": return new TestCommand();

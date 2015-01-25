@@ -15,8 +15,8 @@ import java.util.List;
 public final class Parameter {
     private String name;
     private String key;
-    private boolean optional; // может быть, а может и не быть
-    private boolean multiple; // допускаются мультизначения
-    private boolean available; // маркерный параметр
+    private boolean optional;
+    private boolean multiple;
+    private boolean available;
     private List<String> values = new ArrayList<>();
 }

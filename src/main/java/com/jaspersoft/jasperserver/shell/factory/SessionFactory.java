@@ -38,7 +38,7 @@ public final class SessionFactory {
                 sessionStartTime = currentTimeMillis();
                 return instance;
             } catch (Exception e) {
-                throw new GeneralServerException(e.getMessage()); // todo :: extend it
+                throw new GeneralServerException(e.getMessage());
             }
         }
         return null;

@@ -24,7 +24,6 @@ import java.util.List;
 
 import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exportservice.ExportParameter.EVERYTHING;
 import static com.jaspersoft.jasperserver.shell.ExecutionMode.SHELL;
-import static com.jaspersoft.jasperserver.shell.ExecutionMode.TOOL;
 import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.create;
 import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.getInstance;
 import static java.lang.String.format;
@@ -70,7 +69,6 @@ public class ExportCommand extends Command {
 
         List<String> values = parameter("anonymous").getValues();
 
-        // if params haven't specified then show info for export command
         if (!values.isEmpty()) {
             pathOrSubCommand = values.get(0);
         } else {
@@ -80,19 +78,11 @@ public class ExportCommand extends Command {
             return;
         }
 
-
-        // todo :: переписать
-        //         => возможны мультипараметры
         switch (pathOrSubCommand) {
             case "all":
                 interParams.add(EVERYTHING);
                 break;
             case "role":
-
-
-                // >>> export role | without role name => error!
-
-
                 if (values.size() < 2) {
                     if (getMode().equals(ExecutionMode.TOOL)) throw new UnspecifiedRoleException();
                     Command cmd = create("help");
@@ -100,7 +90,6 @@ public class ExportCommand extends Command {
                     cmd.run();
                     return;
                 }
-
                 role = values.get(1);
                 role = convert(role);
                 if (role == null) {
@@ -108,11 +97,6 @@ public class ExportCommand extends Command {
                 }
                 break;
             case "user":
-
-
-                // >>> export user | without username => error!
-
-
                 if (values.size() < 2) {
                     if (getMode().equals(ExecutionMode.TOOL)) exit(1);
                     Command cmd = create("help");
@@ -120,11 +104,9 @@ public class ExportCommand extends Command {
                     cmd.run();
                     return;
                 }
-
                 user = values.get(1);
                 user = convert(user);
                 if (user == null) {
-                    //if (getMode().equals(ExecutionMode.TOOL)) exit(1);
                     throw new UnspecifiedUserNameException();
                 }
                 break;
@@ -135,7 +117,6 @@ public class ExportCommand extends Command {
 
         if (getMode().equals(SHELL)) {
             Thread t = new Thread(this::print);
-
             try {
                 ExportTaskAdapter task = session.exportService().newTask();
                 setExportOptions(task, user, role, pathOrSubCommand /* <path> */);
@@ -153,10 +134,7 @@ public class ExportCommand extends Command {
             } finally {
                 t.stop();
             }
-        } else if (getMode().equals(TOOL)) { // => [ToolMode]
-
-            // without any message (silent mode)
-
+        } else {
             ExportTaskAdapter task = session.exportService().newTask();
             setExportOptions(task, user, role, pathOrSubCommand);
             StateDto state = task.parameters(interParams).create().entity();
@@ -173,11 +151,8 @@ public class ExportCommand extends Command {
             new FileOutputStream("/Users/alexkrasnyaskiy/IdeaProjects/jrsh/src/main/resources/export-"
                     + postfix + date + ".zip").write(readFully(entity, -1, false));
         } catch (IOException e) {
-            //if (getMode().equals(ExecutionMode.TOOL)) exit(1);
             throw new CannotCreateFileException();
         }
-
-
     }
 
     private String convert(String role) {
@@ -201,7 +176,6 @@ public class ExportCommand extends Command {
             task.uri(repo);
         }
     }
-
 
     @SneakyThrows
     private void print() {

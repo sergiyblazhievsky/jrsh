@@ -25,7 +25,6 @@ public class HelpCommand extends Command implements ContextAware {
     void run() {
         Parameter p = parameter("anonymous");
         if (p != null && !p.getValues().isEmpty()) {
-            // => help for command
             try {
                 String val = p.getValues().get(0);
                 Command cmd = CommandFactory.create(val);
@@ -34,11 +33,8 @@ public class HelpCommand extends Command implements ContextAware {
                 out.printf("error: %s\n", e.getMessage());
             }
         } else {
-            // => general help
-            //
             out.println((char) 27 + "[30;44mAvailable commands: " + (char) 27 + "[37m \n");
-            context.getCmdDescription().entrySet().stream()
-                    .filter(e -> e.getKey() != null)
+            context.getCmdDescription().entrySet().stream().filter(e -> e.getKey() != null)
                     .forEach(e -> out.printf("\t%s\t\t%s\n", e.getKey(), e.getValue()));
         }
     }

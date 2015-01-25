@@ -16,9 +16,9 @@ public class Context {
 
     private Map<String, String> cmdDescription = new HashMap<>();
     private List<String> dictionary
-            // todo: <check> it corresponds with command factory
-            /* default value will be removed */
-            = new ArrayList<>(asList("help", "import", "export", "profile", "session", "logout", "login", "exit", "?", "test"));
+            = new ArrayList<>(asList("help", "?", "import", "export",
+            "profile", "session", "logout", "login",
+            "exit", "test"));
 
     public Context() {
         for (String v : dictionary) {

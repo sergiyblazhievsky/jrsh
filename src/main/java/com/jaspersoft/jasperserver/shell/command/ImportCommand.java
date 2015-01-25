@@ -29,7 +29,7 @@ public class ImportCommand extends Command {
     public ImportCommand() {
         name = "import";
         description = "Imports configuration into JasperReportsServer.";
-        parameters.add(new Parameter().setName("anonymous")); // <path>
+        parameters.add(new Parameter().setName("anonymous"));
 
         parameters.add(new Parameter().setName("with-audit-events").setOptional(true));
         parameters.add(new Parameter().setName("with-access-events").setOptional(true));
@@ -43,7 +43,7 @@ public class ImportCommand extends Command {
     @Override
     void run() {
 
-        session = getInstance(); // check if session is available
+        session = getInstance();
         String path = parameter("anonymous").getValues().get(0);
 
         Parameter withAuditEvents = nonAnonymousParameter("with-audit-events");
@@ -67,7 +67,7 @@ public class ImportCommand extends Command {
             for (ImportParameter param : params) task.parameter(param, true);
             StateDto state = task.create(file).getEntity();
             t.start();
-            waitForUpload(state); // blocking method
+            waitForUpload(state);
             t.stop();
             out.printf("\rImport status: SUCCESS\n");
         } else {
@@ -100,7 +100,6 @@ public class ImportCommand extends Command {
             file = new File(path);
             if (!file.exists() || file.isDirectory()) throw new FileNotFoundException();
         } catch (Exception e) {
-            //if (getMode().equals(ExecutionMode.TOOL)) exit(1);
             throw new WrongPathParameterException();
         }
         return file;

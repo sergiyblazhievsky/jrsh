@@ -41,8 +41,7 @@ public class CommandParser implements ContextAware {
                 if (current != null && !(current instanceof HelpCommand)) {
                     cmdQueue.offer(current);
                 } else if (current != null) {
-                    // add param to help command
-                    current.getParameters().get(0).setAvailable(true)/* <?> */.getValues().add(v);
+                    current.getParameters().get(0).setAvailable(true).getValues().add(v);
                     continue;
                 }
                 current = create(v);
@@ -58,24 +57,24 @@ public class CommandParser implements ContextAware {
                 Parameter p = defaultCmd.parameter(v);
                 if (p != null) {
                     currentParam = p;
-                    currentParam.setAvailable(true); // todo :: <?>
+                    currentParam.setAvailable(true);
                 } else if (currentParam == null) {
                     throw new UnknownInputContentException(v);
                 } else {
                     currentParam.getValues().add(v);
-                    currentParam.setAvailable(true); // todo :: <?>
+                    currentParam.setAvailable(true);
                 }
             } else {
                 Parameter p = current.parameter(v);
                 if (p != null) {
                     if ("anonymous".equals(p.getName())) {
                         p.getValues().add(v);
-                        p.setAvailable(true); // todo :: <?>
+                        p.setAvailable(true);
                     }
                     currentParam = p;
-                    currentParam.setAvailable(true); // todo :: <?>
+                    currentParam.setAvailable(true);
                 } else if (currentParam == null) {
-                    throw new UnknownParserException(); // todo :: <?>
+                    throw new UnknownParserException();
                 } else {
                     currentParam.getValues().add(v);
                     currentParam.setAvailable(true);
@@ -83,15 +82,7 @@ public class CommandParser implements ContextAware {
             }
         }
         cmdQueue.offer(current);
-        /*
-        cmdQueue.stream().filter(command -> command != null).forEach(command -> {
-            validator.validate(command);
-            //ParameterCleaner.cleanUp(command);
-        });
-        */
-        cmdQueue.stream()
-                .filter(c -> c != null)
-                .forEach(validator::validate);
+        cmdQueue.stream().filter(c -> c != null).forEach(validator::validate);
         return cmdQueue;
     }
 
@@ -99,16 +90,4 @@ public class CommandParser implements ContextAware {
     public void setContext(Context context) {
         this.context = context;
     }
-
-    /*
-    private static class ParameterCleaner {
-        static void cleanUp(Command command) {
-            List<Parameter> params = command.getParameters();
-            List<Parameter> temp = params.stream()
-                    .filter(Parameter::isAvailable)
-                    .collect(toList());
-            command.setParameters(temp);
-        }
-    }
-    */
 }
