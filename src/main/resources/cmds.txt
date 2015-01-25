@@ -1,0 +1,3 @@
+
+login --server http://localhost:4444/jasperserver-pro --username superuser --password superuser
+import /Users/alexkrasnyaskiy/IdeaProjects/jrsh/src/main/resources/exp.zip with-audit-events with-update
