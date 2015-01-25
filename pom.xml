@@ -42,7 +42,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- guava collection -->
+        <!-- guava collections -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
