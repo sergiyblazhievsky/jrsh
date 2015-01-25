@@ -10,13 +10,26 @@ JRSH is a simple and comprehensive CLI tool for JasperReports Server. It's desig
 
 ## Usage examples
 
-The following code snippets show how to run operations.
+The following code snippets show how to run
 
-### Import operation
+### Import command
 
 ```bash
-jrs --server "http://54.163.3.100/jasperserver-pro" --username "admin" --password "secret" \
+jrsh --server "http://54.163.3.100/jasperserver-pro" --username "superuser" --password "superuser" \
 import "/folder/import.zip"
+```
+
+### Export command
+
+```bash
+jrsh --server "http://54.163.3.100/jasperserver-pro" --username "superuser" --password "superuser" \
+export "/public/Samples/Reports/06g.ProfitDetailReport" without-users-and-roles
+```
+
+### Help command
+
+```bash
+jrsh help
 ```
 
 ## How to install
