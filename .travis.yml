@@ -12,18 +12,18 @@ notifications:
   webhooks:
     urls:
       - https://webhooks.gitter.im/e/57ba0193a1606d865761
-    on_success: always
+    on_success: false
     on_failure: always
     on_start: false
 
-#env:
-#  global:
-#    secure: ZqkbPrUf9TsheZQ0MEAYZzThPWdJhoa9W7wlwy1oQ8rFOSaWFsx02+Fz9zrPN/V0jAvaSyZkxY8FMeAHk3n2P8tbcb/J/B0XA7wtcWC4ZIw4dKjZHhpjlVBIcGT7H+KmKyokSTuW+GNnVtWk1Et/5mnh4Z4yg3r0Px2iP3y7C3A=
+env:
+  global:
+    secure: ZqkbPrUf9TsheZQ0MEAYZzThPWdJhoa9W7wlwy1oQ8rFOSaWFsx02+Fz9zrPN/V0jAvaSyZkxY8FMeAHk3n2P8tbcb/J/B0XA7wtcWC4ZIw4dKjZHhpjlVBIcGT7H+KmKyokSTuW+GNnVtWk1Et/5mnh4Z4yg3r0Px2iP3y7C3A=
 
 branches:
   only:
   - master
-  - develop
+#  - develop
 
 cache:
   directories:
