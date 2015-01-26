@@ -3,6 +3,7 @@ package com.jaspersoft.jasperserver.shell.command;
 import com.jaspersoft.jasperserver.shell.ExecutionMode;
 import com.jaspersoft.jasperserver.shell.exception.UnknownInterfaceException;
 import com.jaspersoft.jasperserver.shell.exception.WrongPathParameterException;
+import com.jaspersoft.jasperserver.shell.exception.parser.ParameterValueSizeException;
 import com.jaspersoft.jasperserver.shell.exception.parser.WrongRepositoryPathFormatException;
 import com.jaspersoft.jasperserver.shell.exception.server.JrsResourceNotFoundException;
 import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
@@ -48,7 +49,9 @@ public abstract class Command implements Executable {
                 }
 
                 // we cannot handle thus cases, hence we print error and deny re-login operation below
-                if (e instanceof WrongRepositoryPathFormatException || e instanceof JrsResourceNotFoundException){
+                if (e instanceof WrongRepositoryPathFormatException ||
+                        e instanceof JrsResourceNotFoundException ||
+                        e instanceof ParameterValueSizeException) {
                     out.printf("error: %s\n", e.getMessage());
                     return;
                 }

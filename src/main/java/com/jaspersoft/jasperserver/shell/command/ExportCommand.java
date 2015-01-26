@@ -10,6 +10,7 @@ import com.jaspersoft.jasperserver.shell.exception.CannotCreateFileException;
 import com.jaspersoft.jasperserver.shell.exception.SessionIsNotAvailableException;
 import com.jaspersoft.jasperserver.shell.exception.UnspecifiedRoleException;
 import com.jaspersoft.jasperserver.shell.exception.UnspecifiedUserNameException;
+import com.jaspersoft.jasperserver.shell.exception.parser.ParameterValueSizeException;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
@@ -60,6 +61,7 @@ public class ExportCommand extends Command {
     void run() {
         Session session = getInstance();
         String path; // or may be a command
+        String to   = null;
         String role = null;
         String user = null;
 
@@ -67,6 +69,12 @@ public class ExportCommand extends Command {
 
         if (!values.isEmpty()) {
             path = values.get(0);
+            if (values.size() > 1) {
+                to = values.get(1);
+            }
+            if (values.size() > 2) {
+                throw new ParameterValueSizeException("?", "export");
+            }
         } else {
             Command cmd = create("help");
             cmd.parameter("anonymous").setValues(asList("export"));
@@ -156,8 +164,9 @@ public class ExportCommand extends Command {
                 prefix = "export-repo-";
             }
             String date = sdf.format(new Date());
-            new FileOutputStream(prefix + date + postfix + ".zip").write(readFully(entity, -1, false));
-            out.printf("File %s was created.\n", prefix + date + postfix + ".zip");
+            String file = (to == null) ? prefix + date + postfix + ".zip" : to;
+            new FileOutputStream(file).write(readFully(entity, -1, false));
+            out.printf("\rFile %s was created.\n", file);
         } catch (IOException e) {
             throw new CannotCreateFileException();
         }
@@ -185,7 +194,7 @@ public class ExportCommand extends Command {
     @SneakyThrows
     private void print() {
         int counter = 0;
-        out.print("Exporting resources");
+        out.print("\rExporting resources"); // \r ?
         while (true) {
             if (counter == 4) {
                 counter = 0;
