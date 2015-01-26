@@ -6,6 +6,8 @@ import com.jaspersoft.jasperserver.shell.exception.InterfaceException;
 import com.jaspersoft.jasperserver.shell.factory.CommandFactory;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 
+import java.util.Map.Entry;
+
 import static java.lang.System.out;
 
 /**
@@ -33,9 +35,19 @@ public class HelpCommand extends Command implements ContextAware {
                 out.printf("error: %s\n", e.getMessage());
             }
         } else {
-            out.println((char) 27 + "[30;44mAvailable commands: " + (char) 27 + "[37m \n");
-            context.getCmdDescription().entrySet().stream().filter(e -> e.getKey() != null)
-                    .forEach(e -> out.printf("\t%s\t\t%s\n", e.getKey(), e.getValue()));
+            out.println("Available commands: ");
+
+            // Java 8
+            //context.getCmdDescription().entrySet().stream().filter(e -> e.getKey() != null)
+            //        .forEach(e -> out.printf("\t%s\t\t%s\n", e.getKey(), e.getValue()));
+
+            // Java 7
+            for (Entry<String, String> e : context.getCmdDescription().entrySet()) {
+                if (e.getKey()!= null){
+                    out.printf("\t%s\t\t%s\n", e.getKey(), e.getValue());
+                }
+            }
+
         }
     }
 

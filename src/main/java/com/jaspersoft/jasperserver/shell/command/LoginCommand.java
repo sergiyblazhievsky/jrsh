@@ -6,6 +6,7 @@ import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import java.util.List;
 
 import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.create;
+import static java.lang.System.out;
 
 /**
  * @author Alexander Krasnyanskiy
@@ -47,8 +48,11 @@ public class LoginCommand extends Command {
 
         create(url, username, password, organization);
 
+        profile.setName("default");
         profile.setUrl(url);
         profile.setUsername(username);
         profile.setOrganization(organization);
+
+        out.println("You've logged in.");
     }
 }

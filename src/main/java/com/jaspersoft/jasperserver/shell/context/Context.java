@@ -18,7 +18,7 @@ public class Context {
     private List<String> dictionary
             = new ArrayList<>(asList("help", "?", "import", "export",
             "profile", "session", "logout", "login",
-            "exit", "test"));
+            "exit", "show"));
 
     public Context() {
         for (String v : dictionary) {

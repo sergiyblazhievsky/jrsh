@@ -82,7 +82,17 @@ public class CommandParser implements ContextAware {
             }
         }
         cmdQueue.offer(current);
-        cmdQueue.stream().filter(c -> c != null).forEach(validator::validate);
+
+        // Java 8
+        //cmdQueue.stream().filter(c -> c != null).forEach(validator::validate);
+
+        // Java 7
+        for (Command command : cmdQueue) {
+            if (command != null) {
+                validator.validate(command);
+            }
+        }
+
         return cmdQueue;
     }
 

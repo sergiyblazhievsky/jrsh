@@ -17,10 +17,12 @@ import lombok.extern.java.Log;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exportservice.ExportParameter.EVERYTHING;
 import static com.jaspersoft.jasperserver.shell.ExecutionMode.SHELL;
@@ -41,36 +43,30 @@ import static sun.misc.IOUtils.readFully;
 public class ExportCommand extends Command {
 
     private List<ExportParameter> interParams = new ArrayList<>();
-    private Session session;
-    private InputStream entity;
 
     public ExportCommand() {
         name = "export";
         description = "Exports configuration of JasperReportsServer.";
-        parameters.add(new Parameter().setName("anonymous")/*.setOptional(true)*/.setMultiple(true)); // <path>
-
+        parameters.add(new Parameter().setName("anonymous")/*.setOptional(true)*/.setMultiple(true));
+        parameters.add(new Parameter().setName("to").setOptional(true));
         parameters.add(new Parameter().setName("without-access-events").setOptional(true));
         parameters.add(new Parameter().setName("without-audit-events").setOptional(true));
         parameters.add(new Parameter().setName("without-monitoring-events").setOptional(true));
-
         parameters.add(new Parameter().setName("without-events").setOptional(true));
         parameters.add(new Parameter().setName("without-users-and-roles").setOptional(true));
-
     }
 
     @Override
     void run() {
-
-        session = getInstance();
-
-        String pathOrSubCommand;
+        Session session = getInstance();
+        String path; // or may be a command
         String role = null;
         String user = null;
 
         List<String> values = parameter("anonymous").getValues();
 
         if (!values.isEmpty()) {
-            pathOrSubCommand = values.get(0);
+            path = values.get(0);
         } else {
             Command cmd = create("help");
             cmd.parameter("anonymous").setValues(asList("export"));
@@ -78,7 +74,7 @@ public class ExportCommand extends Command {
             return;
         }
 
-        switch (pathOrSubCommand) {
+        switch (path) {
             case "all":
                 interParams.add(EVERYTHING);
                 break;
@@ -112,15 +108,20 @@ public class ExportCommand extends Command {
                 break;
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-        String date = sdf.format(new Date());
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        InputStream entity;
 
         if (getMode().equals(SHELL)) {
-            Thread t = new Thread(this::print);
+            Thread t = new Thread(new Runnable() {
+                public void run() {
+                    print();
+                }
+            });
             try {
                 ExportTaskAdapter task = session.exportService().newTask();
-                setExportOptions(task, user, role, pathOrSubCommand /* <path> */);
-                StateDto state = task.parameters(interParams).create().entity();
+                setExportOptions(task, user, role, /* <path> */ path);
+                StateDto state = task.parameters(interParams).create().getEntity();
                 t.start();
                 entity = session.exportService().task(state.getId()).fetch().getEntity();
                 out.printf("\rExport status: SUCCESS\n");
@@ -136,31 +137,35 @@ public class ExportCommand extends Command {
             }
         } else {
             ExportTaskAdapter task = session.exportService().newTask();
-            setExportOptions(task, user, role, pathOrSubCommand);
+            setExportOptions(task, user, role, path);
             StateDto state = task.parameters(interParams).create().entity();
             entity = session.exportService().task(state.getId()).fetch().getEntity();
         }
 
         try {
-            String postfix;
-            if (pathOrSubCommand.equals("all")) postfix = "all-";
-            else if (role != null) postfix = "role-";
-            else if (user != null) postfix = "user-";
-            else postfix = "repo-";
+            String prefix;
+            String postfix = "_UTC";
 
-            new FileOutputStream("/Users/alexkrasnyaskiy/IdeaProjects/jrsh/src/main/resources/export-"
-                    + postfix + date + ".zip").write(readFully(entity, -1, false));
+            if (path.equals("all")) {
+                prefix = "export-all-";
+            } else if (role != null) {
+                prefix = "export-role-";
+            } else if (user != null) {
+                prefix = "export-user-";
+            } else {
+                prefix = "export-repo-";
+            }
+            String date = sdf.format(new Date());
+            new FileOutputStream(prefix + date + postfix + ".zip").write(readFully(entity, -1, false));
+            out.printf("File %s was created.\n", prefix + date + postfix + ".zip");
         } catch (IOException e) {
             throw new CannotCreateFileException();
         }
     }
 
     private String convert(String role) {
-        String[] tenantRole = role.split("(?:[/]|[|])");
-        if (tenantRole.length == 2) {
-            return format("%s|%s", tenantRole[1], tenantRole[0]);
-        }
-        return role;
+        String[] tenantPlusRole = role.split("(?:[/]|[|])");
+        return tenantPlusRole.length == 2 ? format("%s|%s", tenantPlusRole[1], tenantPlusRole[0]) : role;
     }
 
     private void setExportOptions(ExportTaskAdapter task, String user, String role, String repo) {
@@ -182,7 +187,7 @@ public class ExportCommand extends Command {
         int counter = 0;
         out.print("Exporting resources");
         while (true) {
-            if (counter == 5) {
+            if (counter == 4) {
                 counter = 0;
                 out.print("\rExporting resources");
             }

@@ -17,8 +17,15 @@ public class ProfileCommand extends Command {
         if (profile.getUrl() == null && profile.getUsername() == null) { // mandatory profile properties
             System.out.println("Not available.");
         } else {
-            out.printf("\nprofile name:\t%s\nserver url:\t\t%s\nusername:\t\t%s\norganization:\t%s\n\n",
-                    profile.getName(), profile.getUrl(), profile.getUsername(), profile.getOrganization());
+            out.printf("\nprofile name:\t%s" +
+                            "\nserver url:\t\t%s" +
+                            "\nusername:\t\t%s" +
+                            "\norganization:\t%s\n\n",
+                    profile.getName(),
+                    profile.getUrl(),
+                    profile.getUsername(),
+                    profile.getOrganization() == null ? "unknown" : profile.getOrganization()
+            );
         }
     }
 }

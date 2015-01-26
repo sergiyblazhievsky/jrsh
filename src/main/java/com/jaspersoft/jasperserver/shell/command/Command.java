@@ -3,6 +3,8 @@ package com.jaspersoft.jasperserver.shell.command;
 import com.jaspersoft.jasperserver.shell.ExecutionMode;
 import com.jaspersoft.jasperserver.shell.exception.UnknownInterfaceException;
 import com.jaspersoft.jasperserver.shell.exception.WrongPathParameterException;
+import com.jaspersoft.jasperserver.shell.exception.parser.WrongRepositoryPathFormatException;
+import com.jaspersoft.jasperserver.shell.exception.server.JrsResourceNotFoundException;
 import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import com.jaspersoft.jasperserver.shell.profile.Profile;
@@ -25,7 +27,8 @@ import static java.lang.System.out;
 public abstract class Command implements Executable {
 
     protected String name;
-    protected String description;
+    protected String description; // todo => rename to `brief description`
+    protected String comprehensiveDescription; // ?
     protected List<Parameter> parameters = new ArrayList<>();
     protected static Profile profile = getInstance();
 
@@ -43,6 +46,14 @@ public abstract class Command implements Executable {
                     out.printf("i/o error: %s\n", e.getMessage());
                     return;
                 }
+
+                // we cannot handle thus cases, hence we print error and deny re-login operation below
+                if (e instanceof WrongRepositoryPathFormatException || e instanceof JrsResourceNotFoundException){
+                    out.printf("error: %s\n", e.getMessage());
+                    return;
+                }
+
+                // re-login
                 if (!profile.isEmpty()) {
                     String password = askPassword();
                     SessionFactory.create(profile.getUrl(), profile.getUsername(), password, profile.getOrganization());
@@ -51,7 +62,7 @@ public abstract class Command implements Executable {
                     throw new UnknownInterfaceException(e.getMessage());
                 }
             } else {
-                throw new UnknownInterfaceException(e.getMessage());
+                throw new UnknownInterfaceException(e.getMessage()); // We shouldn't even try to handle that kind of cases
             }
         }
     }

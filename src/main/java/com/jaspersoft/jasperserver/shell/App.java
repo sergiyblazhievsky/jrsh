@@ -23,51 +23,61 @@ import static java.util.Arrays.asList;
  * @author Alexander Krasnyanskiy
  */
 public class App {
-
     public static void main(String[] args) {
 
         App app = new App();
         Context context = new Context();
         Queue<Command> queue = null;
-
         CommandParser parser = new CommandParser(new CommandParameterValidator());
         parser.setContext(context);
-        LogManager.getLogManager().reset();
+
+        LogManager.getLogManager().reset(); // turn off Jersey logger
 
         if (args.length < 1) {
-            out.println("Welcome to JRSH v1.0!\n");
+            out.println("Welcome to JRSH v0.1!\n");
             while (true) {
                 String input = app.readLine();
                 if ("".equals(input)) continue;
                 try {
                     queue = parser.parse(input);
-                    queue.stream().filter(c -> c != null).forEach(c -> c.setMode(SHELL));
+                    for (Command cmd : queue) {
+                        if (cmd != null) cmd.setMode(SHELL);
+                    }
                 } catch (InterfaceException e) {
                     if (e instanceof MandatoryParameterException) {
                         Command cmd = create("help");
                         cmd.parameter("anonymous").setValues(asList(e.getMessage()));
                         cmd.execute();
-                    } else out.printf("error: %s\n", e.getMessage());
+                    } else {
+                        out.printf("error: %s\n", e.getMessage());
+                    }
                     continue;
                 }
                 try {
-                    queue.stream().filter(c -> c != null).forEach(Command::execute);
+                    for (Command c : queue) {
+                        if (c != null) c.execute();
+                    }
                 } catch (ServerException e) {
                     out.printf("error: %s\n", e.getMessage());
                 } catch (InterfaceException e) {
                     out.println(e.getMessage());
                 }
             }
-        } else {
+        } else /* we are in the tool mode */ {
             try {
                 queue = parser.parse(args);
-                queue.stream().filter(c -> c != null).forEach(c -> c.setMode(TOOL));
+                for (Command cmd : queue) {
+                    if (cmd != null) cmd.setMode(TOOL);
+                }
+                exit(0); // ok!
             } catch (InterfaceException e) {
                 out.printf(e.getMessage());
                 exit(1);
             }
             try {
-                queue.stream().filter(c -> c != null).forEach(Command::execute);
+                for (Command cmd : queue) {
+                    if (cmd != null) cmd.execute();
+                }
             } catch (ServerException | InterfaceException e) {
                 out.printf(e.getMessage());
                 exit(1);

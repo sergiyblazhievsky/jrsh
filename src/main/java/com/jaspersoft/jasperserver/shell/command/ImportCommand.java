@@ -59,12 +59,22 @@ public class ImportCommand extends Command {
         if (withUpdate.isAvailable()) params.add(ImportParameter.UPDATE);
         if (withSkipUserUpdate.isAvailable()) params.add(ImportParameter.SKIP_USER_UPDATE);
 
-
         if (getMode().equals(ExecutionMode.SHELL)) {
-            Thread t = new Thread(this::print);
+
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    print();
+                }
+            });
+
             File file = readFile(path);
             ImportTaskRequestAdapter task = session.importService().newTask();
-            for (ImportParameter param : params) task.parameter(param, true);
+
+            for (ImportParameter param : params) {
+                task.parameter(param, true);
+            }
+
             StateDto state = task.create(file).getEntity();
             t.start();
             waitForUpload(state);
@@ -84,7 +94,7 @@ public class ImportCommand extends Command {
         int counter = 0;
         out.print("Importing file");
         while (true) {
-            if (counter == 5) {
+            if (counter == 4) {
                 counter = 0;
                 out.print("\rImporting file");
             }
@@ -110,13 +120,11 @@ public class ImportCommand extends Command {
     private void waitForUpload(StateDto state) {
         do {
             if ("finished".equals(getPhase(state))) break;
-            sleep(500);
+            sleep(350);
         } while (true);
     }
 
     private String getPhase(StateDto state) {
-        return session.exportService()
-                .task(state.getId()).state()
-                .getEntity().getPhase();
+        return session.exportService().task(state.getId()).state().getEntity().getPhase();
     }
 }

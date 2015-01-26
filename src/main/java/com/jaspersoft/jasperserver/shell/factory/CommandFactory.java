@@ -9,7 +9,7 @@ import com.jaspersoft.jasperserver.shell.command.LoginCommand;
 import com.jaspersoft.jasperserver.shell.command.LogoutCommand;
 import com.jaspersoft.jasperserver.shell.command.ProfileCommand;
 import com.jaspersoft.jasperserver.shell.command.SessionCommand;
-import com.jaspersoft.jasperserver.shell.command.TestCommand;
+import com.jaspersoft.jasperserver.shell.command.ShowCommand;
 import com.jaspersoft.jasperserver.shell.exception.parser.NoSuchCommandException;
 
 /**
@@ -26,11 +26,11 @@ public final class CommandFactory {
             case "logout": return new LogoutCommand();
             case "import": return new ImportCommand();
             case "export": return new ExportCommand();
+            case "show": return new ShowCommand();
             case "?": return new HelpCommand();
             case "help": return new HelpCommand();
             case "profile": return new ProfileCommand();
             case "session": return new SessionCommand();
-            case "test": return new TestCommand();
             default: throw new NoSuchCommandException(name);
         }
     }

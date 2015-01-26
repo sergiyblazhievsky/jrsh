@@ -6,6 +6,6 @@ package com.jaspersoft.jasperserver.shell.exception;
 public class CannotCreateFileException extends IOException {
 
     public CannotCreateFileException() {
-        super("Cannot create file.");
+        super("i/o error: Cannot create file.");
     }
 }
