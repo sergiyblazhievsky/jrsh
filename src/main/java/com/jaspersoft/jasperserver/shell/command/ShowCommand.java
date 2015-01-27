@@ -66,7 +66,7 @@ public class ShowCommand extends Command {
                         "\nLicenseType: %s" +
                         "\nDateFormatPattern: %s" +
                         "\nDatetimeFormatPattern: %s" +
-                        "\nBuild: %s\n",
+                        "\nBuild: %s\n\n",
                 info.getExpiration() == null ? "unknown" : info.getExpiration(), // works for 6.0.1
                 info.getVersion(),
                 info.getFeatures(),

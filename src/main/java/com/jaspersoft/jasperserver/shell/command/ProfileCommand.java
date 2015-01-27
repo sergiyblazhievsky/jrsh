@@ -18,8 +18,8 @@ public class ProfileCommand extends Command {
             System.out.println("Not available.");
         } else {
             out.printf("\nprofile name:\t%s" +
-                            "\nserver url:\t\t%s" +
-                            "\nusername:\t\t%s" +
+                            "\nserver url:\t%s" +
+                            "\nusername:\t%s" +
                             "\norganization:\t%s\n\n",
                     profile.getName(),
                     profile.getUrl(),
