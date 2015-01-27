@@ -146,7 +146,7 @@ public class ExportCommand extends Command {
         } else {
             ExportTaskAdapter task = session.exportService().newTask();
             setExportOptions(task, user, role, path);
-            StateDto state = task.parameters(interParams).create().entity();
+            StateDto state = task.parameters(interParams).create().getEntity();
             entity = session.exportService().task(state.getId()).fetch().getEntity();
         }
 

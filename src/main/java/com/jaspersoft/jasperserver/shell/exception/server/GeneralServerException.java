@@ -6,6 +6,6 @@ package com.jaspersoft.jasperserver.shell.exception.server;
 public class GeneralServerException extends ServerException {
 
     public GeneralServerException(String message) {
-        super(String.format("server error: %s", message));
+        super(message);
     }
 }

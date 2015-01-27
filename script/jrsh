@@ -1,3 +1,2 @@
 #!/bin/bash
-#chmod u+x jrsh
 java -jar jrsh-1.0-SNAPSHOT-jar-with-dependencies.jar "$@"
