@@ -35,19 +35,12 @@ public class HelpCommand extends Command implements ContextAware {
                 out.printf("error: %s\n", e.getMessage());
             }
         } else {
-            out.println("Available commands: ");
-
-            // Java 8
-            //context.getCmdDescription().entrySet().stream().filter(e -> e.getKey() != null)
-            //        .forEach(e -> out.printf("\t%s\t\t%s\n", e.getKey(), e.getValue()));
-
-            // Java 7
+            out.println("\n\u001B[30;44mAvailable commands: \u001B[0m");
             for (Entry<String, String> e : context.getCmdDescription().entrySet()) {
                 if (e.getKey()!= null){
                     out.printf("\t%s\t\t%s\n", e.getKey(), e.getValue());
                 }
             }
-
         }
     }
 

@@ -11,9 +11,7 @@ import com.jaspersoft.jasperserver.jaxrs.client.core.operationresult.OperationRe
 import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
 import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.testng.PowerMockTestCase;
 import org.testng.annotations.AfterMethod;
@@ -33,12 +31,16 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 /**
  * Unit test for {@link ExportCommand}
  */
+@Test(enabled = false)
+@SuppressWarnings("unchecked")
 @PrepareForTest({ExportCommand.class, SessionFactory.class, FileOutputStream.class, PrintStream.class, File.class})
 public class ExportCommandTest extends PowerMockTestCase {
 
@@ -77,8 +79,6 @@ public class ExportCommandTest extends PowerMockTestCase {
         initMocks(this);
     }
 
-    @Test(enabled = false)
-    @SuppressWarnings("unchecked")
     public void should_execute_export_command() throws Exception {
 
         /** Given **/
@@ -88,9 +88,8 @@ public class ExportCommandTest extends PowerMockTestCase {
         //whenNew(JasperserverRestClient.class).withArguments(configurationMock).thenReturn(clientMock);
         //whenNew(FileOutputStream.class).withArguments(anyString()).thenReturn(fileOutputStreamMock);
 
-        PowerMockito.mockStatic(SessionFactory.class);
-        Mockito.when(SessionFactory.create("http://54.221.179.1/jasperserver-pro", "superuser", "superuser", "organization_1"));
-
+        mockStatic(SessionFactory.class);
+        when(SessionFactory.create("http://54.221.179.1/jasperserver-pro", "superuser", "superuser", "organization_1"));
 
         doReturn(sessionMock).when(clientMock).authenticate("superuser|organization_1", "superuser");
 
@@ -99,12 +98,10 @@ public class ExportCommandTest extends PowerMockTestCase {
         doReturn(inputStreamOperationResultMock).when(exportRequestAdapterMock).fetch();
         doReturn(streamMock).when(inputStreamOperationResultMock).getEntity();
 
-
         doReturn(exportTaskAdapterMock).when(exportServiceMock).newTask();
         doReturn(exportTaskAdapterMock).when(exportTaskAdapterMock).parameters(anyList());
         doReturn(operationResultMock).when(exportTaskAdapterMock).create();
         doReturn(exportTaskAdapterMock).when(exportTaskAdapterMock).uri("/public/Samples/Reports/06g.ProfitDetailReport");
-
 
         doReturn(stateMock).when(operationResultMock).getEntity();
         doReturn("fakeId").when(stateMock).getId();

@@ -86,7 +86,7 @@ public class App {
     }
 
     private String readLine() {
-        out.printf((char) 27 + "[33m>>> " + (char) 27 + "[37m");
+        out.printf("\u001B[1m>>> \u001B[0m");
         Scanner in = new Scanner(System.in);
         return in.nextLine();
     }

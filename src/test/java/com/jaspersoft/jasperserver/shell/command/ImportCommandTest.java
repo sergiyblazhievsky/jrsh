@@ -96,7 +96,7 @@ public class ImportCommandTest extends PowerMockTestCase {
         doReturn(true).when(fileMock).exists();
 
         SessionFactory.create("http://54.221.179.100/jasperserver-pro", "superuser", "superuser", "organization_1");
-        importCmd.parameter("anonymous").getValues().add("/Users/alexkrasnyanskiy/IdeaProjects/jrsh/src/main/resources/import.zip");
+        importCmd.parameter("anonymous").getValues().add("/Users/alex/IdeaProjects/jrsh/src/main/resources/import.zip");
         importCmd.setMode(SHELL);
 
         PrintStream streamSpy = spy(new PrintStream(new OutputStream() {
@@ -113,7 +113,7 @@ public class ImportCommandTest extends PowerMockTestCase {
         /** Then **/
         verifyNew(RestClientConfiguration.class, times(1)).withArguments("http://54.221.179.100/jasperserver-pro");
         verifyNew(JasperserverRestClient.class, times(1)).withArguments(configurationMock);
-        verifyNew(File.class, times(1)).withArguments("/Users/alexkrasnyanskiy/IdeaProjects/jrsh/src/main/resources/import.zip");
+        verifyNew(File.class, times(1)).withArguments("/Users/alex/IdeaProjects/jrsh/src/main/resources/import.zip");
 
         verify(fileMock, times(1)).isDirectory();
         verify(fileMock, times(1)).exists();

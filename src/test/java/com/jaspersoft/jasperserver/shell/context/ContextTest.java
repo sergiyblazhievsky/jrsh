@@ -1,6 +1,5 @@
 package com.jaspersoft.jasperserver.shell.context;
 
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -8,9 +7,14 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.Map;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertSame;
+import static org.testng.Assert.assertTrue;
+
 /**
  * Unit test for {@link ContextTest}
  */
+@Test
 public class ContextTest {
 
     private Context context;
@@ -20,40 +24,42 @@ public class ContextTest {
         context = new Context();
     }
 
-    @Test
     public void should_return_dictionary_with_proper_amount_of_commands_name() {
+
+        /** When **/
         List<String> dictionary = context.getDictionary();
-        Assert.assertSame(dictionary.size(), 10);
+
+        /** Then **/
+        assertSame(dictionary.size(), 10);
     }
 
-    @Test
     public void should_contain_proper_command_names() {
+
+        /** When **/
         List<String> dictionary = context.getDictionary();
 
-        Assert.assertTrue(dictionary.contains("help"));
-        Assert.assertTrue(dictionary.contains("?"));
-
-        Assert.assertTrue(dictionary.contains("import"));
-        Assert.assertTrue(dictionary.contains("export"));
-
-
-        Assert.assertTrue(dictionary.contains("logout"));
-        Assert.assertTrue(dictionary.contains("login"));
-
-        Assert.assertTrue(dictionary.contains("profile"));
-        Assert.assertTrue(dictionary.contains("session"));
-        Assert.assertTrue(dictionary.contains("exit"));
+        /** Then **/
+        assertTrue(dictionary.contains("help"));
+        assertTrue(dictionary.contains("?"));
+        assertTrue(dictionary.contains("import"));
+        assertTrue(dictionary.contains("export"));
+        assertTrue(dictionary.contains("logout"));
+        assertTrue(dictionary.contains("login"));
+        assertTrue(dictionary.contains("profile"));
+        assertTrue(dictionary.contains("session"));
+        assertTrue(dictionary.contains("exit"));
     }
 
-    @Test
     public void should_contain_proper_command_description() {
-        Map<String, String> description = context.getCmdDescription();
 
+        /** When **/
+        Map<String, String> description = context.getCmdDescription();
         String descForImport = description.get("import");
         String descForExport = description.get("export");
 
-        Assert.assertEquals(descForImport, "Imports configuration into JasperReportsServer.");
-        Assert.assertEquals(descForExport, "Exports configuration of JasperReportsServer.");
+        /** Then **/
+        assertEquals(descForImport, "Imports configuration into JasperReportsServer.");
+        assertEquals(descForExport, "Exports configuration of JasperReportsServer.");
     }
 
     @AfterMethod

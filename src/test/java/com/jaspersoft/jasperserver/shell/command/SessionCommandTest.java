@@ -23,6 +23,7 @@ import static org.powermock.api.support.membermodification.MemberMatcher.field;
 /**
  * Unit tests for {@link SessionCommand}
  */
+@Test
 @PrepareForTest({SessionCommand.class, PrintStream.class})
 public class SessionCommandTest extends PowerMockTestCase {
 
@@ -35,13 +36,11 @@ public class SessionCommandTest extends PowerMockTestCase {
         Command.profile.setUsername(null);
     }
 
-    @Test
     public void should_invoke_print_method_with_proper_param_when_profile_is_empty() {
 
         /** Given **/
         PrintStream spy = spy(new PrintStream(new OutputStream() {
-            public void write(int b) {
-            }
+            public void write(int b) {}
         }));
         setOut(spy);
 
@@ -52,7 +51,6 @@ public class SessionCommandTest extends PowerMockTestCase {
         verify(spy, times(1)).println("There's no active session.");
     }
 
-    @Test
     public void should_invoke_print_method_with_proper_param_when_profile_is_not_empty() throws IllegalAccessException {
 
         /** Given **/

@@ -59,7 +59,7 @@ public class ShowCommand extends Command {
 
     private void printInfo() {
         ServerInfo info = session.serverInfoService().details().getEntity();
-        out.printf("\nExpiration: " + (char) 27 + "[31m%s\n" + (char) 27 + "[37m" +
+        out.printf("\nExpiration: \u001B[31m%s\u001B[0m\n"+
                         "\nVersion: %s" +
                         "\nFeatures: %s" +
                         "\nEdition: %s" +

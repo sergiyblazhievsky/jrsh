@@ -5,10 +5,11 @@ import org.testng.annotations.Test;
 
 import static java.util.Arrays.asList;
 
+@Test
 public class ParameterTest {
 
-    @Test
     public void should_return_proper_values() {
+
         Parameter param = new Parameter();
 
         param.setAvailable(true);

@@ -20,34 +20,35 @@ import static org.mockito.Mockito.verify;
 /**
  * Unit tests for {@link HelpCommand}
  */
+@Test
 @PrepareForTest({HelpCommand.class, PrintStream.class})
 public class HelpCommandTest extends PowerMockTestCase {
 
     private HelpCommand help;
+    private final static int COMMAND_AMOUNT = 8;
 
     @BeforeMethod
     public void before() {
         help = spy(new HelpCommand());
     }
 
-    @Test
     public void should_print_help() {
 
         /** Given **/
-        final int commandAmount = 8;
         PrintStream spy = spy(new PrintStream(new OutputStream() {
-            public void write(int b) {
-            }
+            public void write(int b) {}
         }));
         setOut(spy);
         help.setContext(new Context());
 
+
         /** When **/
         help.run();
 
+
         /** Then **/
         verify(spy, times(1)).println(anyString());
-        verify(spy, times(commandAmount)).printf(anyString(), anyVararg());
+        verify(spy, times(COMMAND_AMOUNT)).printf(anyString(), anyVararg());
     }
 
     @AfterMethod

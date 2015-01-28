@@ -1,9 +1,4 @@
 
-NOTE:
-to add new command
-add it to the [context] and the [factory] first!!!
-
-
 login --server http://localhost:4444/jasperserver-pro --username superuser --password superuser
 login --server http://localhost:8080/jasperserver-pro --username superuser --password superuser
 login --server http://54.221.179.184/jasperserver-pro --username superuser --password superuser
@@ -11,12 +6,7 @@ login --server http://54.221.179.184/jasperserver-pro --username superuser --pas
 /public/Samples/Dashboards/2._Performance_Summary_Dashboard
 /public/Samples/Reports/06g.ProfitDetailReport
 
-
 /Users/alexkrasnyaskiy/IdeaProjects/jrsh/src/main/resources/exp.zip
 /Users/alexkrasnyaskiy/IdeaProjects/jrsh/src/main/resources/import.zip with-access-events with-monitoring-events with-update
 
 export role MyOrg|ROLE_BOSS
-
-
-ERROR:
---server http://localhost:4444/jasperserver-pro --username superuser --password superuser export role
