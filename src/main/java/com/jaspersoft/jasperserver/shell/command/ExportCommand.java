@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exportservice.ExportParameter.EVERYTHING;
 import static com.jaspersoft.jasperserver.shell.ExecutionMode.SHELL;
 import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.create;
 import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.getInstance;
@@ -48,20 +47,29 @@ public class ExportCommand extends Command {
     public ExportCommand() {
         name = "export";
         description = "Exports configuration of JasperReportsServer.";
+        comprehensiveDescription = "\tUsage:\t\texport <repo-path> to <file-path> <options>\n" +
+                "\tOptions:\n" +
+                "\t\t* without-access-events\n" +
+                "\t\t* without-audit-events\n" +
+                "\t\t* without-access-events\n" +
+                "\t\t* without-monitoring-events\n" +
+                "\t\t* without-users-and-roles\n";
+
         parameters.add(new Parameter().setName("anonymous")/*.setOptional(true)*/.setMultiple(true));
         parameters.add(new Parameter().setName("to").setOptional(true));
-        parameters.add(new Parameter().setName("without-access-events").setOptional(true));
-        parameters.add(new Parameter().setName("without-audit-events").setOptional(true));
-        parameters.add(new Parameter().setName("without-monitoring-events").setOptional(true));
-        parameters.add(new Parameter().setName("without-events").setOptional(true));
-        parameters.add(new Parameter().setName("without-users-and-roles").setOptional(true));
+        parameters.add(new Parameter().setName("with-access-events").setOptional(true));
+        parameters.add(new Parameter().setName("with-audit-events").setOptional(true));
+        parameters.add(new Parameter().setName("with-monitoring-events").setOptional(true));
+        parameters.add(new Parameter().setName("with-events").setOptional(true));
+        parameters.add(new Parameter().setName("with-users-and-roles").setOptional(true));
+        parameters.add(new Parameter().setName("with-repository-permissions").setOptional(true));
     }
 
     @Override
     void run() {
         Session session = getInstance();
         String path; // or may be a command
-        String to   = null;
+        String to = null;
         String role = null;
         String user = null;
 
@@ -84,7 +92,8 @@ public class ExportCommand extends Command {
 
         switch (path) {
             case "all":
-                interParams.add(EVERYTHING);
+                interParams.add(ExportParameter.EVERYTHING);
+                addEvents();
                 break;
             case "role":
                 if (values.size() < 2) {
@@ -132,7 +141,7 @@ public class ExportCommand extends Command {
                 StateDto state = task.parameters(interParams).create().getEntity();
                 t.start();
                 entity = session.exportService().task(state.getId()).fetch().getEntity();
-                out.printf("\rExport status: SUCCESS\n");
+                //out.printf("\rExport status: SUCCESS\n");
             } catch (Exception e) {
                 if (!(e instanceof AuthenticationFailedException)) {
                     out.printf("\rExport status: FAIL\n");
@@ -166,9 +175,23 @@ public class ExportCommand extends Command {
             String date = sdf.format(new Date());
             String file = (to == null) ? prefix + date + postfix + ".zip" : to;
             new FileOutputStream(file).write(readFully(entity, -1, false));
+            out.printf("\rExport status: SUCCESS\n");
             out.printf("\rFile %s was created.\n", file);
         } catch (IOException e) {
+            out.printf("\rExport status: FAIL\n");
             throw new CannotCreateFileException();
+        }
+    }
+
+    private void addEvents() {
+        if (parameter("with-access-events").isAvailable()) {
+            interParams.add(ExportParameter.INCLUDE_ACCESS_EVENTS);
+        }
+        if (parameter("with-audit-events").isAvailable()) {
+            interParams.add(ExportParameter.INCLUDE_AUDIT_EVENTS);
+        }
+        if (parameter("with-access-events").isAvailable()) {
+            interParams.add(ExportParameter.INCLUDE_ACCESS_EVENTS);
         }
     }
 
@@ -194,7 +217,7 @@ public class ExportCommand extends Command {
     @SneakyThrows
     private void print() {
         int counter = 0;
-        out.print("\rExporting resources"); // \r ?
+        out.print("\rExporting resources");
         while (true) {
             if (counter == 4) {
                 counter = 0;

@@ -10,3 +10,7 @@ login --server http://54.221.179.184/jasperserver-pro --username superuser --pas
 /Users/alexkrasnyaskiy/IdeaProjects/jrsh/src/main/resources/import.zip with-access-events with-monitoring-events with-update
 
 export role MyOrg|ROLE_BOSS
+
+
+ERROR => cannot create a file
+export /public/Samples/Reports/06g.ProfitDetailReport to /Users/alexkrasnyaskiy/IdeaProjects/jrs-command-line-tool/src/main/resources

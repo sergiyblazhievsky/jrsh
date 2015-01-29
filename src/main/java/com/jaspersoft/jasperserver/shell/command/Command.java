@@ -1,6 +1,7 @@
 package com.jaspersoft.jasperserver.shell.command;
 
 import com.jaspersoft.jasperserver.shell.ExecutionMode;
+import com.jaspersoft.jasperserver.shell.exception.CannotCreateFileException;
 import com.jaspersoft.jasperserver.shell.exception.UnknownInterfaceException;
 import com.jaspersoft.jasperserver.shell.exception.WrongPathParameterException;
 import com.jaspersoft.jasperserver.shell.exception.parser.ParameterValueSizeException;
@@ -43,7 +44,7 @@ public abstract class Command implements Executable {
             run();
         } catch (Exception e) {
             if (mode.equals(SHELL)) {
-                if (e instanceof WrongPathParameterException) {
+                if (e instanceof WrongPathParameterException || e instanceof CannotCreateFileException) {
                     out.printf("i/o error: %s\n", e.getMessage());
                     return;
                 }
