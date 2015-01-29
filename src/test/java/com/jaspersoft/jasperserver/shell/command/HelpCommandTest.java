@@ -47,7 +47,7 @@ public class HelpCommandTest extends PowerMockTestCase {
 
 
         /** Then **/
-        verify(spy, times(1)).println(anyString());
+        verify(spy, times(4)).println(anyString());
         verify(spy, times(COMMAND_AMOUNT)).printf(anyString(), anyVararg());
     }
 
