@@ -13,8 +13,8 @@ notifications:
     urls:
       - https://webhooks.gitter.im/e/57ba0193a1606d865761
     on_success: false
-    on_failure: always
     on_start: false
+    on_failure: always
 
 env:
   global:
@@ -23,13 +23,6 @@ env:
 branches:
   only:
   - master
-
-before_install:
-  - git submodule update --init --recursive
-
-cache:
-  directories:
-  - $HOME/.m2
 
 after_success:
   - mvn clean test jacoco:report coveralls:report
