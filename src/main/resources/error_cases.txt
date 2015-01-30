@@ -1,0 +1,6 @@
+ERROR => cannot create a file
+export /public/Samples/Reports/06g.ProfitDetailReport to /Users/alexkrasnyaskiy/IdeaProjects/jrs-command-line-tool/src/main/resources
+
+
+ERROR => folder doesn't exist!
+export /path/to/repo to /folder/fail/my_arch.zip => fail doesn't exist
