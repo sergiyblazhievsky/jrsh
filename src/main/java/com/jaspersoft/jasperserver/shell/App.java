@@ -34,7 +34,7 @@ public class App {
         LogManager.getLogManager().reset(); // turn off Jersey logger
 
         if (args.length < 1) {
-            out.println("Welcome to JRSH v0.1!\n");
+            out.println("Welcome to JRSH v1.0!\n");
             while (true) {
                 String input = app.readLine();
                 if ("".equals(input)) continue;

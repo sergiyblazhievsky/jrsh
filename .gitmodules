@@ -1,0 +1,3 @@
+[submodule "jrsh-bin"]
+	path = jrsh-bin
+	url = git://github.com/Krasnyanskiy/jrsh-bin.git
