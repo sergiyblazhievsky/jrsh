@@ -29,7 +29,8 @@ public class CommandParser implements ContextAware {
 
     public Queue<Command> parse(String... splits) {
         if (splits.length == 1) {
-            splits = splits[0].split("\\s+");
+            //splits = splits[0].split("\\s+");
+            splits = splits[0].split("\\s+(?=(?:\"[^\"]*\"|[^\"])*$)");
         }
         Queue<Command> cmdQueue = new LinkedList<>();
         boolean anonymousParam = true;
