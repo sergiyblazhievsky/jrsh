@@ -1,33 +1,28 @@
 package com.jaspersoft.jasperserver.shell.command.exp;
 
+import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exportservice.ExportParameter;
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exportservice.ExportTaskAdapter;
-import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
+import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
+import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
 
 import java.io.InputStream;
+
+import static java.util.Arrays.asList;
 
 /**
  * @author Alexander Krasnyanskiy
  */
 public class RepositoryDataExporter {
 
-    public InputStream export() {
-        ExportTaskAdapter task = SessionFactory.getInstance().exportService().newTask();
-        //setExportOptions(task, user, role, path);
-        //StateDto state = task.parameters(interParams).create().getEntity();
-        return null;
+    private Session session;
+
+    public RepositoryDataExporter(Session session) {
+        this.session = session;
     }
 
-    private void setExportOptions(ExportTaskAdapter task, String user, String role, String repo) {
-        if (role != null) {
-            task.role(role);
-            return;
-        }
-        if (user != null) {
-            task.user(user);
-            return;
-        }
-        if (repo != null) {
-            task.uri(repo);
-        }
+    public InputStream export() {
+        ExportTaskAdapter task = session.exportService().newTask();
+        StateDto state = task.parameters(asList(ExportParameter.EVERYTHING)).create().getEntity();
+        return session.exportService().task(state.getId()).fetch().getEntity();
     }
 }

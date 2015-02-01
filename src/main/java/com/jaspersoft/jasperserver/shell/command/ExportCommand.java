@@ -48,7 +48,7 @@ public class ExportCommand extends Command {
         name = "export";
         description = "Export configuration of JasperReportsServer.";
         usageDescription = "\tUsage: export <repo-path> to <file-path>\t[without-access-events] [without-audit-events] [without-access-events]\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t[without-monitoring-events] [without-users-and-roles]";
+                "\t\t\t\t\t\t\t[without-monitoring-events] [without-users-and-roles]";
 
         parameters.add(new Parameter().setName("anonymous")/*.setOptional(true)*/.setMultiple(true));
         parameters.add(new Parameter().setName("to").setOptional(true));
@@ -135,7 +135,6 @@ public class ExportCommand extends Command {
                 StateDto state = task.parameters(interParams).create().getEntity();
                 t.start();
                 entity = session.exportService().task(state.getId()).fetch().getEntity();
-                //out.printf("\rExport status: SUCCESS\n");
             } catch (Exception e) {
                 if (!(e instanceof AuthenticationFailedException)) {
                     out.printf("\rExport status: FAIL\n");

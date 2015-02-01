@@ -25,20 +25,14 @@ public class ProfileCommand extends Command {
     public ProfileCommand() {
         name = "profile";
         description = "Show current profile information.";
-        parameters.add(new Parameter().setName("anonymous").setMultiple(true).setOptional(true)); // value
-        parameters.add(new Parameter().setName("load").setOptional(true)); // with value (name), load profile by name
-        parameters.add(new Parameter().setName("save").setOptional(true)); // with value (name), saves current profile if it's not exist in the configuration file
-        parameters.add(new Parameter().setName("list").setOptional(true)); // without value, load names of profiles from configuration file
-
-        // >>> profile save MyCoolProfile
-        // >>> profile load "Omg profile 42"
-        // >>> profile load-config
-        // >>> profile list
+        parameters.add(new Parameter().setName("anonymous").setMultiple(true).setOptional(true));
+        parameters.add(new Parameter().setName("load").setOptional(true));
+        parameters.add(new Parameter().setName("save").setOptional(true));
+        parameters.add(new Parameter().setName("list").setOptional(true));
     }
 
     @Override
     void run() {
-
         // mandatory profile properties
         if (profile.getUrl() == null && profile.getUsername() == null) {
             if (!parameter("anonymous").isAvailable()
@@ -62,7 +56,7 @@ public class ProfileCommand extends Command {
                 if (parameter("anonymous").isAvailable()) {
                     n = parameter("anonymous").getValues().get(0);
                 }
-                cfg.getProfiles().add(profile.setName(n == null ? "Name-" + new Random().nextInt(Integer.MAX_VALUE) : n));
+                cfg.getProfiles().add(profile.setName(n == null ? "Profile-" + new Random().nextInt(Integer.MAX_VALUE) : n));
                 try {
                     persist(cfg, FILE);
                 } catch (IOException e) {

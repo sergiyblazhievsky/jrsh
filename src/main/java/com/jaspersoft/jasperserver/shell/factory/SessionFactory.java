@@ -44,6 +44,24 @@ public final class SessionFactory {
         return null;
     }
 
+    public static Session createImmutable(String url, String username, String pass, String tenantName){
+        if (url != null && username != null && pass != null) {
+            try {
+                RestClientConfiguration config = new RestClientConfiguration(url);
+                config.setConnectionTimeout(TIMEOUT);
+                config.setReadTimeout(TIMEOUT);
+                JasperserverRestClient client = new JasperserverRestClient(config);
+                if (tenantName != null && !("".equals(tenantName))) {
+                    username = format("%s|%s", username, tenantName);
+                }
+                return client.authenticate(username, pass);
+            } catch (Exception e) {
+                throw new GeneralServerException(e.getMessage());
+            }
+        }
+        return null;
+    }
+
     public static Session getInstance() {
         if (instance == null) {
             throw new SessionIsNotAvailableException();

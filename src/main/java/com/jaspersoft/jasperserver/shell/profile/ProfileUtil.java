@@ -54,4 +54,14 @@ public class ProfileUtil {
     public static boolean isEmpty(Profile profile) {
         return profile.getUrl() == null && profile.getUsername() == null && profile.getOrganization() == null;
     }
+
+    public static Profile find(ProfileConfiguration cfg, String name) {
+        for (Profile p : cfg.getProfiles()) {
+            if (name.equals(p.getName())) {
+                return p;
+            }
+        }
+        return null;
+    }
+
 }

@@ -58,8 +58,8 @@ public class ContextTest {
         String descForExport = description.get("export");
 
         /** Then **/
-        assertEquals(descForImport, "Imports configuration into JasperReportsServer.");
-        assertEquals(descForExport, "Exports configuration of JasperReportsServer.");
+        assertEquals(descForImport, "Import configuration into JasperReportsServer.");
+        assertEquals(descForExport, "Export configuration of JasperReportsServer.");
     }
 
     @AfterMethod

@@ -1,6 +1,7 @@
 package com.jaspersoft.jasperserver.shell;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
+import com.jaspersoft.jasperserver.shell.command.ReplicateCommand;
 import com.jaspersoft.jasperserver.shell.context.Context;
 import com.jaspersoft.jasperserver.shell.encoding.FileEncodingUtil;
 import com.jaspersoft.jasperserver.shell.exception.InterfaceException;
@@ -68,18 +69,23 @@ public class App {
             StringsCompleter exportParams = new StringsCompleter("to", "without-access-events", "with-audit-events",
                     "with-monitoring-events", "with-events", "with-users-and-roles", "with-repository-permissions");
 
+            StringsCompleter importCmd = new StringsCompleter("import");
+            StringsCompleter importParams = new StringsCompleter("with-audit-events", "with-access-events",
+                    "with-monitoring-events", "with-events", "with-update", "with-skip-user-update");
+
             StringsCompleter help = new StringsCompleter("help");
             StringsCompleter helpParams = new StringsCompleter("login", "logout", "import", "export", "exit",
-                    "show", "session", "profile");
+                    "show", "session", "replicate", "profile");
 
             ArgumentCompleter loginCompleter = new ArgumentCompleter(login, loginParams);
             ArgumentCompleter exportCompleter = new ArgumentCompleter(export, exportParams);
             ArgumentCompleter helpCompleter = new ArgumentCompleter(help, helpParams);
             ArgumentCompleter showCompleter = new ArgumentCompleter(show, showParams);
+            ArgumentCompleter importCompleter = new ArgumentCompleter(importCmd, importParams);
             ArgumentCompleter profileCompleter = new ArgumentCompleter(profile, profileParams);
 
-            AggregateCompleter general = new AggregateCompleter(exit, logout, replicate, profileCompleter, session, loginCompleter,
-                    showCompleter, exportCompleter, helpCompleter);
+            AggregateCompleter general = new AggregateCompleter(exit, logout, replicate, profileCompleter, session,
+                    loginCompleter, importCompleter, showCompleter, exportCompleter, helpCompleter);
 
             console.addCompleter(general);
 
@@ -91,7 +97,12 @@ public class App {
                 try {
                     queue = parser.parse(input);
                     for (Command cmd : queue) {
-                        if (cmd != null) cmd.setMode(ExecutionMode.SHELL);
+                        if (cmd != null) {
+                            cmd.setMode(ExecutionMode.SHELL);
+                            if (cmd instanceof ReplicateCommand){
+                                ((ReplicateCommand)cmd).setReader(console);
+                            }
+                        }
                     }
                 } catch (InterfaceException e) {
                     if (e instanceof MandatoryParameterException) {

@@ -1,6 +1,6 @@
 JasperReports Server Shell
 ==========================
-[![Build Status](https://travis-ci.org/Krasnyanskiy/jrs-command-line-tool.svg?branch=master)](https://travis-ci.org/Krasnyanskiy/jrs-command-line-tool) [![Coverage Status](https://img.shields.io/coveralls/Krasnyanskiy/jrs-command-line-tool.svg)](https://coveralls.io/r/Krasnyanskiy/jrs-command-line-tool?branch=master)
+[![Build Status](https://travis-ci.org/Krasnyanskiy/jrsh-project.svg?branch=master)](https://travis-ci.org/Krasnyanskiy/jrsh-project) [![Coverage Status](https://img.shields.io/coveralls/Krasnyanskiy/jrs-command-line-tool.svg)](https://coveralls.io/r/Krasnyanskiy/jrs-command-line-tool?branch=master)
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Krasnyanskiy/jrs-command-line-tool?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
