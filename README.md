@@ -32,9 +32,9 @@ export "/public/Samples/Reports/06g.ProfitDetailReport" without-users-and-roles
 jrsh help
 ```
 
-## How to install
+## How to build
 
-To install [JRSH](https://github.com/Krasnyanskiy/jrs-command-line-tool), just pen a terminal window and invoke
+To build [JRSH](https://github.com/Krasnyanskiy/jrs-command-line-tool), just pen a terminal window and invoke
 ```java
 mvn clean install
 ```
