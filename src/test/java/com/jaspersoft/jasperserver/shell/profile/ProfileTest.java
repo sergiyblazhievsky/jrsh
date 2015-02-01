@@ -9,6 +9,6 @@ public class ProfileTest {
 
     public void should_check_if_profile_is_empty() {
         Profile profile = new Profile();
-        assertTrue(profile.isEmpty());
+        assertTrue(ProfileUtil.isEmpty(profile));
     }
 }

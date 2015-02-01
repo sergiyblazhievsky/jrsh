@@ -28,7 +28,9 @@ public class ImportCommand extends Command {
 
     public ImportCommand() {
         name = "import";
-        description = "Imports configuration into JasperReportsServer.";
+        description = "Import configuration into JasperReportsServer.";
+        usageDescription = "\tUsage: import\t<file>\t[with-audit-events] [with-access-events] [with-monitoring-events]\n" +
+                "\t\t\t\t\t\t\t[with-events] [with-update] [with-skip-user-update]";
         parameters.add(new Parameter().setName("anonymous"));
 
         parameters.add(new Parameter().setName("with-audit-events").setOptional(true));
@@ -45,6 +47,10 @@ public class ImportCommand extends Command {
 
         session = getInstance();
         String path = parameter("anonymous").getValues().get(0);
+
+        if (path.charAt(0) == '"' && path.charAt(path.length() - 1) == '"') {
+            path = path.substring(1, path.length() - 1);
+        }
 
         Parameter withAuditEvents = nonAnonymousParameter("with-audit-events");
         Parameter withAccessEvents = nonAnonymousParameter("with-access-events");

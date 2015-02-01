@@ -10,3 +10,35 @@ login --server http://54.221.179.184/jasperserver-pro --username superuser --pas
 /Users/alexkrasnyaskiy/IdeaProjects/jrsh/src/main/resources/import.zip with-access-events with-monitoring-events with-update
 
 export role MyOrg|ROLE_BOSS
+
+
+
+profiles:
+- {
+    name: Local,
+    url: 'http://localhost:8080/jasperserver-pro',
+    username: superuser
+  }
+- {
+    name: Cloud,
+    url: 'http://54.167.64.189/jasperserver-pro',
+    username: superuser
+  }
+
+
+
+
+
+profile:
+  name: Local,
+  url: 'http://localhost:8080/jasperserver-pro',
+  username: superuser
+
+profile:
+  name: Cloud,
+  url: 'http://54.167.64.189/jasperserver-pro',
+  username: superuser
+
+
+
+"/Users/alexkrasnyaskiy/Desktop/new folder/import.zip"

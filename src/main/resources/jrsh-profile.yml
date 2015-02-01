@@ -1,0 +1,19 @@
+profiles:
+- {
+  name: Local,
+  organization: null,
+  url: 'http://localhost:8080/jasperserver-pro',
+  username: superuser
+}
+- {
+  name: Cloud,
+  organization: null,
+  url: 'http://54.167.64.189/jasperserver-pro',
+  username: superuser
+}
+- {
+  name: Name-1090702605,
+  organization: null,
+  url: 'http://localhost:8080/jasperserver-pro',
+  username: superuser
+}

@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar ../lib/jasperserver-shell-1.0-SNAPSHOT-jar-with-dependencies.jar "$@"
+java -Dfile.encoding=UTF-8 -jar ../lib/jasperserver-shell-1.0-SNAPSHOT-jar-with-dependencies.jar "$@"

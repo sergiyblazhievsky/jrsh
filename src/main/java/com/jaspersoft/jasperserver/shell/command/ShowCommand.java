@@ -28,7 +28,9 @@ public class ShowCommand extends Command {
 
     public ShowCommand() {
         name = "show";
-        description = "Shows JRS information.";
+        description = "Show information about JRS or print configuration tree.";
+        usageDescription = "\tUsage:  show repo <path>\n" +
+                "\t\t\tshow server-info";
         parameters.add(new Parameter().setName("anonymous").setOptional(true));
         parameters.add(new Parameter().setName("server-info").setOptional(true));
         parameters.add(new Parameter().setName("repo").setOptional(true));

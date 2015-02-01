@@ -95,6 +95,13 @@
             <artifactId>joda-time</artifactId>
             <version>2.4</version>
         </dependency>
+
+        <!-- jline -->
+        <dependency>
+            <groupId>jline</groupId>
+            <artifactId>jline</artifactId>
+            <version>2.12</version>
+        </dependency>
     </dependencies>
 
 

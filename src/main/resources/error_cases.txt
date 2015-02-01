@@ -4,3 +4,22 @@ export /public/Samples/Reports/06g.ProfitDetailReport to /Users/alexkrasnyaskiy/
 
 ERROR => folder doesn't exist!
 export /path/to/repo to /folder/fail/my_arch.zip => fail doesn't exist
+
+
+
+
+
+
+>>> profile list
+profile list
+You need to load profile configuration first.
+>>> profile load
+profile load
+>>> profile list
+profile list
+	Local
+	Cloud
+>>> profile save "MishaProfile"
+profile save "MishaProfile"
+It is already saved.
+>>>

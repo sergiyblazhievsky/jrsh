@@ -16,6 +16,7 @@ public class LoginCommand extends Command {
     public LoginCommand() {
         name = "login";
         description = "Login to JasperReportsServer.";
+        usageDescription = "\tUsage: login --server <url> --username <name> --password <pwd> --organization <org>";
         parameters.add(new Parameter().setName("server").setKey("--server"));
         parameters.add(new Parameter().setName("username").setKey("--username"));
         parameters.add(new Parameter().setName("password").setKey("--password"));

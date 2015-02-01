@@ -30,7 +30,7 @@ public class ContextTest {
         List<String> dictionary = context.getDictionary();
 
         /** Then **/
-        assertSame(dictionary.size(), 10);
+        assertSame(dictionary.size(), 11);
     }
 
     public void should_contain_proper_command_names() {

@@ -6,7 +6,11 @@ package com.jaspersoft.jasperserver.shell.profile;
 public final class ProfileFactory {
 
     private static Profile instance;
-    private ProfileFactory() {/*NOP*/}
+
+    private ProfileFactory() {
+        // NOP
+    }
+
     public static Profile getInstance() {
         return instance != null ? instance : new Profile();
     }

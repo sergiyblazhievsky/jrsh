@@ -2,14 +2,17 @@ package com.jaspersoft.jasperserver.shell.command;
 
 import com.jaspersoft.jasperserver.shell.ExecutionMode;
 import com.jaspersoft.jasperserver.shell.exception.CannotCreateFileException;
+import com.jaspersoft.jasperserver.shell.exception.CannotSaveProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.exception.UnknownInterfaceException;
 import com.jaspersoft.jasperserver.shell.exception.WrongPathParameterException;
 import com.jaspersoft.jasperserver.shell.exception.parser.ParameterValueSizeException;
 import com.jaspersoft.jasperserver.shell.exception.parser.WrongRepositoryPathFormatException;
+import com.jaspersoft.jasperserver.shell.exception.profile.CannotLoadProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.exception.server.JrsResourceNotFoundException;
 import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import com.jaspersoft.jasperserver.shell.profile.Profile;
+import com.jaspersoft.jasperserver.shell.profile.ProfileUtil;
 import lombok.Data;
 import lombok.ToString;
 
@@ -29,8 +32,8 @@ import static java.lang.System.out;
 public abstract class Command implements Executable {
 
     protected String name;
-    protected String description; // todo => rename to `brief description`
-    protected String comprehensiveDescription; // ?
+    protected String description; // todo => rename to `briefDescription`
+    protected String usageDescription; // ?
     protected List<Parameter> parameters = new ArrayList<>();
     protected static Profile profile = getInstance();
 
@@ -44,7 +47,7 @@ public abstract class Command implements Executable {
             run();
         } catch (Exception e) {
             if (mode.equals(SHELL)) {
-                if (e instanceof WrongPathParameterException || e instanceof CannotCreateFileException) {
+                if (e instanceof WrongPathParameterException || e instanceof CannotCreateFileException || e instanceof CannotLoadProfileConfiguration || e instanceof CannotSaveProfileConfiguration) {
                     out.printf("i/o error: %s\n", e.getMessage());
                     return;
                 }
@@ -58,7 +61,7 @@ public abstract class Command implements Executable {
                 }
 
                 // re-login
-                if (!profile.isEmpty()) {
+                if (!ProfileUtil.isEmpty(profile)) {
                     String password = askPassword();
                     SessionFactory.create(profile.getUrl(), profile.getUsername(), password, profile.getOrganization());
                     run();

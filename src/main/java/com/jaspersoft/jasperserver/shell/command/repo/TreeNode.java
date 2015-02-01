@@ -8,7 +8,7 @@ import java.util.List;
 import static java.lang.System.out;
 
 /**
- * Resource Tree representation class.
+ * Resource tree representation class.
  */
 @EqualsAndHashCode(exclude = {"children"})
 public class TreeNode {
@@ -28,12 +28,12 @@ public class TreeNode {
     }
 
     private void print(String prefix, Boolean isTail) {
-        out.println(prefix + (isTail ? "└── " : "├── ") + name);
+        out.println(prefix + (isTail ? "\u2514\u2500\u2500 " : "\u251c\u2500\u2500 ") + name);
         for (int i = 0; i < children.size() - 1; i++) {
-            children.get(i).print(prefix + (isTail ? "    " : "│   "), false);
+            children.get(i).print(prefix + (isTail ? "    " : "\u2502   "), false);
         }
         if (children.size() > 0) {
-            children.get(children.size() - 1).print(prefix + (isTail ? "    " : "│   "), true);
+            children.get(children.size() - 1).print(prefix + (isTail ? "    " : "\u2502   "), true);
         }
     }
 }

@@ -30,19 +30,18 @@ public class HelpCommand extends Command implements ContextAware {
             try {
                 String val = p.getValues().get(0);
                 Command cmd = CommandFactory.create(val);
-                out.printf("\t%s\t\t%s\n", cmd.getName(), cmd.getDescription());
-                String fullDesc = cmd.getComprehensiveDescription();
-                if (fullDesc != null) {
-                    out.println(cmd.getComprehensiveDescription());
+                out.printf("\t%s%s\n", "Description: ", cmd.getDescription());
+                String usage = cmd.getUsageDescription();
+                if (usage != null) {
+                    out.println(cmd.getUsageDescription());
                 }
             } catch (InterfaceException e) {
                 out.printf("error: %s\n", e.getMessage());
             }
         } else {
-            out.print("Usage: jrsh <subcommand> [options] [args]\n"
-                    + "JasperReportsServer shell, version 1.0\n"
-                    + "Type 'jrsh help <subcommand>' for help on a specific subcommand.\n\n");
-            out.println("\n\u001B[30;44mAvailable commands: \u001B[0m");
+            out.print("Usage: <command> [options] [args]\n"
+                    + "Type 'help <command>' for help on a specific command.\n");
+            out.println("\n\u001B[30;47mAvailable commands: \u001B[0m");
             for (Entry<String, String> e : context.getCmdDescription().entrySet()) {
                 if (e.getKey() != null) {
                     out.printf("\t%s\t\t%s\n", e.getKey(), e.getValue());

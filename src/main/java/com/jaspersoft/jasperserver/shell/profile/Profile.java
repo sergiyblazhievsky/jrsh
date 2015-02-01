@@ -15,8 +15,4 @@ public class Profile {
     private String url;
     private String username;
     private String organization;
-
-    public boolean isEmpty() {
-        return (url == null && username == null && organization == null);
-    }
 }

@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 public class HelpCommandTest extends PowerMockTestCase {
 
     private HelpCommand help;
-    private final static int COMMAND_AMOUNT = 8;
+    private final static int COMMAND_AMOUNT = 9;
 
     @BeforeMethod
     public void before() {

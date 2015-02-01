@@ -10,7 +10,7 @@ public class SessionCommand extends Command {
 
     public SessionCommand() {
         name = "session";
-        description = "Show session parameters plus uptime.";
+        description = "Show session parameters and uptime.";
     }
 
     @Override

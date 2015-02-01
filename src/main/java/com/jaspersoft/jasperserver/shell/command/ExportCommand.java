@@ -46,14 +46,9 @@ public class ExportCommand extends Command {
 
     public ExportCommand() {
         name = "export";
-        description = "Exports configuration of JasperReportsServer.";
-        comprehensiveDescription = "\tUsage:\t\texport <repo-path> to <file-path> <options>\n" +
-                "\tOptions:\n" +
-                "\t\t* without-access-events\n" +
-                "\t\t* without-audit-events\n" +
-                "\t\t* without-access-events\n" +
-                "\t\t* without-monitoring-events\n" +
-                "\t\t* without-users-and-roles\n";
+        description = "Export configuration of JasperReportsServer.";
+        usageDescription = "\tUsage: export <repo-path> to <file-path>\t[without-access-events] [without-audit-events] [without-access-events]\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t[without-monitoring-events] [without-users-and-roles]";
 
         parameters.add(new Parameter().setName("anonymous")/*.setOptional(true)*/.setMultiple(true));
         parameters.add(new Parameter().setName("to").setOptional(true));
@@ -79,6 +74,9 @@ public class ExportCommand extends Command {
             path = values.get(0);
             if (values.size() > 1) {
                 to = values.get(1);
+                if (to.charAt(0) == '"' && to.charAt(path.length() - 1) == '"') {
+                    to = to.substring(1, to.length() - 1);
+                }
             }
             if (values.size() > 2) {
                 throw new ParameterValueSizeException("?", "export");
@@ -105,9 +103,7 @@ public class ExportCommand extends Command {
                 }
                 role = values.get(1);
                 role = convert(role);
-                if (role == null) {
-                    throw new UnspecifiedRoleException();
-                }
+                if (role == null) throw new UnspecifiedRoleException();
                 break;
             case "user":
                 if (values.size() < 2) {
@@ -119,9 +115,7 @@ public class ExportCommand extends Command {
                 }
                 user = values.get(1);
                 user = convert(user);
-                if (user == null) {
-                    throw new UnspecifiedUserNameException();
-                }
+                if (user == null) throw new UnspecifiedUserNameException();
                 break;
         }
 
@@ -160,9 +154,7 @@ public class ExportCommand extends Command {
         }
 
         try {
-            String prefix;
-            String postfix = "_UTC";
-
+            String prefix, postfix = "_UTC";
             if (path.equals("all")) {
                 prefix = "export-all-";
             } else if (role != null) {

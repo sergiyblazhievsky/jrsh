@@ -9,6 +9,10 @@ import static java.lang.System.out;
  */
 public class LogoutCommand extends Command {
 
+    public LogoutCommand() {
+        description = "Logout from JRS.";
+    }
+
     @Override
     void run() {
         SessionFactory.getInstance().logout();

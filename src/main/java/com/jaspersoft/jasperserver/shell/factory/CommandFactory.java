@@ -2,14 +2,15 @@ package com.jaspersoft.jasperserver.shell.factory;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.command.ExitCommand;
-import com.jaspersoft.jasperserver.shell.command.ExportCommand;
 import com.jaspersoft.jasperserver.shell.command.HelpCommand;
 import com.jaspersoft.jasperserver.shell.command.ImportCommand;
 import com.jaspersoft.jasperserver.shell.command.LoginCommand;
 import com.jaspersoft.jasperserver.shell.command.LogoutCommand;
 import com.jaspersoft.jasperserver.shell.command.ProfileCommand;
+import com.jaspersoft.jasperserver.shell.command.ReplicateCommand;
 import com.jaspersoft.jasperserver.shell.command.SessionCommand;
 import com.jaspersoft.jasperserver.shell.command.ShowCommand;
+import com.jaspersoft.jasperserver.shell.command.ExportCommand;
 import com.jaspersoft.jasperserver.shell.exception.parser.NoSuchCommandException;
 
 /**
@@ -27,6 +28,7 @@ public final class CommandFactory {
             case "import": return new ImportCommand();
             case "export": return new ExportCommand();
             case "show": return new ShowCommand();
+            case "replicate": return new ReplicateCommand();
             case "?": return new HelpCommand();
             case "help": return new HelpCommand();
             case "profile": return new ProfileCommand();

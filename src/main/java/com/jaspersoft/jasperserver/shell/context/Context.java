@@ -14,16 +14,13 @@ import static java.util.Arrays.asList;
 @Data
 public class Context {
 
-    //private Properties properties;
     private Map<String, String> cmdDescription = new HashMap<>();
     private List<String> dictionary
-            = new ArrayList<>(asList("help", "?", "import", "export",
+            = new ArrayList<>(asList("help", "?", "import", "replicate", "export",
             "profile", "session", "logout", "login",
             "exit", "show"));
 
     public Context() {
-        //properties = System.getProperties();
-        //properties.load(new FileInputStream("MessagesBundle_en_US.properties"));
         for (String v : dictionary) {
             Command c = create(v);
             cmdDescription.put(c.getName(), c.getDescription());
