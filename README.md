@@ -36,4 +36,4 @@ To build [JRSH](https://github.com/Krasnyanskiy/jrs-command-line-tool), just pen
 ```java
 mvn clean install
 ```
-And you'll find executable scripts in the `target` folder of your project.
+And you'll find a jar file in `target` folder of your project.
