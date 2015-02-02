@@ -6,19 +6,19 @@ JasperReports Server Shell
 JRSH is a comprehensive CLI tool for JasperReports Server. It's designed for fast and easy interaction with JasperReports Server across various operating systems.
 ## Usage
 The following code snippets show how to run
-### Login command
+#### Login command
 ```bash
 login --server "http://localhost:8080/jasperserver-pro" --username "superuser" --password "superuser"
 ```
-### Import command
+#### Import command
 ```bash
 import "/folder/import.zip"
 ```
-### Export command
+#### Export command
 ```bash
 export "/public/Samples/Reports/06g.ProfitDetailReport"
 ```
-### Help command
+#### Help command
 ```bash
 help import
 ```
@@ -26,7 +26,7 @@ help import
 JRSH requires Java 7 or higher.
 ## Download and Installation
 The current stable release of JRSH: 1.0-alpha.
-### Download links:
+#### Download links:
 - Source: https://github.com/Krasnyanskiy/jrsh-project
 - JAR package: [soon]
 - Bin archive: [soon]
