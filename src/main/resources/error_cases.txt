@@ -23,3 +23,17 @@ profile list
 profile save "MishaProfile"
 It is already saved.
 >>>
+
+
+
+
+
+>>> replicate Local ot jrs-cloud     => ot
+Please enter password: superuse
+error: Unauthorized
+>>> replicate Local to Local
+Please enter the password for Local JRS: adasd
+Please enter the password for Local JRS: sds
+Please enter password: sdsd       => again???
+error: Unauthorized
+>>>

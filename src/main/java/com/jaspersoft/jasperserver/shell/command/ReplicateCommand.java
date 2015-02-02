@@ -13,7 +13,6 @@ import com.jaspersoft.jasperserver.shell.profile.Profile;
 import com.jaspersoft.jasperserver.shell.profile.ProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.profile.ProfileConfigurationFactory;
 import com.jaspersoft.jasperserver.shell.profile.ProfileUtil;
-import jline.console.ConsoleReader;
 import lombok.SneakyThrows;
 
 import java.io.FileNotFoundException;
@@ -31,11 +30,10 @@ import static java.util.Arrays.asList;
 /**
  * @author Alexander Krasnyanskiy
  */
-public class ReplicateCommand extends Command implements ConsoleReaderAware {
+public class ReplicateCommand extends Command {
 
     //private static final String FILE = "/Users/alexkrasnyaskiy/IdeaProjects/jasperserver-shell/src/main/resources/jrsh-profile.yml";
     private static final String FILE = "/jrsh-profile.yml";
-    private ConsoleReader reader;
 
     public ReplicateCommand() {
         name = "replicate";
@@ -61,7 +59,7 @@ public class ReplicateCommand extends Command implements ConsoleReaderAware {
                 config = ProfileConfigurationFactory.create(FILE);
             }
 
-            if (parameter("anonymous").getValues().size() != 2) {
+            if (parameter("anonymous").getValues().size() != 2 || !parameter("to").isAvailable()) {
                 throw new MandatoryParameterMissingException();
             }
 
@@ -119,11 +117,6 @@ public class ReplicateCommand extends Command implements ConsoleReaderAware {
             sleep(250);
             counter++;
         }
-    }
-
-    @Override
-    public void setReader(ConsoleReader reader) {
-        this.reader = reader;
     }
 
     private class PasswordTokenizer {

@@ -1,7 +1,6 @@
 package com.jaspersoft.jasperserver.shell;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.command.ReplicateCommand;
 import com.jaspersoft.jasperserver.shell.context.Context;
 import com.jaspersoft.jasperserver.shell.encoding.FileEncodingUtil;
 import com.jaspersoft.jasperserver.shell.exception.InterfaceException;
@@ -99,9 +98,7 @@ public class App {
                     for (Command cmd : queue) {
                         if (cmd != null) {
                             cmd.setMode(ExecutionMode.SHELL);
-                            if (cmd instanceof ReplicateCommand){
-                                ((ReplicateCommand)cmd).setReader(console);
-                            }
+                            cmd.setReader(console);
                         }
                     }
                 } catch (InterfaceException e) {
@@ -145,10 +142,4 @@ public class App {
             }
         }
     }
-
-//    private String readLine() {
-//        out.printf("\u001B[1m>>> \u001B[0m");
-//        Scanner in = new Scanner(System.in);
-//        return in.nextLine();
-//    }
 }

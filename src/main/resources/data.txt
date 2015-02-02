@@ -11,7 +11,7 @@ login --server http://54.221.179.184/jasperserver-pro --username superuser --pas
 
 export role MyOrg|ROLE_BOSS
 
-
+profile load /Users/alexkrasnyaskiy/IdeaProjects/jasperserver-shell/src/main/resources/jrsh-profile.yml
 
 profiles:
 - {
