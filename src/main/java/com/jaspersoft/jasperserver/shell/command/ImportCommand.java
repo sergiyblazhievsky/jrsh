@@ -29,8 +29,7 @@ public class ImportCommand extends Command {
     public ImportCommand() {
         name = "import";
         description = "Import configuration into JasperReportsServer.";
-        usageDescription = "\tUsage: import\t<file>\t[with-audit-events] [with-access-events] [with-monitoring-events]\n" +
-                "\t\t\t\t\t\t\t[with-events] [with-update] [with-skip-user-update]";
+        usageDescription = "\tUsage: import\t<file>\t[with-audit-events] [with-access-events] [with-monitoring-events]\n" + "\t\t\t\t[with-events] [with-update] [with-skip-user-update]";
         parameters.add(new Parameter().setName("anonymous"));
 
         parameters.add(new Parameter().setName("with-audit-events").setOptional(true));

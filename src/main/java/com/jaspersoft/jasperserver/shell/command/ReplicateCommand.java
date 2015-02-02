@@ -33,13 +33,13 @@ import static java.util.Arrays.asList;
  */
 public class ReplicateCommand extends Command implements ConsoleReaderAware {
 
-    private static final String FILE = "/Users/alexkrasnyaskiy/IdeaProjects/jasperserver-shell/src/main/resources/jrsh-profile.yml";
+    //private static final String FILE = "/Users/alexkrasnyaskiy/IdeaProjects/jasperserver-shell/src/main/resources/jrsh-profile.yml";
+    private static final String FILE = "/jrsh-profile.yml";
     private ConsoleReader reader;
 
     public ReplicateCommand() {
         name = "replicate";
-        description = "Replicate JRS configuration from one JRS to another."
-                /* + "\n\t\t\t\t Please notice that you should load your profile configuration first."*/;
+        description = "Replicate JRS configuration from one JRS to another." /* + "\n\t\t\t\t Please notice that you should load your profile configuration first."*/;
         usageDescription = "\tUsage: replicate <src-profile-name> to <dest-profile-name>";
         parameters.add(new Parameter().setName("anonymous").setMultiple(true));
         parameters.add(new Parameter().setName("to")/* bug in parser! */.setOptional(true));
@@ -56,80 +56,43 @@ public class ReplicateCommand extends Command implements ConsoleReaderAware {
         });
 
         ProfileConfiguration config = ProfileConfigurationFactory.get();
-        if (config == null) {
-            try {
+        try {
+            if (config == null) {
                 config = ProfileConfigurationFactory.create(FILE);
-
-                if (parameter("anonymous").getValues().size() != 2) {
-                    throw new MandatoryParameterMissingException();
-                }
-
-                String from = parameter("anonymous").getValues().get(0);
-                String to = parameter("anonymous").getValues().get(1);
-
-                Profile src = ProfileUtil.find(config, from);
-                Profile dest = ProfileUtil.find(config, to);
-
-                if (src == null || dest == null) {
-                    throw new WrongProfileNameException();
-                }
-                PasswordTokenizer tokenizer = askPasswords(from, to);
-                Session exp = createImmutable(src.getUrl(), src.getUsername(), tokenizer.nextToken(), src.getOrganization());
-                Session imp = createImmutable(dest.getUrl(), dest.getUsername(), tokenizer.nextToken(), dest.getOrganization());
-                t.start();
-                RepositoryDataExporter exporter = new RepositoryDataExporter(exp);
-                InputStream data = exporter.export();
-                RepositoryDataImporter importer = new RepositoryDataImporter(imp);
-                importer.importData(data);
-                t.stop();
-                out.printf("\rReplication status: SUCCESS\n");
-            } catch (FileNotFoundException e) {
-                t.stop();
-                out.printf("\rReplication status: FAIL\n");
-                throw new CannotLoadProfileConfiguration();
-            } catch (IOException e) {
-                t.stop();
-                throw new UnknownParserException(); // fixme <-
-            } finally {
-                reader.setPrompt("\u001B[1m>>> \u001B[0m");
             }
-        } else {
-            try {
-                if (parameter("anonymous").getValues().size() != 2) {
-                    throw new MandatoryParameterMissingException();
-                }
 
-                String from = parameter("anonymous").getValues().get(0);
-                String to = parameter("anonymous").getValues().get(1);
-
-                Profile src = ProfileUtil.find(config, from);
-                Profile dest = ProfileUtil.find(config, to);
-
-                if (src == null || dest == null) {
-                    throw new WrongProfileNameException();
-                }
-                PasswordTokenizer tokenizer = askPasswords(from, to);
-                //System.out.println("\rSessions establishing...");
-                Session exp = createImmutable(src.getUrl(), src.getUsername(), tokenizer.nextToken(), src.getOrganization());
-                Session imp = createImmutable(dest.getUrl(), dest.getUsername(), tokenizer.nextToken(), dest.getOrganization());
-                t.start();
-                RepositoryDataExporter exporter = new RepositoryDataExporter(exp);
-                InputStream data = exporter.export();
-                RepositoryDataImporter importer = new RepositoryDataImporter(imp);
-                importer.importData(data);
-                t.stop();
-                out.printf("\rReplication status: SUCCESS\n");
-            } catch (FileNotFoundException e) {
-                t.stop();
-                out.printf("\rReplication status: FAIL\n");
-                throw new CannotLoadProfileConfiguration();
-            } catch (IOException e) {
-                t.stop();
-                out.printf("\rReplication status: FAIL\n");
-                throw new UnknownParserException();
-            } finally {
-                reader.setPrompt("\u001B[1m>>> \u001B[0m");
+            if (parameter("anonymous").getValues().size() != 2) {
+                throw new MandatoryParameterMissingException();
             }
+
+            String from = parameter("anonymous").getValues().get(0);
+            String to = parameter("anonymous").getValues().get(1);
+
+            Profile src = ProfileUtil.find(config, from);
+            Profile dest = ProfileUtil.find(config, to);
+
+            if (src == null || dest == null) {
+                throw new WrongProfileNameException();
+            }
+            PasswordTokenizer tokenizer = askPasswords(from, to);
+            Session exp = createImmutable(src.getUrl(), src.getUsername(), tokenizer.nextToken(), src.getOrganization());
+            Session imp = createImmutable(dest.getUrl(), dest.getUsername(), tokenizer.nextToken(), dest.getOrganization());
+            t.start();
+            RepositoryDataExporter exporter = new RepositoryDataExporter(exp);
+            InputStream data = exporter.export();
+            RepositoryDataImporter importer = new RepositoryDataImporter(imp);
+            importer.importData(data);
+            t.stop();
+            out.printf("\rReplication status: SUCCESS\n");
+        } catch (FileNotFoundException e) {
+            t.stop();
+            out.printf("\rReplication status: FAIL\n");
+            throw new CannotLoadProfileConfiguration();
+        } catch (IOException e) {
+            t.stop();
+            throw new UnknownParserException(); // fixme <-
+        } finally {
+            reader.setPrompt("\u001B[1m>>> \u001B[0m");
         }
     }
 

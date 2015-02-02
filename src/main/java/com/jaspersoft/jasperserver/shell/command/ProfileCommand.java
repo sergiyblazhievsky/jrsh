@@ -20,7 +20,8 @@ import static java.lang.System.out;
  */
 public class ProfileCommand extends Command {
 
-    private static final String FILE = "/Users/alexkrasnyaskiy/IdeaProjects/jasperserver-shell/src/main/resources/jrsh-profile.yml";
+    //private static final String file = "/Users/alexkrasnyaskiy/IdeaProjects/jasperserver-shell/src/main/resources/jrsh-profile.yml";
+    private static String file = "jrsh-profile.yml";
 
     public ProfileCommand() {
         name = "profile";
@@ -33,7 +34,6 @@ public class ProfileCommand extends Command {
 
     @Override
     void run() {
-        // mandatory profile properties
         if (profile.getUrl() == null && profile.getUsername() == null) {
             if (!parameter("anonymous").isAvailable()
                     && !parameter("load").isAvailable()
@@ -44,7 +44,12 @@ public class ProfileCommand extends Command {
         }
         if (parameter("load").isAvailable()) {
             try {
-                ProfileConfigurationFactory.create(FILE);
+                if (parameter("anonymous").isAvailable()) {
+                    file = parameter("anonymous").getValues().get(0);
+                    ProfileConfigurationFactory.create(file);
+                } else {
+                    ProfileConfigurationFactory.create(file); // fixme :: handle default file path
+                }
                 out.println("Loaded.");
             } catch (FileNotFoundException e) {
                 throw new CannotLoadProfileConfiguration();
@@ -58,12 +63,12 @@ public class ProfileCommand extends Command {
                 }
                 cfg.getProfiles().add(profile.setName(n == null ? "Profile-" + new Random().nextInt(Integer.MAX_VALUE) : n));
                 try {
-                    persist(cfg, FILE);
+                    persist(cfg, file);
                 } catch (IOException e) {
                     throw new CannotSaveProfileConfiguration();
                 }
                 out.println("Saved.");
-            } else if (profile.getName() != null){
+            } else if (profile.getName() != null) {
                 out.println("It is already saved.");
             } else {
                 out.println("You need to load profile configuration first.");
@@ -77,7 +82,7 @@ public class ProfileCommand extends Command {
                     out.printf("\t%s\n", p.getName());
                 }
             }
-        } else if (profile.getUrl() != null && profile.getUsername() != null){
+        } else if (profile.getUrl() != null && profile.getUsername() != null) {
             out.printf("\nprofile name:\t%s" + "\nserver url:\t%s" + "\nusername:\t%s" + "\norganization:\t%s\n\n",
                     profile.getName(),
                     profile.getUrl(),
