@@ -1,6 +1,6 @@
 JasperReports Server Shell
 ==========================
-[![Build Status](https://travis-ci.org/Krasnyanskiy/jrsh-project.svg?branch=master)](https://travis-ci.org/Krasnyanskiy/jrsh-project) [![Coverage Status](https://img.shields.io/coveralls/Krasnyanskiy/jrs-command-line-tool.svg)](https://coveralls.io/r/Krasnyanskiy/jrs-command-line-tool?branch=master)
+[![Build Status](https://travis-ci.org/Krasnyanskiy/jrsh-project.svg?branch=master)](https://travis-ci.org/Krasnyanskiy/jrsh-project) [![Coverage Status](https://coveralls.io/repos/Krasnyanskiy/jrsh/badge.svg)](https://coveralls.io/r/Krasnyanskiy/jrsh?branch=master)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Krasnyanskiy/jrs-command-line-tool?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 # Overview
 JRSH is a comprehensive CLI tool for JasperReports Server. It's designed for fast and easy interaction with JasperReports Server across various operating systems.
