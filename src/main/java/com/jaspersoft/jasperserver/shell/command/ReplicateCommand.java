@@ -81,6 +81,10 @@ public class ReplicateCommand extends Command {
 
             t.stop();
 
+            // logout
+            exp.logout();
+            imp.logout();
+
             out.printf("\rReplication status: SUCCESS\n");
         } catch (FileNotFoundException e) {
             t.stop();
@@ -88,7 +92,7 @@ public class ReplicateCommand extends Command {
             throw new CannotLoadProfileConfiguration();
         } catch (IOException e) {
             t.stop();
-            throw new UnknownParserException(); // fixme :: wtf?
+            throw new UnknownParserException(); // fixme: wtf
         } finally {
             reader.setPrompt("\u001B[1m>>> \u001B[0m");
         }
