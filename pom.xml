@@ -16,8 +16,6 @@
             <name>jaspersoft-snapshots</name>
             <url>http://jaspersoft.artifactoryonline.com/jaspersoft/jaspersoft-clients-releases</url>
         </repository>
-
-
         <repository>
             <id>Sonatype-public</id>
             <name>SnakeYAML repository</name>

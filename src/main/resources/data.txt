@@ -42,3 +42,9 @@ profile:
 
 
 "/Users/alexkrasnyaskiy/Desktop/new folder/import.zip"
+
+
+en de fr es ua
+>>> lang[tab]
+
+>>> lang es [enter] => switch to spanish

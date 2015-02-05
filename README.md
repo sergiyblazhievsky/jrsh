@@ -27,8 +27,8 @@ JRSH requires Java 7 or higher.
 ## Download and Installation
 The current stable release of JRSH: 1.0-alpha.
 #### Download links:
-- Source: https://github.com/Krasnyanskiy/jrsh-project
-- JAR package: https://github.com/Krasnyanskiy/jrsh-project/blob/master/lib/jasperserver-shell-1.0-SNAPSHOT-jar-with-dependencies.jar
+- Source: https://github.com/Krasnyanskiy/jrsh
+- JAR package: https://github.com/Krasnyanskiy/jrsh/blob/master/lib/jrsh-1.0-SNAPSHOT-jar-with-dependencies.jar
 - Bin archive: [soon]
 
 ## How to build
