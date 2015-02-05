@@ -1,5 +1,6 @@
 package com.jaspersoft.jasperserver.shell.command;
 
+import com.jaspersoft.jasperserver.shell.ExecutionMode;
 import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingException;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 
@@ -54,6 +55,8 @@ public class LoginCommand extends Command {
         profile.setUsername(username);
         profile.setOrganization(organization);
 
-        out.println("You've logged in.");
+        if (getMode().equals(ExecutionMode.SHELL)){
+            out.println("You've logged in.");
+        }
     }
 }

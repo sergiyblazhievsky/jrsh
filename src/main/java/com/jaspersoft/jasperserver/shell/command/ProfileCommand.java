@@ -20,7 +20,7 @@ import static java.lang.System.out;
  */
 public class ProfileCommand extends Command {
 
-    //private static final String file = "/Users/alexkrasnyaskiy/IdeaProjects/jasperserver-shell/src/main/resources/jrsh-profile.yml";
+    //private static final String file = "/Users/alexkrasnyaskiy/IdeaProjects/jasperserver-shell/src/main/resources/profiles.yml";
     private static String file = "jrsh-profile.yml";
 
     public ProfileCommand() {

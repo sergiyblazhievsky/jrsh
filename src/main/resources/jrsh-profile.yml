@@ -1,20 +1,41 @@
-!!com.jaspersoft.jasperserver.shell.profile.ProfileConfiguration
 profiles:
 - {
-  name: Local,
-  organization: null,
+  name: local,
   url: 'http://localhost:8080/jasperserver-pro',
   username: superuser
 }
 - {
-  name: Virtual,
-  organization: null,
+  name: virtual,
   url: 'http://localhost:8080/jasperserver-pro',
   username: superuser
 }
 - {
-  name: jrs-cloud,
-  organization: null,
+  name: jrs-1,
+  url: 'http://54.92.200.133/jasperserver-pro',
+  username: superuser
+}
+- {
+  name: jrs-2,
+  url: 'http://54.92.200.133/jasperserver-pro',
+  username: superuser
+}
+- {
+  name: jrs-3,
+  url: 'http://54.92.200.133/jasperserver-pro',
+  username: superuser
+}
+- {
+  name: jrs-4,
+  url: 'http://54.92.200.133/jasperserver-pro',
+  username: superuser
+}
+- {
+  name: jrs-5,
+  url: 'http://54.92.200.133/jasperserver-pro',
+  username: superuser
+}
+- {
+  name: jrs-6,
   url: 'http://54.92.200.133/jasperserver-pro',
   username: superuser
 }

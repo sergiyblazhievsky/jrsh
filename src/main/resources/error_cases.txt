@@ -37,3 +37,14 @@ Please enter the password for Local JRS: sds
 Please enter password: sdsd       => again???
 error: Unauthorized
 >>>
+
+
+
+
+
+
+
+
+>>> login --server sdfsdkjgd
+Please enter password: asd
+error: Unauthorized

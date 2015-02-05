@@ -1,19 +1,27 @@
 package com.jaspersoft.jasperserver.shell;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
+import com.jaspersoft.jasperserver.shell.completion.ParameterCompleter;
 import com.jaspersoft.jasperserver.shell.context.Context;
 import com.jaspersoft.jasperserver.shell.encoding.FileEncodingUtil;
 import com.jaspersoft.jasperserver.shell.exception.InterfaceException;
 import com.jaspersoft.jasperserver.shell.exception.parser.MandatoryParameterException;
 import com.jaspersoft.jasperserver.shell.exception.server.ServerException;
 import com.jaspersoft.jasperserver.shell.parser.CommandParser;
+import com.jaspersoft.jasperserver.shell.profile.Profile;
+import com.jaspersoft.jasperserver.shell.profile.ProfileConfiguration;
+import com.jaspersoft.jasperserver.shell.profile.ProfileConfigurationFactory;
 import com.jaspersoft.jasperserver.shell.validator.CommandParameterValidator;
 import jline.console.ConsoleReader;
 import jline.console.completer.AggregateCompleter;
 import jline.console.completer.ArgumentCompleter;
 import jline.console.completer.StringsCompleter;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 import java.util.logging.LogManager;
 
@@ -27,6 +35,8 @@ import static java.util.Arrays.asList;
  * @author Alexander Krasnyanskiy
  */
 public class App {
+
+    private final static String FILE = "profiles.yml";
 
     public static void main(String[] args) throws IOException {
 
@@ -45,36 +55,57 @@ public class App {
             out.println("Welcome to JRSH v1.0!\n");
             console.setPrompt("\u001B[1m>>> \u001B[0m");
 
-            /**
-             ** Completers configuration
-             **/
-
+            //
+            // Completers configuration
+            //
             StringsCompleter exit = new StringsCompleter("exit");
-            StringsCompleter replicate = new StringsCompleter("replicate");
+
             StringsCompleter session = new StringsCompleter("session");
             StringsCompleter logout = new StringsCompleter("logout");
 
             StringsCompleter profile = new StringsCompleter("profile");
-            StringsCompleter profileParams = new StringsCompleter("save", "load", "list");
+            ParameterCompleter profileParams = new ParameterCompleter(asList("save", "load", "list"));
 
             StringsCompleter login = new StringsCompleter("login");
-            StringsCompleter loginParams = new StringsCompleter("--server", "--username", "--password",
-                    "--organization");
+            ParameterCompleter loginParams = new ParameterCompleter(asList("--server", "--username", "--password"));
 
             StringsCompleter show = new StringsCompleter("show");
-            StringsCompleter showParams = new StringsCompleter("repo", "server-info");
+            ParameterCompleter showParams = new ParameterCompleter(asList("repo", "server-info"));
+
+            StringsCompleter replicate = new StringsCompleter("replicate");
+
+
+            ///
+            // Profiles pre-loading
+            //
+            File file = new File(System.getProperty("user.dir"));
+            List<String> list = new ArrayList<>();
+            list.add("to");
+            try {
+                List<Profile> profs = preLoadProfiles(file.getParentFile() + "/config/" + FILE);
+                for (Profile p : profs) {
+                    String name = p.getName();
+                    if (name != null && !name.isEmpty()){
+                        list.add(name);
+                    }
+                }
+            } catch (Exception ignored){}
+
+            ParameterCompleter replicateParams = new ParameterCompleter(list);
 
             StringsCompleter export = new StringsCompleter("export");
-            StringsCompleter exportParams = new StringsCompleter("to", "without-access-events", "with-audit-events",
-                    "with-monitoring-events", "with-events", "with-users-and-roles", "with-repository-permissions");
+            ParameterCompleter exportParams = new ParameterCompleter(asList("to", "without-access-events",
+                    "with-audit-events", "with-monitoring-events", "with-events", "with-users-and-roles",
+                    "with-repository-permissions"));
 
             StringsCompleter importCmd = new StringsCompleter("import");
-            StringsCompleter importParams = new StringsCompleter("with-audit-events", "with-access-events",
-                    "with-monitoring-events", "with-events", "with-update", "with-skip-user-update");
+            ParameterCompleter importParams = new ParameterCompleter(asList("with-audit-events", "with-access-events",
+                    "with-monitoring-events", "with-events", "with-update", "with-skip-user-update"));
 
             StringsCompleter help = new StringsCompleter("help");
-            StringsCompleter helpParams = new StringsCompleter("login", "logout", "import", "export", "exit",
-                    "show", "session", "replicate", "profile");
+            ParameterCompleter helpParams = new ParameterCompleter(asList("login", "logout", "import", "export", "exit",
+                    "show", "session", "replicate", "profile"));
+
 
             ArgumentCompleter loginCompleter = new ArgumentCompleter(login, loginParams);
             ArgumentCompleter exportCompleter = new ArgumentCompleter(export, exportParams);
@@ -82,9 +113,11 @@ public class App {
             ArgumentCompleter showCompleter = new ArgumentCompleter(show, showParams);
             ArgumentCompleter importCompleter = new ArgumentCompleter(importCmd, importParams);
             ArgumentCompleter profileCompleter = new ArgumentCompleter(profile, profileParams);
+            ArgumentCompleter replicateCompleter = new ArgumentCompleter(replicate, replicateParams);
 
-            AggregateCompleter general = new AggregateCompleter(exit, logout, replicate, profileCompleter, session,
-                    loginCompleter, importCompleter, showCompleter, exportCompleter, helpCompleter);
+            AggregateCompleter general = new AggregateCompleter(exit, logout, /*replicate*/replicateCompleter,
+                    profileCompleter, session, loginCompleter, importCompleter, showCompleter, exportCompleter,
+                    helpCompleter);
 
             console.addCompleter(general);
 
@@ -92,6 +125,7 @@ public class App {
             while ((input = console.readLine().trim()) != null) {
 
                 if ("".equals(input)) continue;
+                if ("clear".equals(input)) console.clearScreen(); // secret command :)
 
                 try {
                     queue = parser.parse(input);
@@ -125,7 +159,10 @@ public class App {
             try {
                 queue = parser.parse(args);
                 for (Command cmd : queue) {
-                    if (cmd != null) cmd.setMode(TOOL);
+                    if (cmd != null) {
+                        cmd.setMode(TOOL);
+                        cmd.execute();
+                    }
                 }
                 exit(0); // ok!
             } catch (InterfaceException e) {
@@ -141,5 +178,10 @@ public class App {
                 exit(1);
             }
         }
+    }
+
+    private static List<Profile> preLoadProfiles(String path) throws FileNotFoundException {
+        ProfileConfiguration config = ProfileConfigurationFactory.create(path);
+        return config.getProfiles();
     }
 }

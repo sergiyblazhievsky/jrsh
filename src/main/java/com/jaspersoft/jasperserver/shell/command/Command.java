@@ -67,7 +67,7 @@ public abstract class Command implements Executable, ConsoleReaderAware {
                     return;
                 }
                 // re-login
-                if (!ProfileUtil.isEmpty(profile) && /* for replicate only */!(e instanceof GeneralServerException)) {
+                if (!ProfileUtil.isEmpty(profile) && /* for replicate cmd only */!(e instanceof GeneralServerException)) {
                     String password = askPassword();
                     SessionFactory.create(profile.getUrl(), profile.getUsername(), password, profile.getOrganization());
                     run();
@@ -75,7 +75,8 @@ public abstract class Command implements Executable, ConsoleReaderAware {
                     throw new UnknownInterfaceException(e.getMessage());
                 }
             } else {
-                throw new UnknownInterfaceException(e.getMessage()); // we shouldn't even try to handle that kind of cases
+                // we shouldn't even try to handle such kind of cases
+                throw new UnknownInterfaceException(e.getMessage());
             }
         }
     }
@@ -83,7 +84,7 @@ public abstract class Command implements Executable, ConsoleReaderAware {
     private String askPassword() {
         String pass = null;
         try {
-            pass = reader.readLine("\rPlease enter password: ");
+            pass = reader.readLine("\rPlease enter password: ", '*');
         } catch (IOException ignored) {}
         reader.setPrompt("\u001B[1m>>> \u001B[0m");
         return pass;

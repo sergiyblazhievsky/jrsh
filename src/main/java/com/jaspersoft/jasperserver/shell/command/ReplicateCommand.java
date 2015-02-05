@@ -18,26 +18,22 @@ import lombok.SneakyThrows;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.createImmutable;
 import static java.lang.System.out;
 import static java.lang.Thread.sleep;
-import static java.util.Arrays.asList;
 
 /**
  * @author Alexander Krasnyanskiy
  */
 public class ReplicateCommand extends Command {
 
-    //private static final String FILE = "/Users/alexkrasnyaskiy/IdeaProjects/jasperserver-shell/src/main/resources/jrsh-profile.yml";
-    private static final String FILE = "/jrsh-profile.yml";
+    private static final String FILE = "../config/profile.yml";
 
     public ReplicateCommand() {
         name = "replicate";
-        description = "Replicate JRS configuration from one JRS to another." /* + "\n\t\t\t\t Please notice that you should load your profile configuration first."*/;
+        description = "Replicate JRS configuration from one JRS to another.";
+        // Please notice that you should load your profile configuration first
         usageDescription = "\tUsage: replicate <src-profile-name> to <dest-profile-name>";
         parameters.add(new Parameter().setName("anonymous").setMultiple(true));
         parameters.add(new Parameter().setName("to")/* bug in parser! */.setOptional(true));
@@ -72,15 +68,19 @@ public class ReplicateCommand extends Command {
             if (src == null || dest == null) {
                 throw new WrongProfileNameException();
             }
-            PasswordTokenizer tokenizer = askPasswords(from, to);
-            Session exp = createImmutable(src.getUrl(), src.getUsername(), tokenizer.nextToken(), src.getOrganization());
-            Session imp = createImmutable(dest.getUrl(), dest.getUsername(), tokenizer.nextToken(), dest.getOrganization());
+
+            Session exp = createImmutable(src.getUrl(), src.getUsername(), askPasswords(from), src.getOrganization());
+            Session imp = createImmutable(dest.getUrl(), dest.getUsername(), askPasswords(to), dest.getOrganization());
+
             t.start();
+
             RepositoryDataExporter exporter = new RepositoryDataExporter(exp);
             InputStream data = exporter.export();
             RepositoryDataImporter importer = new RepositoryDataImporter(imp);
             importer.importData(data);
+
             t.stop();
+
             out.printf("\rReplication status: SUCCESS\n");
         } catch (FileNotFoundException e) {
             t.stop();
@@ -88,19 +88,18 @@ public class ReplicateCommand extends Command {
             throw new CannotLoadProfileConfiguration();
         } catch (IOException e) {
             t.stop();
-            throw new UnknownParserException(); // fixme <-
+            throw new UnknownParserException(); // fixme :: wtf?
         } finally {
             reader.setPrompt("\u001B[1m>>> \u001B[0m");
         }
     }
 
-    private PasswordTokenizer askPasswords(String src, String dest) throws IOException {
-        String passSrc = reader.readLine("Please enter the password for " + src + " JRS: ");
-        String passDest = reader.readLine("Please enter the password for " + dest + " JRS: ");
-        if (passSrc.equals("") || passDest.equals("")) {
+    private String askPasswords(String jrsName) throws IOException {
+        String pass = reader.readLine("Please enter the password for " + jrsName + " JRS: ", '*');
+        if (pass.equals("")) {
             throw new WrongPasswordException();
         }
-        return new PasswordTokenizer(passSrc, passDest);
+        return pass;
     }
 
 
@@ -116,20 +115,6 @@ public class ReplicateCommand extends Command {
             out.print(".");
             sleep(250);
             counter++;
-        }
-    }
-
-    private class PasswordTokenizer {
-        private List<String> tokens;
-        private Iterator<String> it;
-
-        public PasswordTokenizer(String first, String second) {
-            tokens = new ArrayList<>(asList(first, second));
-            it = tokens.iterator();
-        }
-
-        protected String nextToken() {
-            return it.next();
         }
     }
 }
