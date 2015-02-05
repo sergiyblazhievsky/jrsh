@@ -18,7 +18,7 @@ public class SessionCommand extends Command {
         if (profile.getUrl() == null && profile.getUsername() == null) {
             out.println("There's no active session.");
         } else {
-            out.printf("\nserver url:\t%s\nusername:\t%s\norganization:\t%s\nsession uptime:\t%s\n\n",
+            out.printf("\nServer URL:\t%s\nUsername:\t%s\nOrganization:\t%s\nSession uptime:\t%s\n\n",
                     profile.getUrl() == null ? "unknown" : profile.getUrl(),
                     profile.getUsername() == null ? "unknown" : profile.getUsername(),
                     profile.getOrganization() == null ? "unknown" : profile.getOrganization(),
