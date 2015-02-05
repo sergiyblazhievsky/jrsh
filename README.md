@@ -32,7 +32,7 @@ The current stable release of JRSH: 1.0-alpha.
 - Bin archive: [soon]
 
 ## How to build
-To build project, just pen a terminal window and invoke
+To build executable Java archive, just pen a terminal window and invoke
 ```java
 mvn clean install
 ```
