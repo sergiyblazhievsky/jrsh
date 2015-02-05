@@ -32,7 +32,7 @@ The current stable release of JRSH: 1.0-alpha.
 - Bin archive: [soon]
 
 ## How to build
-To build [JRSH](https://github.com/Krasnyanskiy/jrs-command-line-tool), just pen a terminal window and invoke
+To build project, just pen a terminal window and invoke
 ```java
 mvn clean install
 ```
