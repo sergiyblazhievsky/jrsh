@@ -157,7 +157,7 @@
                 <version>3.0.1</version>
                 <configuration>
                     <branch>master</branch>
-                    <repoToken>COUt2qTNpRLBrBpxn6MYomyALx3pgGndV</repoToken>
+                    <repoToken>8YGj6GbVkSsyA0w6brFpSfX9mqvR6fDT5</repoToken>
                 </configuration>
             </plugin>
         </plugins>
