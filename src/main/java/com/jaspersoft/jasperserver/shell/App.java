@@ -3,7 +3,6 @@ package com.jaspersoft.jasperserver.shell;
 import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.completion.ParameterCompleter;
 import com.jaspersoft.jasperserver.shell.context.Context;
-import com.jaspersoft.jasperserver.shell.encoding.FileEncodingUtil;
 import com.jaspersoft.jasperserver.shell.exception.InterfaceException;
 import com.jaspersoft.jasperserver.shell.exception.parser.MandatoryParameterException;
 import com.jaspersoft.jasperserver.shell.exception.server.ServerException;
@@ -28,6 +27,7 @@ import java.util.logging.LogManager;
 import static com.jaspersoft.jasperserver.shell.ExecutionMode.TOOL;
 import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.create;
 import static java.lang.System.exit;
+import static java.lang.System.getProperty;
 import static java.lang.System.out;
 import static java.util.Arrays.asList;
 
@@ -36,7 +36,7 @@ import static java.util.Arrays.asList;
  */
 public class App {
 
-    private final static String FILE = "profiles.yml";
+    private final static String FILE = "/conf/profiles.yml";
 
     public static void main(String[] args) throws IOException {
 
@@ -47,18 +47,19 @@ public class App {
         parser.setContext(context);
 
         LogManager.getLogManager().reset(); // turn off Jersey logger
-        FileEncodingUtil.setUTF8(); // issue #53 fix candidate
 
         if (args.length < 1) {
 
             console = new ConsoleReader();
-            out.println("Welcome to JRSH v1.0!\n");
+            out.println("Welcome to JRSH v1.0-alpha!\n");
             console.setPrompt("\u001B[1m>>> \u001B[0m");
 
             //
             // Completers configuration
             //
             StringsCompleter exit = new StringsCompleter("exit");
+
+            StringsCompleter clear = new StringsCompleter("clear");
 
             StringsCompleter session = new StringsCompleter("session");
             StringsCompleter logout = new StringsCompleter("logout");
@@ -72,26 +73,11 @@ public class App {
             StringsCompleter show = new StringsCompleter("show");
             ParameterCompleter showParams = new ParameterCompleter(asList("repo", "server-info"));
 
+
+            List<String> profileNames = getProfileNames();
             StringsCompleter replicate = new StringsCompleter("replicate");
+            ParameterCompleter replicateParams = new ParameterCompleter(profileNames);
 
-
-            ///
-            // Profiles pre-loading
-            //
-            File file = new File(System.getProperty("user.dir"));
-            List<String> list = new ArrayList<>();
-            list.add("to");
-            try {
-                List<Profile> profs = preLoadProfiles(file.getParentFile() + "/config/" + FILE);
-                for (Profile p : profs) {
-                    String name = p.getName();
-                    if (name != null && !name.isEmpty()){
-                        list.add(name);
-                    }
-                }
-            } catch (Exception ignored){}
-
-            ParameterCompleter replicateParams = new ParameterCompleter(list);
 
             StringsCompleter export = new StringsCompleter("export");
             ParameterCompleter exportParams = new ParameterCompleter(asList("to", "without-access-events",
@@ -115,18 +101,17 @@ public class App {
             ArgumentCompleter profileCompleter = new ArgumentCompleter(profile, profileParams);
             ArgumentCompleter replicateCompleter = new ArgumentCompleter(replicate, replicateParams);
 
-            AggregateCompleter general = new AggregateCompleter(exit, logout, /*replicate*/replicateCompleter,
-                    profileCompleter, session, loginCompleter, importCompleter, showCompleter, exportCompleter,
-                    helpCompleter);
+            AggregateCompleter aggregator = new AggregateCompleter(exit, clear, logout,
+                    replicateCompleter, profileCompleter, session, loginCompleter,
+                    importCompleter, showCompleter, exportCompleter, helpCompleter);
 
-            console.addCompleter(general);
+
+            console.addCompleter(aggregator);
 
             String input;
             while ((input = console.readLine().trim()) != null) {
-
                 if ("".equals(input)) continue;
-                if ("clear".equals(input)) console.clearScreen(); // secret command :)
-
+                //if ("clear".equals(input)) console.clearScreen();
                 try {
                     queue = parser.parse(input);
                     for (Command cmd : queue) {
@@ -178,6 +163,30 @@ public class App {
                 exit(1);
             }
         }
+    }
+
+    /**
+     * Profiles pre-loaded profile names.
+     *
+     * @return list
+     */
+    private static List<String> getProfileNames() {
+        File file = new File(getProperty("user.dir"));
+        List<String> profileNames = new ArrayList<String>() {{
+            add("to");
+        }};
+        try {
+            List<Profile> profiles = preLoadProfiles(file.getParentFile() + FILE);
+            for (Profile p : profiles) {
+                String name = p.getName();
+                if (name != null && !name.isEmpty()) {
+                    profileNames.add(name);
+                }
+            }
+        } catch (Exception ignored) {
+            // NOP
+        }
+        return profileNames;
     }
 
     private static List<Profile> preLoadProfiles(String path) throws FileNotFoundException {

@@ -1,5 +1,6 @@
 package com.jaspersoft.jasperserver.shell.factory;
 
+import com.jaspersoft.jasperserver.shell.command.ClearScreenCommand;
 import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.command.ExitCommand;
 import com.jaspersoft.jasperserver.shell.command.HelpCommand;
@@ -27,6 +28,7 @@ public final class CommandFactory {
             case "logout": return new LogoutCommand();
             case "import": return new ImportCommand();
             case "export": return new ExportCommand();
+            case "clear": return new ClearScreenCommand();
             case "show": return new ShowCommand();
             case "replicate": return new ReplicateCommand();
             case "?": return new HelpCommand();

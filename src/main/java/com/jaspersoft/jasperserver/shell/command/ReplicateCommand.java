@@ -28,15 +28,14 @@ import static java.lang.Thread.sleep;
  */
 public class ReplicateCommand extends Command {
 
-    private static final String FILE = "../config/profile.yml";
+    private static final String FILE = "../conf/profile.yml";
 
     public ReplicateCommand() {
         name = "replicate";
         description = "Replicate JRS configuration from one JRS to another.";
-        // Please notice that you should load your profile configuration first
         usageDescription = "\tUsage: replicate <src-profile-name> to <dest-profile-name>";
         parameters.add(new Parameter().setName("anonymous").setMultiple(true));
-        parameters.add(new Parameter().setName("to")/* bug in parser! */.setOptional(true));
+        parameters.add(new Parameter().setName("to")/* todo bug in parser! */.setOptional(true));
     }
 
     @Override
@@ -92,7 +91,7 @@ public class ReplicateCommand extends Command {
             throw new CannotLoadProfileConfiguration();
         } catch (IOException e) {
             t.stop();
-            throw new UnknownParserException(); // fixme: wtf
+            throw new UnknownParserException(); // fixme: ---
         } finally {
             reader.setPrompt("\u001B[1m>>> \u001B[0m");
         }

@@ -17,8 +17,7 @@ public class Context {
     private Map<String, String> cmdDescription = new HashMap<>();
     private List<String> dictionary
             = new ArrayList<>(asList("help", "?", "import", "replicate", "export",
-            "profile", "session", "logout", "login",
-            "exit", "show"));
+            "profile", "session", "logout", "login", "exit", "show", "clear"));
 
     public Context() {
         for (String v : dictionary) {
