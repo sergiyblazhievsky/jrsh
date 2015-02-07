@@ -41,12 +41,13 @@ public class ReplicateCommand extends Command {
     @Override
     void run() {
 
-        Thread t = new Thread(new Runnable() {
+        Thread spinner = new Thread(new Runnable() {
             @Override
             public void run() {
                 print();
             }
         });
+        spinner.setDaemon(true);
 
         ProfileConfiguration config = ProfileConfigurationFactory.getConfiguration();
         try {
@@ -71,14 +72,14 @@ public class ReplicateCommand extends Command {
             Session exp = createImmutable(src.getUrl(), src.getUsername(), askPasswords(from), src.getOrganization());
             Session imp = createImmutable(dest.getUrl(), dest.getUsername(), askPasswords(to), dest.getOrganization());
 
-            t.start();
+            spinner.start();
 
             RepositoryDataExporter exporter = new RepositoryDataExporter(exp);
             InputStream data = exporter.export();
             RepositoryDataImporter importer = new RepositoryDataImporter(imp);
             importer.importData(data);
 
-            t.stop();
+            spinner.stop();
 
             // logout
             exp.logout();
@@ -86,11 +87,11 @@ public class ReplicateCommand extends Command {
 
             out.printf("\rReplication status: SUCCESS\n");
         } catch (FileNotFoundException e) {
-            t.stop();
+            spinner.stop();
             out.printf("\rReplication status: FAIL\n");
             throw new CannotLoadProfileConfiguration();
         } catch (IOException e) {
-            t.stop();
+            spinner.stop();
             throw new UnknownParserException(); // fixme: ---
         } finally {
             reader.setPrompt("\u001B[1m>>> \u001B[0m");

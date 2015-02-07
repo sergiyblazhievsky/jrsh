@@ -1,0 +1,16 @@
+---
+profiles:
+  - default:
+     name: JRS_
+     organization: organization_1
+     url: 'http://localhost:8080/jasperserver-pro'
+     username: superuser
+
+  - name: JRS_1
+    organization: organization_1
+    url: 'http://localhost:8080/jasperserver-pro'
+    username: superuser
+
+  - name: JRS_2
+    url: 'http://54.221.179.184/jasperserver-pro'
+    username: jasperadmin

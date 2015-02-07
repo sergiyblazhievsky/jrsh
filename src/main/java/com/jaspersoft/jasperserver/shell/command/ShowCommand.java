@@ -83,7 +83,7 @@ public class ShowCommand extends Command {
 
     void printTree(String path) {
 
-        Thread t = new Thread(new Runnable() {
+        Thread spinner = new Thread(new Runnable() {
             @SneakyThrows
             public void run() {
                 int counter = 0;
@@ -99,17 +99,18 @@ public class ShowCommand extends Command {
                 }
             }
         });
+        spinner.setDaemon(true);
 
         List<ClientResourceLookup> resources = null;
         validate(path);
         try {
-            t.start();
+            spinner.start();
             resources = session.resourcesService().resources().parameter(FOLDER_URI, "".equals(path) ? "/" : path).search().getEntity().getResourceLookups();
         } catch (ResourceNotFoundException e) {
             out.print("\r");
             throw new JrsResourceNotFoundException(path);
         } finally {
-            t.stop();
+            spinner.stop();
         }
 
         List<String> list = newArrayList();

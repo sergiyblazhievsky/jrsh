@@ -66,12 +66,13 @@ public class ImportCommand extends Command {
 
         if (getMode().equals(ExecutionMode.SHELL)) {
 
-            Thread t = new Thread(new Runnable() {
+            Thread spinner = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     print();
                 }
             });
+            spinner.setDaemon(true);
 
             File file = readFile(path);
             ImportTaskRequestAdapter task = session.importService().newTask();
@@ -81,9 +82,9 @@ public class ImportCommand extends Command {
             }
 
             StateDto state = task.create(file).getEntity();
-            t.start();
+            spinner.start();
             waitForUpload(state);
-            t.stop();
+            spinner.stop();
             out.printf("\rImport status: SUCCESS\n");
         } else {
             File file = readFile(path);

@@ -68,6 +68,8 @@ public class ParameterCompleter extends StringsCompleter {
                     candidates.add(" ");
                 }
             }
+        } else if (!buf.endsWith(" ")) {
+            candidates.add(" ");
         } else {
             candidates.addAll(params);
         }

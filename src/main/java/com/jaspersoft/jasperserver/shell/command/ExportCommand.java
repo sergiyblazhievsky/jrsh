@@ -124,16 +124,18 @@ public class ExportCommand extends Command {
         InputStream entity;
 
         if (getMode().equals(SHELL)) {
-            Thread t = new Thread(new Runnable() {
+            Thread spinner = new Thread(new Runnable() {
                 public void run() {
                     print();
                 }
             });
+            spinner.setDaemon(true);
+
             try {
                 ExportTaskAdapter task = session.exportService().newTask();
                 setExportOptions(task, user, role, /* <path> */ path);
                 StateDto state = task.parameters(interParams).create().getEntity();
-                t.start();
+                spinner.start();
                 entity = session.exportService().task(state.getId()).fetch().getEntity();
             } catch (Exception e) {
                 if (!(e instanceof AuthenticationFailedException)) {
@@ -143,7 +145,7 @@ public class ExportCommand extends Command {
                     throw new SessionIsNotAvailableException();
                 }
             } finally {
-                t.stop();
+                spinner.stop();
             }
         } else {
             ExportTaskAdapter task = session.exportService().newTask();

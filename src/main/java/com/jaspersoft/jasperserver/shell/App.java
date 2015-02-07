@@ -54,22 +54,16 @@ public class App {
             out.println("Welcome to JRSH v1.0-alpha!\n");
             console.setPrompt("\u001B[1m>>> \u001B[0m");
 
-            //
-            // Completers configuration
-            //
+            // todo: move completers configuration to the separate class! think twice about Single Responsibility Principle!
+
             StringsCompleter exit = new StringsCompleter("exit");
-
             StringsCompleter clear = new StringsCompleter("clear");
-
             StringsCompleter session = new StringsCompleter("session");
             StringsCompleter logout = new StringsCompleter("logout");
-
             StringsCompleter profile = new StringsCompleter("profile");
             ParameterCompleter profileParams = new ParameterCompleter(asList("save", "load", "list"));
-
             StringsCompleter login = new StringsCompleter("login");
             ParameterCompleter loginParams = new ParameterCompleter(asList("--server", "--username", "--password"));
-
             StringsCompleter show = new StringsCompleter("show");
             ParameterCompleter showParams = new ParameterCompleter(asList("repo", "server-info"));
 
@@ -111,7 +105,6 @@ public class App {
             String input;
             while ((input = console.readLine().trim()) != null) {
                 if ("".equals(input)) continue;
-                //if ("clear".equals(input)) console.clearScreen();
                 try {
                     queue = parser.parse(input);
                     for (Command cmd : queue) {
@@ -167,7 +160,7 @@ public class App {
 
     /**
      * Profiles pre-loaded profile names.
-     *
+     * todo: move to the separate class!
      * @return list
      */
     private static List<String> getProfileNames() {
