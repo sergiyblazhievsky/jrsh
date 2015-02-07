@@ -12,7 +12,6 @@ import org.testng.annotations.Test;
 
 import java.util.Queue;
 
-
 /**
  * Unit tests for {@link CommandParser}
  */
@@ -27,7 +26,7 @@ public class CommandParserTest {
     }
 
     @Test
-    public void should_return_execution_queue_which_contains_two_commands() {
+    public void should_return_execution_queue_which_should_contains_two_commands() {
         Queue<Command> queue = parser.parse(
                 "login --server http://localhost:8080/jasperserver-pro --username superuser --password superuser " +
                         "import /Users/alexkrasnyaskiy/Desktop/jrsh/imp1.zip");
@@ -37,7 +36,7 @@ public class CommandParserTest {
     }
 
     @Test
-    public void should_return_proper_configured_command_with_queue() {
+    public void should_return_queue_with_only_one_configured_command() {
 
         /** Given **/
         Command expected = new ImportCommand();
@@ -62,7 +61,7 @@ public class CommandParserTest {
     }
 
     @Test
-    public void should_return_queue_of_three_commands() {
+    public void should_return_queue_with_three_commands() {
         Queue<Command> queue = parser.parse(
                 "--server http://localhost:8080/jasperserver-pro --username superuser --password superuser " +
                         "import /Users/alexkrasnyaskiy/Desktop/jrsh/imp1.zip logout");

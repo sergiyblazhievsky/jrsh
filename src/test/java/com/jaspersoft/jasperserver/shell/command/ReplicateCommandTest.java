@@ -32,10 +32,10 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@Test
 /**
  * Unit tests for {@link ReplicateCommand}
  */
+@Test
 @PrepareForTest({
         ProfileConfigurationFactory.class, PrintStream.class,
         SessionFactory.class, RepositoryDataExporter.class,
@@ -44,14 +44,19 @@ public class ReplicateCommandTest extends PowerMockTestCase {
 
     @Mock
     private InputStream stream;
+
     @Mock
     private Session firstSessionMock;
+
     @Mock
     private Session secondSessionMock;
+
     @Mock
     private RepositoryDataExporter exporterMock;
+
     @Mock
     private RepositoryDataImporter importerMock;
+
     private ReplicateCommand replicateSpy;
 
     @BeforeMethod
@@ -95,8 +100,10 @@ public class ReplicateCommandTest extends PowerMockTestCase {
         PowerMockito.when(ProfileConfigurationFactory.create("../conf/profile.yml")).thenReturn(fakeConfig);
 
         PowerMockito.mockStatic(SessionFactory.class);
-        PowerMockito.when(SessionFactory.createImmutable(eq("http://localhost:8080/jasperserver-pro"), eq("superuser"), eq("password"), eq("organization_1"))).thenReturn(firstSessionMock);
-        PowerMockito.when(SessionFactory.createImmutable(eq("http://localhost:8085/jasperserver-pro"), eq("superuser"), eq("password"), eq("organization_1"))).thenReturn(secondSessionMock);
+        PowerMockito.when(SessionFactory.createImmutable(eq("http://localhost:8080/jasperserver-pro"),
+                eq("superuser"), eq("password"), eq("organization_1"))).thenReturn(firstSessionMock);
+        PowerMockito.when(SessionFactory.createImmutable(eq("http://localhost:8085/jasperserver-pro"),
+                eq("superuser"), eq("password"), eq("organization_1"))).thenReturn(secondSessionMock);
 
         PowerMockito.whenNew(RepositoryDataExporter.class).withArguments(firstSessionMock).thenReturn(exporterMock);
         PowerMockito.whenNew(RepositoryDataImporter.class).withArguments(secondSessionMock).thenReturn(importerMock);
@@ -113,15 +120,18 @@ public class ReplicateCommandTest extends PowerMockTestCase {
         /** When **/
         replicateSpy.run();
 
+
         /** Then **/
         PowerMockito.verifyStatic(times(1));
         ProfileConfigurationFactory.create(anyString());
 
         PowerMockito.verifyStatic(times(1));
-        SessionFactory.createImmutable(eq("http://localhost:8080/jasperserver-pro"), eq("superuser"), eq("password"), eq("organization_1"));
+        SessionFactory.createImmutable(eq("http://localhost:8080/jasperserver-pro"), eq("superuser"),
+                eq("password"), eq("organization_1"));
 
         PowerMockito.verifyStatic(times(1));
-        SessionFactory.createImmutable(eq("http://localhost:8085/jasperserver-pro"), eq("superuser"), eq("password"), eq("organization_1"));
+        SessionFactory.createImmutable(eq("http://localhost:8085/jasperserver-pro"), eq("superuser"),
+                eq("password"), eq("organization_1"));
 
         PowerMockito.verifyNew(RepositoryDataExporter.class, times(1)).withArguments(firstSessionMock);
         PowerMockito.verifyNew(RepositoryDataImporter.class, times(1)).withArguments(secondSessionMock);
@@ -140,6 +150,6 @@ public class ReplicateCommandTest extends PowerMockTestCase {
     @AfterMethod
     public void after() {
         replicateSpy = null;
-        reset(secondSessionMock, firstSessionMock, importerMock, exporterMock,stream);
+        reset(secondSessionMock, firstSessionMock, importerMock, exporterMock, stream);
     }
 }

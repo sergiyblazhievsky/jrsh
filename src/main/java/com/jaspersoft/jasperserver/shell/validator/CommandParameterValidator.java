@@ -20,7 +20,6 @@ public class CommandParameterValidator {
         return true;
     }
 
-    // protected due to the testing needs
     protected void validateParameterMultipleValue(Command command) {
         List<Parameter> params = command.getParameters();
         for (Parameter p : params) {
@@ -31,7 +30,7 @@ public class CommandParameterValidator {
     }
 
     protected boolean validateMandatoryParameterValue(Command command) {
-        if (command instanceof LoginCommand) return true; // a special case // don't need to validate param for login :: ?
+        if (command instanceof LoginCommand) return true; // a special case // we don't need to validate param for login ?
         List<Parameter> params = command.getParameters();
         for (Parameter p : params) {
             if (!p.isOptional() && p.getValues().size() == 0) {
