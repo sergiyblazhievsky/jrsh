@@ -24,7 +24,7 @@ public final class ProfileConfigurationFactory {
         }
     }
 
-    public static ProfileConfiguration get(){
+    public static ProfileConfiguration getConfiguration(){
         return configuration;
     }
 }

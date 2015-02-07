@@ -48,7 +48,7 @@ public class ReplicateCommand extends Command {
             }
         });
 
-        ProfileConfiguration config = ProfileConfigurationFactory.get();
+        ProfileConfiguration config = ProfileConfigurationFactory.getConfiguration();
         try {
             if (config == null) {
                 config = ProfileConfigurationFactory.create(FILE);

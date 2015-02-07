@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Random;
 
-import static com.jaspersoft.jasperserver.shell.profile.ProfileConfigurationFactory.get;
+import static com.jaspersoft.jasperserver.shell.profile.ProfileConfigurationFactory.getConfiguration;
 import static com.jaspersoft.jasperserver.shell.profile.ProfileUtil.persist;
 import static java.lang.System.out;
 
@@ -55,7 +55,7 @@ public class ProfileCommand extends Command {
                 throw new CannotLoadProfileConfiguration();
             }
         } else if (parameter("save").isAvailable()) {
-            ProfileConfiguration cfg = get();
+            ProfileConfiguration cfg = getConfiguration();
             if ("default".equals(profile.getName())) {
                 String n = null;
                 if (parameter("anonymous").isAvailable()) {
@@ -74,7 +74,7 @@ public class ProfileCommand extends Command {
                 out.println("You need to load profile configuration first.");
             }
         } else if (parameter("list").isAvailable()) {
-            ProfileConfiguration cfg = get();
+            ProfileConfiguration cfg = getConfiguration();
             if (cfg == null) {
                 out.println("You need to load profile configuration first.");
             } else {
