@@ -1,7 +1,8 @@
 package com.jaspersoft.jasperserver.shell;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.completion.ParameterCompleter;
+import com.jaspersoft.jasperserver.shell.completion.GeneralParameterCompleter;
+import com.jaspersoft.jasperserver.shell.completion.ReplicateCommandParameterCompleter;
 import com.jaspersoft.jasperserver.shell.context.Context;
 import com.jaspersoft.jasperserver.shell.exception.InterfaceException;
 import com.jaspersoft.jasperserver.shell.exception.parser.MandatoryParameterException;
@@ -54,37 +55,44 @@ public class App {
             out.println("Welcome to JRSH v1.0-alpha!\n");
             console.setPrompt("\u001B[1m>>> \u001B[0m");
 
-            // todo: move completers configuration to the separate class! think twice about Single Responsibility Principle!
+            //
+            // todo: move the completer configuration to the separate class
+            // todo: and, dude, think twice about Single Responsibility Principle!
+            //
 
             StringsCompleter exit = new StringsCompleter("exit");
             StringsCompleter clear = new StringsCompleter("clear");
             StringsCompleter session = new StringsCompleter("session");
             StringsCompleter logout = new StringsCompleter("logout");
+
             StringsCompleter profile = new StringsCompleter("profile");
-            ParameterCompleter profileParams = new ParameterCompleter(asList("save", "load", "list"));
+            GeneralParameterCompleter profileParams = new GeneralParameterCompleter(asList("save", "load", "list"));
+
             StringsCompleter login = new StringsCompleter("login");
-            ParameterCompleter loginParams = new ParameterCompleter(asList("--server", "--username", "--password"));
+            GeneralParameterCompleter loginParams = new GeneralParameterCompleter(asList("--server",
+                    "--username", "--password"));
+
             StringsCompleter show = new StringsCompleter("show");
-            ParameterCompleter showParams = new ParameterCompleter(asList("repo", "server-info"));
+            GeneralParameterCompleter showParams = new GeneralParameterCompleter(asList("repo", "server-info"));
 
-
-            List<String> profileNames = getProfileNames();
             StringsCompleter replicate = new StringsCompleter("replicate");
-            ParameterCompleter replicateParams = new ParameterCompleter(profileNames);
+            ReplicateCommandParameterCompleter replicateParams =
+                    new ReplicateCommandParameterCompleter(getProfileNames());
 
 
             StringsCompleter export = new StringsCompleter("export");
-            ParameterCompleter exportParams = new ParameterCompleter(asList("to", "without-access-events",
-                    "with-audit-events", "with-monitoring-events", "with-events", "with-users-and-roles",
-                    "with-repository-permissions"));
+            GeneralParameterCompleter exportParams = new GeneralParameterCompleter(asList("to",
+                    "without-access-events", "with-audit-events", "with-monitoring-events", "with-events",
+                    "with-users-and-roles", "with-repository-permissions"));
 
             StringsCompleter importCmd = new StringsCompleter("import");
-            ParameterCompleter importParams = new ParameterCompleter(asList("with-audit-events", "with-access-events",
-                    "with-monitoring-events", "with-events", "with-update", "with-skip-user-update"));
+            GeneralParameterCompleter importParams = new GeneralParameterCompleter(asList("with-audit-events",
+                    "with-access-events", "with-monitoring-events", "with-events", "with-update",
+                    "with-skip-user-update"));
 
             StringsCompleter help = new StringsCompleter("help");
-            ParameterCompleter helpParams = new ParameterCompleter(asList("login", "logout", "import", "export", "exit",
-                    "show", "session", "replicate", "profile"));
+            GeneralParameterCompleter helpParams = new GeneralParameterCompleter(asList("login", "logout", "import",
+                    "export", "exit", "show", "session", "replicate", "profile"));
 
 
             ArgumentCompleter loginCompleter = new ArgumentCompleter(login, loginParams);
@@ -159,15 +167,13 @@ public class App {
     }
 
     /**
-     * Profiles pre-loaded profile names.
-     * todo: move to the separate class!
+     * Profiles pre-loaded profile names. todo: move the method to the separate class!
+     *
      * @return list
      */
     private static List<String> getProfileNames() {
         File file = new File(getProperty("user.dir"));
-        List<String> profileNames = new ArrayList<String>() {{
-            add("to");
-        }};
+        List<String> profileNames = new ArrayList<>();
         try {
             List<Profile> profiles = preLoadProfiles(file.getParentFile() + FILE);
             for (Profile p : profiles) {

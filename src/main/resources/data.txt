@@ -48,3 +48,31 @@ en de fr es ua
 >>> lang[tab]
 
 >>> lang es [enter] => switch to spanish
+
+
+
+
+
+
+***
+
+STEP #1
+-------
+
+jrs-1 jrs-2 jrs-2
+
+>>> replicate[tab]
+
+STEP #2
+-------
+
+to
+
+>>> replicate jrs-2[tab]+to
+
+STEP #3
+-------
+
+jrs-1 jrs-3
+
+>>> replicate jrs-2 to

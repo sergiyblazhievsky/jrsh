@@ -3,6 +3,7 @@ package com.jaspersoft.jasperserver.shell.command;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.shell.command.exp.RepositoryDataExporter;
 import com.jaspersoft.jasperserver.shell.command.imp.RepositoryDataImporter;
+import com.jaspersoft.jasperserver.shell.completion.ReplicateCommandParameterCompleter;
 import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingException;
 import com.jaspersoft.jasperserver.shell.exception.WrongPasswordException;
 import com.jaspersoft.jasperserver.shell.exception.parser.UnknownParserException;
@@ -94,6 +95,7 @@ public class ReplicateCommand extends Command {
             spinner.stop();
             throw new UnknownParserException(); // fixme: ---
         } finally {
+            restoreParametersDefaultState();
             reader.setPrompt("\u001B[1m>>> \u001B[0m");
         }
     }
@@ -120,5 +122,14 @@ public class ReplicateCommand extends Command {
             sleep(250);
             counter++;
         }
+    }
+
+    private void restoreParametersDefaultState() {
+
+        // [workaround]
+        // todo: need to find some better solution
+
+        ReplicateCommandParameterCompleter.f = false;
+        ReplicateCommandParameterCompleter.s = false;
     }
 }

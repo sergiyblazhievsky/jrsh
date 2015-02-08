@@ -5,7 +5,6 @@ import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exports
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.core.exceptions.AuthenticationFailedException;
 import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
-import com.jaspersoft.jasperserver.shell.ExecutionMode;
 import com.jaspersoft.jasperserver.shell.exception.CannotCreateFileException;
 import com.jaspersoft.jasperserver.shell.exception.SessionIsNotAvailableException;
 import com.jaspersoft.jasperserver.shell.exception.UnspecifiedRoleException;
@@ -25,7 +24,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exportservice.ExportParameter.EVERYTHING;
 import static com.jaspersoft.jasperserver.shell.ExecutionMode.SHELL;
+import static com.jaspersoft.jasperserver.shell.ExecutionMode.TOOL;
 import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.create;
 import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.getInstance;
 import static java.lang.String.format;
@@ -90,12 +91,12 @@ public class ExportCommand extends Command {
 
         switch (path) {
             case "all":
-                interParams.add(ExportParameter.EVERYTHING);
+                interParams.add(EVERYTHING);
                 addEvents();
                 break;
             case "role":
                 if (values.size() < 2) {
-                    if (getMode().equals(ExecutionMode.TOOL)) throw new UnspecifiedRoleException();
+                    if (getMode().equals(TOOL)) throw new UnspecifiedRoleException();
                     Command cmd = create("help");
                     cmd.parameter("anonymous").setValues(asList("export"));
                     cmd.run();
@@ -107,7 +108,7 @@ public class ExportCommand extends Command {
                 break;
             case "user":
                 if (values.size() < 2) {
-                    if (getMode().equals(ExecutionMode.TOOL)) exit(1);
+                    if (getMode().equals(TOOL)) exit(1);
                     Command cmd = create("help");
                     cmd.parameter("anonymous").setValues(asList("export"));
                     cmd.run();
@@ -168,6 +169,12 @@ public class ExportCommand extends Command {
             String date = sdf.format(new Date());
             String file = (to == null) ? prefix + date + postfix + ".zip" : to;
             new FileOutputStream(file).write(readFully(entity, -1, false));
+
+
+            // fixme: for Windows?
+            //File f = new File(getProperty("user.dir") + "/" + file);
+            //new FileOutputStream(f).write(readFully(entity, -1, false));
+
             out.printf("\rExport status: SUCCESS\n");
             out.printf("\rFile %s was created.\n", file);
         } catch (IOException e) {

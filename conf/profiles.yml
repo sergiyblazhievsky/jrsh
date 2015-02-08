@@ -1,12 +1,12 @@
 profiles:
 - {
     name: local,
-    url: 'http://localhost:8080/jasperserver-pro',
+    url: 'http://localhost:4444/jasperserver-pro',
     username: superuser
   }
 - {
     name: virtual,
-    url: 'http://localhost:8080/jasperserver-pro',
+    url: 'http://localhost:4444/jasperserver-pro',
     username: superuser,
     organization: organization_1
   }

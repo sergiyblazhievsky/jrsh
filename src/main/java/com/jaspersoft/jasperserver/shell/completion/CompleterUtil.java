@@ -69,6 +69,16 @@ public class CompleterUtil {
         return set.size() == 1;
     }
 
+    /**
+     * Checks if src element belong to the candidates collection.
+     *
+     * @param src source string
+     * @param col the candidates collection
+     * @return yes/no
+     */
+    public static boolean belong(String src, Collection<String> col) {
+        return col.contains(src);
+    }
 
     /**
      * Selects matched elements only.
