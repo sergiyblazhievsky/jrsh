@@ -5,7 +5,7 @@ JasperReports Server Shell
 # Overview
 JRSH is a comprehensive CLI for JasperReports Server. It's designed for fast and easy interaction with JasperReports Server across various operating systems.
 # Execution Modes
-JRSH is able to work in two modes, interactive (SHELL) and non-interactive (TOOL). In SHELL mode you can run commands mostly one by one. And meanwhile in TOOL mode you write the whole sequence of commands with their options, and application executes that sequence automatically.
+JRSH is able to work in two modes, interactive (SHELL) and non-interactive (TOOL). In SHELL mode you can run commands mostly one by one. And meanwhile in TOOL mode you write the whole sequence of commands with their options, and application executes the sequence automatically.
 
 ## Usage
 The following code snippets show how to run commands in SHELL mode.
