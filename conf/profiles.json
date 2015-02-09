@@ -1,0 +1,31 @@
+{
+  "__comment": "Do not attempt to modify the file manually. All changes should be done programmatically. In the case of manual modification of this file, the correct performance of the application just cannot be guaranteed.",
+  "profiles": {
+    "default": {
+      "name": "JRS-DEFAULT",
+      "server": "http://localhost:8080/jasperserver-pro",
+      "username": "superuser",
+      "organization": "organization_1"
+    },
+    "list": [
+      {
+        "name": "JRS-DEFAULT",
+        "server": "http://localhost:8080/jasperserver-pro",
+        "username": "superuser",
+        "organization": "organization_1"
+      },
+      {
+        "name": "JRS-DEFAULT",
+        "server": "http://localhost:8080/jasperserver-pro",
+        "username": "superuser",
+        "organization": "organization_1"
+      },
+      {
+        "name": "JRS-DEFAULT",
+        "server": "http://localhost:8080/jasperserver-pro",
+        "username": "superuser",
+        "organization": "organization_1"
+      }
+    ]
+  }
+}

@@ -13,16 +13,15 @@ import static jline.internal.Preconditions.checkNotNull;
  *
  * @author Alexander Krasnyanskiy
  */
-@SuppressWarnings("unchecked")
-public class GeneralParameterCompleter extends StringsCompleter {
+public class GeneralCommandParameterCompleter extends StringsCompleter {
 
     private List<String> params = new ArrayList<>();
 
-    public GeneralParameterCompleter(List<String> params) {
+    public GeneralCommandParameterCompleter(List<String> params) {
         this.params.addAll(params);
     }
 
-    public GeneralParameterCompleter() {
+    public GeneralCommandParameterCompleter() {
         // NOP
     }
 
@@ -35,6 +34,7 @@ public class GeneralParameterCompleter extends StringsCompleter {
      * @return The index of the buffer for which the completion will be relative
      */
     @Override
+    @SuppressWarnings("unchecked")
     public int complete(String buf, int cursor, List candidates) {
         checkNotNull(candidates);
         if (buf == null) {

@@ -3,7 +3,7 @@ package com.jaspersoft.jasperserver.shell.command;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.shell.command.exp.RepositoryDataExporter;
 import com.jaspersoft.jasperserver.shell.command.imp.RepositoryDataImporter;
-import com.jaspersoft.jasperserver.shell.completion.ReplicateCommandParameterCompleter;
+import com.jaspersoft.jasperserver.shell.completion.ReplicateCommandCommandParameterCompleter;
 import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingException;
 import com.jaspersoft.jasperserver.shell.exception.WrongPasswordException;
 import com.jaspersoft.jasperserver.shell.exception.parser.UnknownParserException;
@@ -129,7 +129,7 @@ public class ReplicateCommand extends Command {
         // [workaround]
         // todo: need to find some better solution
 
-        ReplicateCommandParameterCompleter.f = false;
-        ReplicateCommandParameterCompleter.s = false;
+        ReplicateCommandCommandParameterCompleter.f = false;
+        ReplicateCommandCommandParameterCompleter.s = false;
     }
 }

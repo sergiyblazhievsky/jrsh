@@ -1,8 +1,8 @@
 package com.jaspersoft.jasperserver.shell;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.completion.GeneralParameterCompleter;
-import com.jaspersoft.jasperserver.shell.completion.ReplicateCommandParameterCompleter;
+import com.jaspersoft.jasperserver.shell.completion.GeneralCommandParameterCompleter;
+import com.jaspersoft.jasperserver.shell.completion.ReplicateCommandCommandParameterCompleter;
 import com.jaspersoft.jasperserver.shell.context.Context;
 import com.jaspersoft.jasperserver.shell.exception.InterfaceException;
 import com.jaspersoft.jasperserver.shell.exception.parser.MandatoryParameterException;
@@ -66,32 +66,32 @@ public class App {
             StringsCompleter logout = new StringsCompleter("logout");
 
             StringsCompleter profile = new StringsCompleter("profile");
-            GeneralParameterCompleter profileParams = new GeneralParameterCompleter(asList("save", "load", "list"));
+            GeneralCommandParameterCompleter profileParams = new GeneralCommandParameterCompleter(asList("save", "load", "list"));
 
             StringsCompleter login = new StringsCompleter("login");
-            GeneralParameterCompleter loginParams = new GeneralParameterCompleter(asList("--server",
+            GeneralCommandParameterCompleter loginParams = new GeneralCommandParameterCompleter(asList("--server",
                     "--username", "--password"));
 
             StringsCompleter show = new StringsCompleter("show");
-            GeneralParameterCompleter showParams = new GeneralParameterCompleter(asList("repo", "server-info"));
+            GeneralCommandParameterCompleter showParams = new GeneralCommandParameterCompleter(asList("repo", "server-info"));
 
             StringsCompleter replicate = new StringsCompleter("replicate");
-            ReplicateCommandParameterCompleter replicateParams =
-                    new ReplicateCommandParameterCompleter(getProfileNames());
+            ReplicateCommandCommandParameterCompleter replicateParams =
+                    new ReplicateCommandCommandParameterCompleter(getProfileNames());
 
 
             StringsCompleter export = new StringsCompleter("export");
-            GeneralParameterCompleter exportParams = new GeneralParameterCompleter(asList("to",
+            GeneralCommandParameterCompleter exportParams = new GeneralCommandParameterCompleter(asList("to",
                     "without-access-events", "with-audit-events", "with-monitoring-events", "with-events",
                     "with-users-and-roles", "with-repository-permissions"));
 
             StringsCompleter importCmd = new StringsCompleter("import");
-            GeneralParameterCompleter importParams = new GeneralParameterCompleter(asList("with-audit-events",
+            GeneralCommandParameterCompleter importParams = new GeneralCommandParameterCompleter(asList("with-audit-events",
                     "with-access-events", "with-monitoring-events", "with-events", "with-update",
                     "with-skip-user-update"));
 
             StringsCompleter help = new StringsCompleter("help");
-            GeneralParameterCompleter helpParams = new GeneralParameterCompleter(asList("login", "logout", "import",
+            GeneralCommandParameterCompleter helpParams = new GeneralCommandParameterCompleter(asList("login", "logout", "import",
                     "export", "exit", "show", "session", "replicate", "profile"));
 
 

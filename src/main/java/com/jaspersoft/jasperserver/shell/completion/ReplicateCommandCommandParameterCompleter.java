@@ -11,7 +11,7 @@ import static jline.internal.Preconditions.checkNotNull;
 /**
  * @author Alexander Krasnyanskiy
  */
-public class ReplicateCommandParameterCompleter extends GeneralParameterCompleter {
+public class ReplicateCommandCommandParameterCompleter extends GeneralCommandParameterCompleter {
 
     public static boolean f = false;
     public static boolean s = false;
@@ -20,12 +20,12 @@ public class ReplicateCommandParameterCompleter extends GeneralParameterComplete
     private List<String> copy = new ArrayList<>();
     private final static String direction = "to";
 
-    public ReplicateCommandParameterCompleter(List<String> params) {
+    public ReplicateCommandCommandParameterCompleter(List<String> params) {
         this.params.addAll(params);
         this.copy.addAll(params);
     }
 
-    public ReplicateCommandParameterCompleter() {
+    public ReplicateCommandCommandParameterCompleter() {
         // NOP
     }
 
