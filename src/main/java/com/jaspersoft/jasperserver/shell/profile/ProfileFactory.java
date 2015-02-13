@@ -1,5 +1,7 @@
 package com.jaspersoft.jasperserver.shell.profile;
 
+import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
+
 /**
  * @author Alexander Krasnyanskiy
  */

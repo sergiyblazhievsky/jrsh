@@ -23,7 +23,7 @@ public final class SessionFactory {
 
     private SessionFactory() {/*NOP*/}
 
-    public static Session create(String url, String username, String pass, String tenantName) {
+    public static Session createSession(String url, String username, String pass, String tenantName) {
         if (url != null && username != null && pass != null) {
             try {
                 RestClientConfiguration config = new RestClientConfiguration(url);

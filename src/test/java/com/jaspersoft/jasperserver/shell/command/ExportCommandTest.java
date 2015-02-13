@@ -89,7 +89,7 @@ public class ExportCommandTest extends PowerMockTestCase {
         //whenNew(FileOutputStream.class).withArguments(anyString()).thenReturn(fileOutputStreamMock);
 
         mockStatic(SessionFactory.class);
-        when(SessionFactory.create("http://54.221.179.1/jasperserver-pro", "superuser", "superuser", "organization_1"));
+        when(SessionFactory.createSession("http://54.221.179.1/jasperserver-pro", "superuser", "superuser", "organization_1"));
 
         doReturn(sessionMock).when(clientMock).authenticate("superuser|organization_1", "superuser");
 
@@ -110,7 +110,7 @@ public class ExportCommandTest extends PowerMockTestCase {
         doReturn(false).when(fileMock).isDirectory();
         doReturn(true).when(fileMock).exists();
 
-        SessionFactory.create("http://54.221.179.1/jasperserver-pro", "superuser", "superuser", "organization_1");
+        SessionFactory.createSession("http://54.221.179.1/jasperserver-pro", "superuser", "superuser", "organization_1");
         export.parameter("anonymous").getValues().add("/public/Samples/Reports/06g.ProfitDetailReport");
         export.setMode(SHELL);
 

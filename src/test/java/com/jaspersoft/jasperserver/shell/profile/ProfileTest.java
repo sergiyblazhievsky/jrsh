@@ -1,5 +1,6 @@
 package com.jaspersoft.jasperserver.shell.profile;
 
+import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertTrue;

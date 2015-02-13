@@ -1,8 +1,8 @@
 package com.jaspersoft.jasperserver.shell.command;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
-import com.jaspersoft.jasperserver.shell.command.exp.RepositoryDataExporter;
-import com.jaspersoft.jasperserver.shell.command.imp.RepositoryDataImporter;
+import com.jaspersoft.jasperserver.shell.command.export.RepositoryDataExporter;
+import com.jaspersoft.jasperserver.shell.command.import_.RepositoryDataImporter;
 import com.jaspersoft.jasperserver.shell.completion.ReplicateCommandCommandParameterCompleter;
 import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingException;
 import com.jaspersoft.jasperserver.shell.exception.WrongPasswordException;
@@ -10,10 +10,10 @@ import com.jaspersoft.jasperserver.shell.exception.parser.UnknownParserException
 import com.jaspersoft.jasperserver.shell.exception.profile.CannotLoadProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.exception.profile.WrongProfileNameException;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
-import com.jaspersoft.jasperserver.shell.profile.Profile;
-import com.jaspersoft.jasperserver.shell.profile.ProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.profile.ProfileConfigurationFactory;
 import com.jaspersoft.jasperserver.shell.profile.ProfileUtil;
+import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
+import com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration;
 import lombok.SneakyThrows;
 
 import java.io.FileNotFoundException;

@@ -95,7 +95,7 @@ public class ImportCommandTest extends PowerMockTestCase {
         doReturn(false).when(fileMock).isDirectory();
         doReturn(true).when(fileMock).exists();
 
-        SessionFactory.create("http://54.221.179.100/jasperserver-pro", "superuser", "superuser", "organization_1");
+        SessionFactory.createSession("http://54.221.179.100/jasperserver-pro", "superuser", "superuser", "organization_1");
         importCmd.parameter("anonymous").getValues().add("/Users/alex/IdeaProjects/jrsh/src/main/resources/import.zip");
         importCmd.setMode(SHELL);
 

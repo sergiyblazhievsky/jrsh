@@ -51,7 +51,7 @@ public class SessionFactoryTest extends PowerMockTestCase {
         Mockito.doReturn(sessionMock).when(clientMock).authenticate(anyString(), anyString());
 
         /** When **/
-        Session session = SessionFactory.create("http://54.221.179.100/jasperserver-pro", "superuser", "superuser", "organization_1");
+        Session session = SessionFactory.createSession("http://54.221.179.100/jasperserver-pro", "superuser", "superuser", "organization_1");
 
         /** Then **/
         Assert.assertNotNull(session);
@@ -70,7 +70,7 @@ public class SessionFactoryTest extends PowerMockTestCase {
         Mockito.doThrow(new AuthenticationFailedException()).when(clientMock).authenticate(anyString(), anyString());
 
         /** When **/
-        SessionFactory.create("http://localhost:4444/jasperserver-pro", "wrongUsername", "superuser", null);
+        SessionFactory.createSession("http://localhost:4444/jasperserver-pro", "wrongUsername", "superuser", null);
 
         /** Then **/
         //  throw
@@ -78,7 +78,7 @@ public class SessionFactoryTest extends PowerMockTestCase {
 
     @Test(dependsOnMethods = "should_throw_an_exception_when_credentials_are_wrong")
     public void should_return_null_if_passed_null_parameters() {
-        Session session = SessionFactory.create(null, null, null, null);
+        Session session = SessionFactory.createSession(null, null, null, null);
         Assert.assertNull(session);
     }
 
@@ -93,7 +93,7 @@ public class SessionFactoryTest extends PowerMockTestCase {
         PowerMockito.whenNew(RestClientConfiguration.class).withArguments(anyString()).thenReturn(configurationMock);
         PowerMockito.whenNew(JasperserverRestClient.class).withArguments(configurationMock).thenReturn(clientMock);
         Mockito.doReturn(sessionMock).when(clientMock).authenticate(anyString(), anyString());
-        SessionFactory.create("http://54.221.179.100/jasperserver-pro", "superuser", "superuser", "organization_1");
+        SessionFactory.createSession("http://54.221.179.100/jasperserver-pro", "superuser", "superuser", "organization_1");
 
         /** When **/
         Session session = SessionFactory.getInstance();
@@ -114,7 +114,7 @@ public class SessionFactoryTest extends PowerMockTestCase {
         PowerMockito.whenNew(RestClientConfiguration.class).withArguments(anyString()).thenReturn(configurationMock);
         PowerMockito.whenNew(JasperserverRestClient.class).withArguments(configurationMock).thenReturn(clientMock);
         Mockito.doReturn(sessionMock).when(clientMock).authenticate(anyString(), anyString());
-        SessionFactory.create("http://54.221.179.100/jasperserver-pro", "superuser", "superuser", "organization_1");
+        SessionFactory.createSession("http://54.221.179.100/jasperserver-pro", "superuser", "superuser", "organization_1");
 
         /** When **/
         String uptime = SessionFactory.uptime();

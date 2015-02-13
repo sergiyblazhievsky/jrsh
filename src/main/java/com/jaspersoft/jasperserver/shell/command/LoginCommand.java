@@ -6,7 +6,7 @@ import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 
 import java.util.List;
 
-import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.create;
+import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.createSession;
 import static java.lang.System.out;
 
 /**
@@ -48,9 +48,9 @@ public class LoginCommand extends Command {
             throw new MandatoryParameterMissingException();
         }
 
-        create(url, username, password, organization);
+        createSession(url, username, password, organization);
 
-        profile.setName("default");
+        profile.setName("current");
         profile.setUrl(url);
         profile.setUsername(username);
         profile.setOrganization(organization);

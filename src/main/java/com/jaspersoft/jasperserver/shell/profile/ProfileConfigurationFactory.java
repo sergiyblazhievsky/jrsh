@@ -1,8 +1,10 @@
 package com.jaspersoft.jasperserver.shell.profile;
 
+import com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration;
+import com.jaspersoft.jasperserver.shell.profile.reader.ProfileReader;
+
 import java.io.FileNotFoundException;
 
-import static com.jaspersoft.jasperserver.shell.profile.ProfileUtil.load;
 
 /**
  * @author Alexander Krasnyanskiy
@@ -15,11 +17,11 @@ public final class ProfileConfigurationFactory {
         // NOP
     }
 
-    public static ProfileConfiguration create(String path) throws FileNotFoundException {
+    public static ProfileConfiguration create(String file) throws FileNotFoundException {
         if (configuration != null) {
             return configuration;
         } else {
-            configuration = load(path);
+            configuration = new ProfileReader(file).read();
             return configuration;
         }
     }

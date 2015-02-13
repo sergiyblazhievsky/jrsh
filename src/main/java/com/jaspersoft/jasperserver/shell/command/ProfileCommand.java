@@ -3,9 +3,9 @@ package com.jaspersoft.jasperserver.shell.command;
 import com.jaspersoft.jasperserver.shell.exception.CannotSaveProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.exception.profile.CannotLoadProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
-import com.jaspersoft.jasperserver.shell.profile.Profile;
-import com.jaspersoft.jasperserver.shell.profile.ProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.profile.ProfileConfigurationFactory;
+import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
+import com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,8 +20,7 @@ import static java.lang.System.out;
  */
 public class ProfileCommand extends Command {
 
-    //private static final String file = "/Users/alexkrasnyaskiy/IdeaProjects/jasperserver-shell/src/main/resources/profiles.yml";
-    private static String file = "jrsh-profile.yml";
+    private static String file = "/conf/profiles.yml";
 
     public ProfileCommand() {
         name = "profile";
@@ -56,7 +55,7 @@ public class ProfileCommand extends Command {
             }
         } else if (parameter("save").isAvailable()) {
             ProfileConfiguration cfg = getConfiguration();
-            if ("default".equals(profile.getName())) {
+            if ("current".equals(profile.getName())) {
                 String n = null;
                 if (parameter("anonymous").isAvailable()) {
                     n = parameter("anonymous").getValues().get(0);

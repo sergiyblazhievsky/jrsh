@@ -14,8 +14,8 @@ import com.jaspersoft.jasperserver.shell.exception.server.GeneralServerException
 import com.jaspersoft.jasperserver.shell.exception.server.JrsResourceNotFoundException;
 import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
-import com.jaspersoft.jasperserver.shell.profile.Profile;
 import com.jaspersoft.jasperserver.shell.profile.ProfileUtil;
+import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import jline.console.ConsoleReader;
 import lombok.Data;
 import lombok.ToString;
@@ -36,8 +36,8 @@ import static java.lang.System.out;
 public abstract class Command implements Executable, ConsoleReaderAware {
 
     protected String name;
-    protected String description; // todo => rename to `briefDescription`
-    protected String usageDescription; // ?
+    protected String description; // todo: rename to `briefDescription`
+    protected String usageDescription;
     protected List<Parameter> parameters = new ArrayList<>();
     protected static Profile profile = getInstance();
 
@@ -56,20 +56,18 @@ public abstract class Command implements Executable, ConsoleReaderAware {
                     out.printf("i/o error: %s\n", e.getMessage());
                     return;
                 }
+
                 // we cannot handle thus cases, hence we print error and deny re-login operation below
-                if (e instanceof WrongRepositoryPathFormatException ||
-                        e instanceof JrsResourceNotFoundException ||
-                        e instanceof ParameterValueSizeException ||
-                        /* for replicate if [to] doesn't exist */
-                        e instanceof WrongProfileNameException ||
-                        e instanceof MandatoryParameterMissingException) {
+                // fixme: Design bug! Too many instanceof
+                if (e instanceof WrongRepositoryPathFormatException || e instanceof JrsResourceNotFoundException || e instanceof ParameterValueSizeException || /* for replicate if [to] doesn't exist */ e instanceof WrongProfileNameException ||  e instanceof MandatoryParameterMissingException) {
                     out.printf("error: %s\n", e.getMessage());
                     return;
                 }
+
                 // re-login
                 if (!ProfileUtil.isEmpty(profile) && /* for replicate cmd only */!(e instanceof GeneralServerException)) {
                     String password = askPassword();
-                    SessionFactory.create(profile.getUrl(), profile.getUsername(), password, profile.getOrganization());
+                    SessionFactory.createSession(profile.getUrl(), profile.getUsername(), password, profile.getOrganization());
                     run();
                 } else {
                     throw new UnknownInterfaceException(e.getMessage());
@@ -84,8 +82,10 @@ public abstract class Command implements Executable, ConsoleReaderAware {
     private String askPassword() {
         String pass = null;
         try {
-            pass = reader.readLine("\rPlease enter password: ", '*');
-        } catch (IOException ignored) {}
+            pass = reader.readLine("\rPlease enter the password: ", '*');
+        } catch (IOException ignored) {
+
+        }
         reader.setPrompt("\u001B[1m>>> \u001B[0m");
         return pass;
     }
