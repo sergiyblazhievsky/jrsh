@@ -8,12 +8,12 @@ import com.jaspersoft.jasperserver.shell.context.ContextAware;
 import com.jaspersoft.jasperserver.shell.exception.parser.UnknownInputContentException;
 import com.jaspersoft.jasperserver.shell.exception.parser.UnknownParserException;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
-import com.jaspersoft.jasperserver.shell.validator.CommandParameterValidator;
+import com.jaspersoft.jasperserver.shell.validator.ParameterValidator;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
-import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.create;
+import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.createCommand;
 
 /**
  * @author Alexander Krasnyanskiy
@@ -21,9 +21,9 @@ import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.create;
 public class CommandParser implements ContextAware {
 
     private Context context;
-    private CommandParameterValidator validator;
+    private ParameterValidator validator;
 
-    public CommandParser(CommandParameterValidator validator) {
+    public CommandParser(ParameterValidator validator) {
         this.validator = validator;
     }
 
@@ -44,7 +44,7 @@ public class CommandParser implements ContextAware {
                     current.getParameters().get(0).setAvailable(true).getValues().add(v);
                     continue;
                 }
-                current = create(v);
+                current = createCommand(v);
                 if (current instanceof HelpCommand) {
                     ((HelpCommand) current).setContext(context);
                 }

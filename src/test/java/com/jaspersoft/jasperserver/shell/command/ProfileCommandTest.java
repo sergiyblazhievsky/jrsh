@@ -19,7 +19,7 @@ import static org.powermock.api.support.membermodification.MemberMatcher.everyth
 import static org.powermock.api.support.membermodification.MemberModifier.suppress;
 
 /**
- * Unit tests for {@link ProfileCommand}
+ * Unit tests for {@link com.jaspersoft.jasperserver.shell.command.ProfileCommand}
  */
 @PrepareForTest({ProfileCommand.class, PrintStream.class})
 public class ProfileCommandTest extends PowerMockTestCase {

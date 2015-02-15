@@ -21,8 +21,8 @@ public final class CommandFactory {
 
     private CommandFactory() {/*NOP*/}
 
-    public static Command create(String name) {
-        switch (name) {
+    public static Command createCommand(String commandName) {
+        switch (commandName) {
             case "exit": return new ExitCommand();
             case "login": return new LoginCommand();
             case "logout": return new LogoutCommand();
@@ -35,7 +35,7 @@ public final class CommandFactory {
             case "help": return new HelpCommand();
             case "profile": return new ProfileCommand();
             case "session": return new SessionCommand();
-            default: throw new NoSuchCommandException(name);
+            default: throw new NoSuchCommandException(commandName);
         }
     }
 }

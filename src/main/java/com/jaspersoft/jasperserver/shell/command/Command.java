@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.jaspersoft.jasperserver.shell.ExecutionMode.SHELL;
-import static com.jaspersoft.jasperserver.shell.profile.ProfileFactory.getInstance;
+import static com.jaspersoft.jasperserver.shell.profile.factory.ProfileFactory.getInstance;
 import static java.lang.System.out;
 
 /**

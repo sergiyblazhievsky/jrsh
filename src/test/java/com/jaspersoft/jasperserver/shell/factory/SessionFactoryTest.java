@@ -20,7 +20,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 
 /**
- * Unit tests for {@link SessionFactory}
+ * Unit tests for {@link com.jaspersoft.jasperserver.shell.factory.SessionFactory}
  */
 @PrepareForTest({SessionFactory.class})
 public class SessionFactoryTest extends PowerMockTestCase {

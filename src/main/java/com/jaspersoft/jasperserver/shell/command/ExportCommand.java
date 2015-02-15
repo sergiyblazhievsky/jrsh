@@ -9,7 +9,7 @@ import com.jaspersoft.jasperserver.shell.exception.CannotCreateFileException;
 import com.jaspersoft.jasperserver.shell.exception.SessionIsNotAvailableException;
 import com.jaspersoft.jasperserver.shell.exception.UnspecifiedRoleException;
 import com.jaspersoft.jasperserver.shell.exception.UnspecifiedUserNameException;
-import com.jaspersoft.jasperserver.shell.exception.parser.ParameterValueSizeException;
+import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
@@ -27,8 +27,7 @@ import java.util.TimeZone;
 import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exportservice.ExportParameter.EVERYTHING;
 import static com.jaspersoft.jasperserver.shell.ExecutionMode.SHELL;
 import static com.jaspersoft.jasperserver.shell.ExecutionMode.TOOL;
-import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.create;
-import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.getInstance;
+import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.createCommand;
 import static java.lang.String.format;
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -48,8 +47,8 @@ public class ExportCommand extends Command {
     public ExportCommand() {
         name = "export";
         description = "Export configuration of JasperReportsServer.";
-        usageDescription = "\tUsage: export <repo-path> to <file-path>\t[without-access-events] [without-audit-events] [without-access-events]\n" +
-                "\t\t\t\t\t\t\t[without-monitoring-events] [without-users-and-roles]";
+        usageDescription = "\tUsage: export <repo|user|role|all> <repo-path> to <file-path>\t[without-access-events] [without-audit-events] [without-access-events]\n" +
+                "\t\t\t\t\t\t\t\t\t\t[without-monitoring-events] [without-users-and-roles]";
 
         parameters.add(new Parameter().setName("anonymous")/*.setOptional(true)*/.setMultiple(true));
         parameters.add(new Parameter().setName("to").setOptional(true));
@@ -63,7 +62,7 @@ public class ExportCommand extends Command {
 
     @Override
     void run() {
-        Session session = getInstance();
+        Session session = SessionFactory.getInstance();
         String path; // or may be a command
         String to = null;
         String role = null;
@@ -72,18 +71,12 @@ public class ExportCommand extends Command {
         List<String> values = parameter("anonymous").getValues();
 
         if (!values.isEmpty()) {
-            path = values.get(0);
-            if (values.size() > 1) {
-                to = values.get(1);
-                if (to.charAt(0) == '"' && to.charAt(path.length() - 1) == '"') {
-                    to = to.substring(1, to.length() - 1);
-                }
-            }
-            if (values.size() > 2) {
-                throw new ParameterValueSizeException("?", "export");
-            }
+            path = values.get(1);
+            /*
+              some validation ?
+            */
         } else {
-            Command cmd = create("help");
+            Command cmd = createCommand("help");
             cmd.parameter("anonymous").setValues(asList("export"));
             cmd.run();
             return;
@@ -94,10 +87,13 @@ public class ExportCommand extends Command {
                 interParams.add(EVERYTHING);
                 addEvents();
                 break;
+            case "repo":
+                path = removeQuotes(path);
+                break;
             case "role":
                 if (values.size() < 2) {
                     if (getMode().equals(TOOL)) throw new UnspecifiedRoleException();
-                    Command cmd = create("help");
+                    Command cmd = createCommand("help");
                     cmd.parameter("anonymous").setValues(asList("export"));
                     cmd.run();
                     return;
@@ -109,7 +105,7 @@ public class ExportCommand extends Command {
             case "user":
                 if (values.size() < 2) {
                     if (getMode().equals(TOOL)) exit(1);
-                    Command cmd = create("help");
+                    Command cmd = createCommand("help");
                     cmd.parameter("anonymous").setValues(asList("export"));
                     cmd.run();
                     return;
@@ -134,7 +130,7 @@ public class ExportCommand extends Command {
 
             try {
                 ExportTaskAdapter task = session.exportService().newTask();
-                setExportOptions(task, user, role, /* <path> */ path);
+                setExportOptions(task, user, role, path);
                 StateDto state = task.parameters(interParams).create().getEntity();
                 spinner.start();
                 entity = session.exportService().task(state.getId()).fetch().getEntity();
@@ -227,5 +223,14 @@ public class ExportCommand extends Command {
             sleep(250);
             counter++;
         }
+    }
+
+    private String removeQuotes(String path){
+        if (!path.isEmpty()){
+            if (path.charAt(0) == '"' && path.charAt(path.length() - 1) == '"') {
+                return path.substring(1, path.length() - 1);
+            }
+        }
+        return path;
     }
 }

@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 /**
  * @author Alexander Krasnyanskiy
  */
+@Deprecated
 public class FileEncodingUtil {
 
     public static void setUTF8() {

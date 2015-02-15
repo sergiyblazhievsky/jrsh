@@ -16,11 +16,11 @@ public class CommandFactoryTest {
 
     @Test
     public void should_return_proper_command_class() {
-        Command help = CommandFactory.create("help");
-        Command export = CommandFactory.create("export");
-        Command login = CommandFactory.create("login");
-        Command logout = CommandFactory.create("logout");
-        Command exit = CommandFactory.create("exit");
+        Command help = CommandFactory.createCommand("help");
+        Command export = CommandFactory.createCommand("export");
+        Command login = CommandFactory.createCommand("login");
+        Command logout = CommandFactory.createCommand("logout");
+        Command exit = CommandFactory.createCommand("exit");
 
         Assert.assertTrue(instanceOf(HelpCommand.class).matches(help));
         Assert.assertTrue(instanceOf(ExportCommand.class).matches(export));
@@ -31,6 +31,6 @@ public class CommandFactoryTest {
 
     @Test(expectedExceptions = NoSuchCommandException.class)
     public void should_throw_an_exception_if_such_command_does_not_exist() {
-        Command unknown = CommandFactory.create("unknown");
+        Command unknown = CommandFactory.createCommand("unknown");
     }
 }

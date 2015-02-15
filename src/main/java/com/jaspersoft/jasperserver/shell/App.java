@@ -1,13 +1,13 @@
 package com.jaspersoft.jasperserver.shell;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.completion.CompletionConfigurer;
+import com.jaspersoft.jasperserver.shell.completion.CompletionConfigurator;
 import com.jaspersoft.jasperserver.shell.context.Context;
 import com.jaspersoft.jasperserver.shell.exception.InterfaceException;
 import com.jaspersoft.jasperserver.shell.exception.parser.MandatoryParameterException;
 import com.jaspersoft.jasperserver.shell.exception.server.ServerException;
 import com.jaspersoft.jasperserver.shell.parser.CommandParser;
-import com.jaspersoft.jasperserver.shell.validator.CommandParameterValidator;
+import com.jaspersoft.jasperserver.shell.validator.ParameterValidator;
 import jline.console.ConsoleReader;
 import jline.console.completer.AggregateCompleter;
 
@@ -16,7 +16,7 @@ import java.util.Queue;
 import java.util.logging.LogManager;
 
 import static com.jaspersoft.jasperserver.shell.ExecutionMode.TOOL;
-import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.create;
+import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.createCommand;
 import static java.lang.System.exit;
 import static java.lang.System.out;
 import static java.util.Arrays.asList;
@@ -30,7 +30,7 @@ public class App {
         Context context = new Context();
         Queue<Command> queue = null;
         ConsoleReader console;
-        CommandParser parser = new CommandParser(new CommandParameterValidator());
+        CommandParser parser = new CommandParser(new ParameterValidator());
         parser.setContext(context);
         LogManager.getLogManager().reset();
 
@@ -38,7 +38,7 @@ public class App {
             console = new ConsoleReader();
             out.println("Welcome to JRSH v1.0-alpha!\n");
             console.setPrompt("\u001B[1m>>> \u001B[0m");
-            AggregateCompleter aggregator = new CompletionConfigurer().getAggregator();
+            AggregateCompleter aggregator = new CompletionConfigurator().getAggregator();
             console.addCompleter(aggregator);
             String input;
 
@@ -54,7 +54,7 @@ public class App {
                     }
                 } catch (InterfaceException e) {
                     if (e instanceof MandatoryParameterException) {
-                        Command cmd = create("help");
+                        Command cmd = createCommand("help");
                         cmd.parameter("anonymous").setValues(asList(e.getMessage()));
                         cmd.execute();
                     } else {

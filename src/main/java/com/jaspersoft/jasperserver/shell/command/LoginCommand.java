@@ -1,6 +1,8 @@
 package com.jaspersoft.jasperserver.shell.command;
 
 import com.jaspersoft.jasperserver.shell.ExecutionMode;
+import com.jaspersoft.jasperserver.shell.command.repository.TreeDownloader;
+import com.jaspersoft.jasperserver.shell.completion.completer.RepositoryPathCompleter;
 import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingException;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 
@@ -54,6 +56,17 @@ public class LoginCommand extends Command {
         profile.setUrl(url);
         profile.setUsername(username);
         profile.setOrganization(organization);
+
+
+
+        /**
+         * Черный хак!!! Убрать!
+         */
+        if (RepositoryPathCompleter.resources == null || RepositoryPathCompleter.resources.isEmpty()){
+            RepositoryPathCompleter.resources = new TreeDownloader().list();
+        }
+
+
 
         if (getMode().equals(ExecutionMode.SHELL)){
             out.println("You've logged in.");

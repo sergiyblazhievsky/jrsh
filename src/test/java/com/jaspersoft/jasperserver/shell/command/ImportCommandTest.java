@@ -38,7 +38,7 @@ import static org.powermock.api.mockito.PowerMockito.verifyNew;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 /**
- * Unit tests for {@link ImportCommand}
+ * Unit tests for {@link com.jaspersoft.jasperserver.shell.command.ImportCommand}
  */
 @PrepareForTest({ImportCommand.class, SessionFactory.class, PrintStream.class, File.class})
 public class ImportCommandTest extends PowerMockTestCase {

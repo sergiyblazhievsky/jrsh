@@ -26,10 +26,10 @@ profiles:
   }
 
 
+--server http://localhost:8080/jasperserver-pro --username superuser --password superuser
+export repo /public/Samples/Reports to /Users/alexkrasnyaskiy/IdeaProjects/jasperserver-shell/src/main/resources/arch.zip
 
-
-
-profile:
+profile:w
   name: Local,
   url: 'http://localhost:8080/jasperserver-pro',
   username: superuser

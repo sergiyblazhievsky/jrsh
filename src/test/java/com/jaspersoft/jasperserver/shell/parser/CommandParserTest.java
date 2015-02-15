@@ -4,7 +4,7 @@ import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.command.ImportCommand;
 import com.jaspersoft.jasperserver.shell.context.Context;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
-import com.jaspersoft.jasperserver.shell.validator.CommandParameterValidator;
+import com.jaspersoft.jasperserver.shell.validator.ParameterValidator;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 import java.util.Queue;
 
 /**
- * Unit tests for {@link CommandParser}
+ * Unit tests for {@link com.jaspersoft.jasperserver.shell.parser.CommandParser}
  */
 public class CommandParserTest {
 
@@ -21,7 +21,7 @@ public class CommandParserTest {
 
     @BeforeMethod
     public void before() {
-        parser = new CommandParser(new CommandParameterValidator());
+        parser = new CommandParser(new ParameterValidator());
         parser.setContext(new Context());
     }
 

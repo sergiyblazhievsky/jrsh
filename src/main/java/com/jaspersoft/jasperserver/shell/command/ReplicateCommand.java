@@ -3,14 +3,14 @@ package com.jaspersoft.jasperserver.shell.command;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.shell.command.export.RepositoryDataExporter;
 import com.jaspersoft.jasperserver.shell.command.import_.RepositoryDataImporter;
-import com.jaspersoft.jasperserver.shell.completion.ReplicateCommandCommandParameterCompleter;
 import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingException;
 import com.jaspersoft.jasperserver.shell.exception.WrongPasswordException;
 import com.jaspersoft.jasperserver.shell.exception.parser.UnknownParserException;
+import com.jaspersoft.jasperserver.shell.exception.profile.CannotFindProfileConfigurationException;
 import com.jaspersoft.jasperserver.shell.exception.profile.CannotLoadProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.exception.profile.WrongProfileNameException;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
-import com.jaspersoft.jasperserver.shell.profile.ProfileConfigurationFactory;
+import com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory;
 import com.jaspersoft.jasperserver.shell.profile.ProfileUtil;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration;
@@ -29,8 +29,6 @@ import static java.lang.Thread.sleep;
  */
 public class ReplicateCommand extends Command {
 
-    private static final String FILE = "../conf/profile.yml";
-
     public ReplicateCommand() {
         name = "replicate";
         description = "Replicate JRS configuration from one JRS to another.";
@@ -43,17 +41,15 @@ public class ReplicateCommand extends Command {
     void run() {
 
         Thread spinner = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                print();
-            }
+            public void run() {print();}
         });
         spinner.setDaemon(true);
 
         ProfileConfiguration config = ProfileConfigurationFactory.getConfiguration();
+
         try {
             if (config == null) {
-                config = ProfileConfigurationFactory.create(FILE);
+                throw new CannotFindProfileConfigurationException();
             }
 
             if (parameter("anonymous").getValues().size() != 2 || !parameter("to").isAvailable()) {
@@ -82,7 +78,6 @@ public class ReplicateCommand extends Command {
 
             spinner.stop();
 
-            // logout
             exp.logout();
             imp.logout();
 
@@ -93,15 +88,20 @@ public class ReplicateCommand extends Command {
             throw new CannotLoadProfileConfiguration();
         } catch (IOException e) {
             spinner.stop();
-            throw new UnknownParserException(); // fixme: ---
+            throw new UnknownParserException(); // fixme!
         } finally {
-            restoreParametersDefaultState();
             reader.setPrompt("\u001B[1m>>> \u001B[0m");
         }
     }
 
     private String askPasswords(String jrsName) throws IOException {
-        String pass = reader.readLine("Please enter the password for " + jrsName + " JRS: ", '*');
+        String username = "from whom?";
+        for (Profile p : ProfileConfigurationFactory.getConfiguration().getProfiles()) {
+            if (jrsName.equals(p.getName())){
+                username = p.getUsername();
+            }
+        }
+        String pass = reader.readLine("Please enter the password for <" + username + "> at <" + jrsName + "> environment: ", '*');
         if (pass.equals("")) {
             throw new WrongPasswordException();
         }
@@ -122,14 +122,5 @@ public class ReplicateCommand extends Command {
             sleep(250);
             counter++;
         }
-    }
-
-    private void restoreParametersDefaultState() {
-
-        // [workaround]
-        // todo: need to find some better solution
-
-        ReplicateCommandCommandParameterCompleter.f = false;
-        ReplicateCommandCommandParameterCompleter.s = false;
     }
 }

@@ -1,18 +1,13 @@
 package com.jaspersoft.jasperserver.shell.command;
 
-import com.jaspersoft.jasperserver.shell.exception.CannotSaveProfileConfiguration;
-import com.jaspersoft.jasperserver.shell.exception.profile.CannotLoadProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
-import com.jaspersoft.jasperserver.shell.profile.ProfileConfigurationFactory;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration;
+import com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Random;
 
-import static com.jaspersoft.jasperserver.shell.profile.ProfileConfigurationFactory.getConfiguration;
-import static com.jaspersoft.jasperserver.shell.profile.ProfileUtil.persist;
+import static com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory.getConfiguration;
 import static java.lang.System.out;
 
 /**
@@ -20,7 +15,7 @@ import static java.lang.System.out;
  */
 public class ProfileCommand extends Command {
 
-    private static String file = "/conf/profiles.yml";
+    // TODO: доделать!
 
     public ProfileCommand() {
         name = "profile";
@@ -42,30 +37,30 @@ public class ProfileCommand extends Command {
             }
         }
         if (parameter("load").isAvailable()) {
-            try {
-                if (parameter("anonymous").isAvailable()) {
-                    file = parameter("anonymous").getValues().get(0);
-                    ProfileConfigurationFactory.create(file);
-                } else {
-                    ProfileConfigurationFactory.create(file); // fixme :: handle default file path
-                }
+            //try {
+                //if (parameter("anonymous").isAvailable()) {
+                //    file = parameter("anonymous").getValues().get(0);
+                    //ProfileConfigurationFactory.createConfiguration(file);
+                //} else {
+                    //ProfileConfigurationFactory.createConfiguration(file); // fixme :: handle default file path
+                //}
                 out.println("Loaded.");
-            } catch (FileNotFoundException e) {
-                throw new CannotLoadProfileConfiguration();
-            }
+            //} catch (FileNotFoundException e) {
+            //    throw new CannotLoadProfileConfiguration();
+            //}
         } else if (parameter("save").isAvailable()) {
-            ProfileConfiguration cfg = getConfiguration();
+            ProfileConfiguration cfg = ProfileConfigurationFactory.getConfiguration();
             if ("current".equals(profile.getName())) {
                 String n = null;
                 if (parameter("anonymous").isAvailable()) {
                     n = parameter("anonymous").getValues().get(0);
                 }
                 cfg.getProfiles().add(profile.setName(n == null ? "Profile-" + new Random().nextInt(Integer.MAX_VALUE) : n));
-                try {
-                    persist(cfg, file);
-                } catch (IOException e) {
-                    throw new CannotSaveProfileConfiguration();
-                }
+                //try {
+                    //ProfileUtil.persist(cfg, file);
+                //} catch (IOException e) {
+                //    throw new CannotSaveProfileConfiguration();
+                //}
                 out.println("Saved.");
             } else if (profile.getName() != null) {
                 out.println("It is already saved.");
@@ -78,7 +73,11 @@ public class ProfileCommand extends Command {
                 out.println("You need to load profile configuration first.");
             } else {
                 for (Profile p : cfg.getProfiles()) {
-                    out.printf("\t%s\n", p.getName());
+                    if (cfg.getDefaultProfile().equals(p.getName())){
+                        out.printf("\t%s \u001B[31m*\u001B[0m\n", p.getName()); // mark default profile with `*`
+                    } else {
+                        out.printf("\t%s\n", p.getName());
+                    }
                 }
             }
         } else if (profile.getUrl() != null && profile.getUsername() != null) {

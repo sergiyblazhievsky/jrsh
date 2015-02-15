@@ -21,7 +21,7 @@ import static org.powermock.api.support.membermodification.MemberMatcher.field;
 
 
 /**
- * Unit tests for {@link SessionCommand}
+ * Unit tests for {@link com.jaspersoft.jasperserver.shell.command.SessionCommand}
  */
 @Test
 @PrepareForTest({SessionCommand.class, PrintStream.class})

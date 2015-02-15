@@ -1,4 +1,4 @@
-//package com.jaspersoft.jasperserver.shell.command;
+package com.jaspersoft.jasperserver.shell.command;//package com.jaspersoft.jasperserver.shell.command;
 //
 //import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 //import com.jaspersoft.jasperserver.shell.command.exp.RepositoryDataExporter;
@@ -7,7 +7,7 @@
 //import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 //import com.jaspersoft.jasperserver.shell.profile.Profile;
 //import com.jaspersoft.jasperserver.shell.profile.ProfileConfiguration;
-//import com.jaspersoft.jasperserver.shell.profile.ProfileConfigurationFactory;
+//import com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory;
 //import jline.console.ConsoleReader;
 //import org.mockito.Mock;
 //import org.mockito.Mockito;

@@ -15,6 +15,7 @@ import static java.lang.System.currentTimeMillis;
 /**
  * @author Alexander Krasnyanskiy
  */
+@Deprecated
 public final class SessionFactory {
 
     private static Session instance;
@@ -44,6 +45,7 @@ public final class SessionFactory {
         return null;
     }
 
+    @Deprecated
     public static Session createImmutable(String url, String username, String pass, String tenantName){
         if (url != null && username != null && pass != null) {
             try {
@@ -70,6 +72,7 @@ public final class SessionFactory {
         }
     }
 
+    @Deprecated
     public static String uptime() {
         PeriodFormatter hoursMinutesSeconds = new PeriodFormatterBuilder()
                 .appendHours().appendSuffix(" hour ", " hours ")

@@ -18,7 +18,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
- * Unit tests for {@link HelpCommand}
+ * Unit tests for {@link com.jaspersoft.jasperserver.shell.command.HelpCommand}
  */
 @Test
 @PrepareForTest({HelpCommand.class, PrintStream.class})

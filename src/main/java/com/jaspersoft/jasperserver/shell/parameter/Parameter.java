@@ -9,10 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Deprecated
 @EqualsAndHashCode(exclude = {"key", "values"})
 @ToString(exclude = {"key", "values"})
 @Accessors(chain = true)
-public final class Parameter {
+public class Parameter {
     private String name;
     private String key;
     private boolean optional;

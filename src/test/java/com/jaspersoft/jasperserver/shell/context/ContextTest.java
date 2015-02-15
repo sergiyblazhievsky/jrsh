@@ -12,7 +12,7 @@ import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Unit test for {@link ContextTest}
+ * Unit test for {@link com.jaspersoft.jasperserver.shell.context.ContextTest}
  */
 @Test
 public class ContextTest {

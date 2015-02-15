@@ -37,7 +37,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 /**
- * Unit test for {@link ExportCommand}
+ * Unit test for {@link com.jaspersoft.jasperserver.shell.command.ExportCommand}
  */
 @Test(enabled = false)
 @SuppressWarnings("unchecked")

@@ -29,7 +29,7 @@ public class HelpCommand extends Command implements ContextAware {
         if (p != null && !p.getValues().isEmpty()) {
             try {
                 String val = p.getValues().get(0);
-                Command cmd = CommandFactory.create(val);
+                Command cmd = CommandFactory.createCommand(val);
                 out.printf("\t%s%s\n", "Description: ", cmd.getDescription());
                 String usage = cmd.getUsageDescription();
                 if (usage != null) {

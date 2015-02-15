@@ -4,8 +4,8 @@ import com.jaspersoft.jasperserver.dto.resources.ClientResourceLookup;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.core.exceptions.ResourceNotFoundException;
 import com.jaspersoft.jasperserver.jaxrs.client.dto.common.ServerInfo;
-import com.jaspersoft.jasperserver.shell.command.repo.TreeConverter;
-import com.jaspersoft.jasperserver.shell.command.repo.TreeNode;
+import com.jaspersoft.jasperserver.shell.command.repository.TreeConverter;
+import com.jaspersoft.jasperserver.shell.command.repository.TreeNode;
 import com.jaspersoft.jasperserver.shell.exception.server.JrsResourceNotFoundException;
 import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
@@ -69,7 +69,7 @@ public class ShowCommand extends Command {
                         "\nDateFormatPattern: %s" +
                         "\nDatetimeFormatPattern: %s" +
                         "\nBuild: %s\n\n",
-                info.getExpiration() == null ? "unknown" : info.getExpiration(), // works for 6.0.1
+                info.getExpiration() == null ? "unknown" : info.getExpiration(),
                 info.getVersion(),
                 info.getFeatures(),
                 info.getEditionName() + " " + info.getEdition(),
@@ -105,7 +105,9 @@ public class ShowCommand extends Command {
         validate(path);
         try {
             spinner.start();
-            resources = session.resourcesService().resources().parameter(FOLDER_URI, "".equals(path) ? "/" : path).search().getEntity().getResourceLookups();
+            resources = session.resourcesService().resources()
+                    .parameter(FOLDER_URI, "".equals(path) ? "/" : path)
+                    .search().getEntity().getResourceLookups();
         } catch (ResourceNotFoundException e) {
             out.print("\r");
             throw new JrsResourceNotFoundException(path);
