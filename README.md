@@ -19,7 +19,7 @@ import "/folder/import.zip"
 ```
 ##### Export command
 ```bash
-export "/public/Samples/Reports/06g.ProfitDetailReport"
+export repo "/public/Samples/Reports/06g.ProfitDetailReport"
 ```
 ##### Help command
 ```bash
