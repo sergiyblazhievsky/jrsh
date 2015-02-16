@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static java.lang.String.format;
 import static jline.internal.Preconditions.checkNotNull;
 
 /**
@@ -18,13 +17,10 @@ import static jline.internal.Preconditions.checkNotNull;
 public class RepositoryPathCompleter implements Completer {
 
     public static List<String> resources;
-    private static int counter = 0;
-
-//    static {
-//        resources = new TreeDownloader().list();
-//    }
+    //private static int counter = 0;
 
     public int complete(String buffer, final int cursor, final List<CharSequence> candidates) {
+        //log.info(String.format("[%s - %d - %d]", buffer, cursor, candidates.size()));
         checkNotNull(candidates);
         if (buffer == null) {
             buffer = "";
@@ -41,7 +37,7 @@ public class RepositoryPathCompleter implements Completer {
             if (resource.startsWith(translated)) {
                 String name = resource + " ";
                 candidates.add(name);
-                log.info(format("\n::> translated %s\n::> resource %s", translated, resource));
+                //log.info(format("\n::> translated %s\n::> resource %s", translated, resource));
             }
         }
 
@@ -53,8 +49,8 @@ public class RepositoryPathCompleter implements Completer {
             return translated.length();
         }
 
-        log.info(format("\n %d common -> %s", counter, common));
-        log.info(format("\n %d diff -> %s", counter, diff));
+        //log.info(format("\n %d common -> %s", counter, common));
+        //log.info(format("\n %d diff -> %s", counter, diff));
 
         Set<String> cuts = new HashSet<>();
 
@@ -72,7 +68,7 @@ public class RepositoryPathCompleter implements Completer {
             candidates.addAll(cuts);
         }
 
-        log.info(format("\n %d candidates: %s\n", counter++, cuts));
+        //log.info(format("\n %d candidates: %s\n", counter++, cuts));
 
         return /*0*/translated.length();
     }
