@@ -5,92 +5,103 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.jaspersoft.client.tool</groupId>
-    <artifactId>jrs-command-line-tool</artifactId>
+    <groupId>com.jaspersoft</groupId>
+    <artifactId>jrsh</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-
     <properties>
-        <jdk.version>1.7</jdk.version>
-        <rest-client.version>5.6.0b-SNAPSHOT</rest-client.version>
-        <jcommander.version>1.30</jcommander.version>
-        <fasterxml.version>2.4.4</fasterxml.version>
-        <maven.compiler.plugin.version>3.2</maven.compiler.plugin.version>
-        <lombok.version>1.14.4</lombok.version>
-        <coveralls.plugin.version>3.0.1</coveralls.plugin.version>
-        <!--<cobertura.maven.plugin.version>2.6</cobertura.maven.plugin.version>-->
-        <jacoco.version>0.7.2.201409121644</jacoco.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <testng.version>6.8.8</testng.version>
-        <easymock.version>3.2</easymock.version>
-        <powermock.version>1.5.5</powermock.version>
     </properties>
-
 
     <repositories>
         <repository>
             <id>jaspersoft</id>
             <name>jaspersoft-snapshots</name>
-            <url>http://jaspersoft.artifactoryonline.com/jaspersoft/jaspersoft-clients-snapshots</url>
+            <url>http://jaspersoft.artifactoryonline.com/jaspersoft/jaspersoft-clients-releases</url>
+        </repository>
+        <repository>
+            <id>Sonatype-public</id>
+            <name>SnakeYAML repository</name>
+            <url>http://oss.sonatype.org/content/groups/public/</url>
         </repository>
     </repositories>
 
 
     <dependencies>
+        <!-- jrs rest client -->
         <dependency>
             <groupId>com.jaspersoft</groupId>
             <artifactId>jrs-rest-java-client</artifactId>
-            <version>${rest-client.version}</version>
+            <version>6.0.1-ALPHA</version>
         </dependency>
+
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.14.8</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- guava collections -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
+        </dependency>
+
+        <!-- log -->
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.3</version>
+        </dependency>
+
+        <!-- test -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
-            <scope>test</scope>
+            <version>6.8.8</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-module-testng</artifactId>
-            <version>${powermock.version}</version>
+            <version>1.6.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-api-mockito</artifactId>
-            <version>${powermock.version}</version>
+            <version>1.6.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-api-easymock</artifactId>
-            <version>${powermock.version}</version>
+            <version>1.6.1</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- yaml -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${fasterxml.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${fasterxml.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-            <version>${fasterxml.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.15-SNAPSHOT</version>
         </dependency>
 
+        <!-- joda -->
         <dependency>
-            <groupId>com.beust</groupId>
-            <artifactId>jcommander</artifactId>
-            <version>${jcommander.version}</version>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.4</version>
+        </dependency>
+
+        <!-- jline -->
+        <dependency>
+            <groupId>jline</groupId>
+            <artifactId>jline</artifactId>
+            <version>2.12</version>
         </dependency>
     </dependencies>
 
@@ -100,10 +111,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.plugin.version}</version>
+                <version>3.2</version>
                 <configuration>
-                    <source>${jdk.version}</source>
-                    <target>${jdk.version}</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
@@ -123,31 +134,15 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.jaspersoft.cli.tool.Application</mainClass>
+                            <mainClass>com.jaspersoft.jasperserver.shell.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
-            <!--<plugin>-->
-                <!--<groupId>org.codehaus.mojo</groupId>-->
-                <!--<artifactId>cobertura-maven-plugin</artifactId>-->
-                <!--<version>${cobertura.maven.plugin.version}</version>-->
-                <!--<configuration>-->
-                    <!--<format>xml</format>-->
-                    <!--<maxmem>256m</maxmem>-->
-                    <!--<aggregate>true</aggregate>-->
-                    <!--<check/>-->
-                    <!--<instrumentation>-->
-                        <!--<excludes>-->
-                            <!--<exclude>**/com/jaspersoft/cli/tool/command/common/**</exclude>-->
-                        <!--</excludes>-->
-                    <!--</instrumentation>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
+                <version>0.7.2.201409121644</version>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -160,10 +155,10 @@
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
-                <version>${coveralls.plugin.version}</version>
+                <version>3.0.1</version>
                 <configuration>
                     <branch>master</branch>
-                    <repoToken>COUt2qTNpRLBrBpxn6MYomyALx3pgGndV</repoToken>
+                    <repoToken>8YGj6GbVkSsyA0w6brFpSfX9mqvR6fDT5</repoToken>
                 </configuration>
             </plugin>
         </plugins>

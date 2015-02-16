@@ -1,0 +1,50 @@
+ERROR => cannot create a file
+export /public/Samples/Reports/06g.ProfitDetailReport to /Users/alexkrasnyaskiy/IdeaProjects/jrs-command-line-tool/src/main/resources
+
+
+ERROR => folder doesn't exist!
+export /path/to/repo to /folder/fail/my_arch.zip => fail doesn't exist
+
+
+
+
+
+
+>>> profile list
+profile list
+You need to load profile configuration first.
+>>> profile load
+profile load
+>>> profile list
+profile list
+	Local
+	Cloud
+>>> profile save "MishaProfile"
+profile save "MishaProfile"
+It is already saved.
+>>>
+
+
+
+
+
+>>> replicate Local ot jrs-cloud     => ot
+Please enter password: superuse
+error: Unauthorized
+>>> replicate Local to Local
+Please enter the password for Local JRS: adasd
+Please enter the password for Local JRS: sds
+Please enter password: sdsd       => again???
+error: Unauthorized
+>>>
+
+
+
+
+
+
+
+
+>>> login --server sdfsdkjgd
+Please enter password: asd
+error: Unauthorized

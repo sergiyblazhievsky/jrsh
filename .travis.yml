@@ -5,9 +5,16 @@ jdk:
 
 notifications:
   email:
-  - o.krasnianskyi@globallogic.com
-  - igor.nesterenko@globallogic.com
-  - borys.timakov@globallogic.com
+    recipients:
+      - o.krasnianskyi@globallogic.com
+      - igor.nesterenko@globallogic.com
+      - borys.timakov@globallogic.com
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/57ba0193a1606d865761
+    on_success: false
+    on_start: false
+    on_failure: always
 
 #env:
 #  global:
@@ -17,10 +24,5 @@ branches:
   only:
   - master
 
-cache:
-  directories:
-  - $HOME/.m2
-
 after_success:
-#  - mvn clean cobertura:cobertura coveralls:cobertura
   - mvn clean test jacoco:report coveralls:report
