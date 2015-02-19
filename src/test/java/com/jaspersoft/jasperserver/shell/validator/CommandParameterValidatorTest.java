@@ -1,6 +1,6 @@
 package com.jaspersoft.jasperserver.shell.validator;
 
-import com.jaspersoft.jasperserver.shell.command.ExportCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.ExportCommand;
 import com.jaspersoft.jasperserver.shell.exception.parser.MandatoryParameterException;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import org.testng.Assert;

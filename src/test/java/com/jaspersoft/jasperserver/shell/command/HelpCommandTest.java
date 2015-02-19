@@ -1,5 +1,6 @@
 package com.jaspersoft.jasperserver.shell.command;
 
+import com.jaspersoft.jasperserver.shell.command.impl.HelpCommand;
 import com.jaspersoft.jasperserver.shell.context.Context;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.testng.PowerMockTestCase;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
- * Unit tests for {@link com.jaspersoft.jasperserver.shell.command.HelpCommand}
+ * Unit tests for {@link com.jaspersoft.jasperserver.shell.command.impl.HelpCommand}
  */
 @Test
 @PrepareForTest({HelpCommand.class, PrintStream.class})

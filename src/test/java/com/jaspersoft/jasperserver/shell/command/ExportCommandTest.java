@@ -9,6 +9,7 @@ import com.jaspersoft.jasperserver.jaxrs.client.core.RestClientConfiguration;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.core.operationresult.OperationResult;
 import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
+import com.jaspersoft.jasperserver.shell.command.impl.ExportCommand;
 import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -37,7 +38,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 /**
- * Unit test for {@link com.jaspersoft.jasperserver.shell.command.ExportCommand}
+ * Unit test for {@link com.jaspersoft.jasperserver.shell.command.impl.ExportCommand}
  */
 @Test(enabled = false)
 @SuppressWarnings("unchecked")

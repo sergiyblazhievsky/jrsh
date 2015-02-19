@@ -1,18 +1,19 @@
 package com.jaspersoft.jasperserver.shell.completion.completer;
 
-import com.jaspersoft.jasperserver.shell.completion.CompleterUtil;
+import com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jaspersoft.jasperserver.shell.completion.CompleterUtil.commonSubstring;
-import static com.jaspersoft.jasperserver.shell.completion.CompleterUtil.filter;
-import static com.jaspersoft.jasperserver.shell.completion.CompleterUtil.match;
+import static com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil.commonSubstring;
+import static com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil.filter;
+import static com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil.match;
 import static jline.internal.Preconditions.checkNotNull;
 
 /**
  * @author Alexander Krasnyanskiy
  */
+@Deprecated
 public class ReplicateCommandParameterCompleter extends CommandCommonParameterCompleter {
 
     public static boolean f = false;
@@ -27,9 +28,8 @@ public class ReplicateCommandParameterCompleter extends CommandCommonParameterCo
         this.copy.addAll(params);
     }
 
-    public ReplicateCommandParameterCompleter() {
-        // NOP
-    }
+    //public ReplicateCommandParameterCompleter() {
+    //}
 
     /**
      * Populates candidates with a list of possible completions for the buffer.

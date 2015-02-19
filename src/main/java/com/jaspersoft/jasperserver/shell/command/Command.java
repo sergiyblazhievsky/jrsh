@@ -44,10 +44,10 @@ public abstract class Command implements Executable, ConsoleReaderAware {
     private ExecutionMode mode;
     protected ConsoleReader reader;
 
-    abstract void run();
+    public abstract void run();
 
     @Override
-    public void execute() {
+    public final void execute() {
         try {
             run();
         } catch (Exception e) {
@@ -56,16 +56,11 @@ public abstract class Command implements Executable, ConsoleReaderAware {
                     out.printf("i/o error: %s\n", e.getMessage());
                     return;
                 }
-
-                // we cannot handle thus cases, hence we print error and deny re-login operation below
-                // fixme: Design bug! Too many instanceof
                 if (e instanceof WrongRepositoryPathFormatException || e instanceof JrsResourceNotFoundException || e instanceof ParameterValueSizeException || /* for replicate if [to] doesn't exist */ e instanceof WrongProfileNameException ||  e instanceof MandatoryParameterMissingException) {
                     out.printf("error: %s\n", e.getMessage());
                     return;
                 }
-
-                // re-login
-                if (!ProfileUtil.isEmpty(profile) && /* for replicate cmd only */!(e instanceof GeneralServerException)) {
+                if (!ProfileUtil.isEmpty(profile) && !(e instanceof GeneralServerException)) {
                     String password = askPassword();
                     SessionFactory.createSession(profile.getUrl(), profile.getUsername(), password, profile.getOrganization());
                     run();
@@ -73,7 +68,6 @@ public abstract class Command implements Executable, ConsoleReaderAware {
                     throw new UnknownInterfaceException(e.getMessage());
                 }
             } else {
-                // we shouldn't even try to handle such kind of cases
                 throw new UnknownInterfaceException(e.getMessage());
             }
         }

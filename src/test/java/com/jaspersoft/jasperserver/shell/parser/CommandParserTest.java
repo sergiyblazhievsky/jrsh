@@ -1,7 +1,7 @@
 package com.jaspersoft.jasperserver.shell.parser;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.command.ImportCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.ImportCommand;
 import com.jaspersoft.jasperserver.shell.context.Context;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import com.jaspersoft.jasperserver.shell.validator.ParameterValidator;

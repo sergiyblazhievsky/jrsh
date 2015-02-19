@@ -1,5 +1,6 @@
 package com.jaspersoft.jasperserver.shell.command;
 
+import com.jaspersoft.jasperserver.shell.command.impl.SessionCommand;
 import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.testng.PowerMockTestCase;
@@ -21,7 +22,7 @@ import static org.powermock.api.support.membermodification.MemberMatcher.field;
 
 
 /**
- * Unit tests for {@link com.jaspersoft.jasperserver.shell.command.SessionCommand}
+ * Unit tests for {@link com.jaspersoft.jasperserver.shell.command.impl.SessionCommand}
  */
 @Test
 @PrepareForTest({SessionCommand.class, PrintStream.class})
