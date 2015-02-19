@@ -20,10 +20,6 @@ public class RepositoryPathCompleter implements Completer {
 
     public static List<Pair<String, Boolean>> resources;
 
-    //static {
-    //    resources = new TreeDownloader().markedList();
-    //}
-
     public int complete(String buffer, final int cursor, final List<CharSequence> candidates) {
         checkNotNull(candidates);
         if (buffer == null) {
@@ -101,6 +97,10 @@ public class RepositoryPathCompleter implements Completer {
                     }
                 }
             }
+        }
+        if (candidates.isEmpty() || (candidates.size() == 1 && candidates.contains(""))) {
+            candidates.clear();
+            candidates.add(" ");
         }
         return translated.length();
     }
