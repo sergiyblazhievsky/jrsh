@@ -1,4 +1,6 @@
-package com.jaspersoft.jasperserver.shell.command;
+package com.jaspersoft.jasperserver.shell.command.impl;
+
+import com.jaspersoft.jasperserver.shell.command.Command;
 
 import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.getInstance;
 import static java.lang.System.exit;
@@ -14,7 +16,7 @@ public class ExitCommand extends Command {
     }
 
     @Override
-    void run() {
+    public void run() {
         try {
             getInstance().logout();
         } catch (Exception ignored) {/* NOP */} finally {

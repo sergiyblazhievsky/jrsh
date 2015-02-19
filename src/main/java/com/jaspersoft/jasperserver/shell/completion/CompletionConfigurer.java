@@ -1,17 +1,17 @@
 package com.jaspersoft.jasperserver.shell.completion;
 
-import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
-import com.jaspersoft.jasperserver.shell.profile.reader.ProfileReader;
+import com.jaspersoft.jasperserver.shell.completion.completer.CommandCommonParameterCompleter;
+import com.jaspersoft.jasperserver.shell.completion.completer.CustomParameterCompleter;
+import com.jaspersoft.jasperserver.shell.completion.completer.ParameterCompleter;
+import com.jaspersoft.jasperserver.shell.completion.completer.RepositoryPathCompleter;
 import jline.console.completer.AggregateCompleter;
 import jline.console.completer.ArgumentCompleter;
+import jline.console.completer.Completer;
+import jline.console.completer.FileNameCompleter;
+import jline.console.completer.NullCompleter;
 import jline.console.completer.StringsCompleter;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import static java.lang.System.getProperty;
+import static com.jaspersoft.jasperserver.shell.profile.ProfileUtil.list;
 import static java.util.Arrays.asList;
 
 /**
@@ -19,81 +19,85 @@ import static java.util.Arrays.asList;
  */
 public class CompletionConfigurer {
 
-    private final static String FILE = "/conf/profiles.yml";
     private AggregateCompleter aggregator;
 
     public CompletionConfigurer() {
-        StringsCompleter exit = new StringsCompleter("exit");
-        StringsCompleter clear = new StringsCompleter("clear");
-        StringsCompleter session = new StringsCompleter("session");
-        StringsCompleter logout = new StringsCompleter("logout");
 
-        StringsCompleter profile = new StringsCompleter("profile");
-        GeneralCommandParameterCompleter profileParams = new GeneralCommandParameterCompleter(asList("save", "load", "list"));
+        Completer exit = new StringsCompleter("exit");
+        Completer clear = new StringsCompleter("clear");
+        Completer session = new StringsCompleter("session");
+        Completer logout = new StringsCompleter("logout");
 
-        StringsCompleter login = new StringsCompleter("login");
-        GeneralCommandParameterCompleter loginParams = new GeneralCommandParameterCompleter(asList("--server",
-                "--username", "--password"));
+        Completer profile = new StringsCompleter("profile");
+        Completer profileParameters = new CommandCommonParameterCompleter("save", "load", "list");
 
-        StringsCompleter show = new StringsCompleter("show");
-        GeneralCommandParameterCompleter showParams = new GeneralCommandParameterCompleter(asList("repo", "server-info"));
+        Completer login = new StringsCompleter("login");
+        Completer loginParameters = new CommandCommonParameterCompleter("--server", "--username", "--password");
 
-        StringsCompleter replicate = new StringsCompleter("replicate");
-            ReplicateCommandCommandParameterCompleter replicateParams =
-                new ReplicateCommandCommandParameterCompleter(getProfileNames());
+        Completer show = new StringsCompleter("show");
+        Completer showParameters = new CommandCommonParameterCompleter("repo", "server-info");
 
 
-        StringsCompleter export = new StringsCompleter("export");
-        GeneralCommandParameterCompleter exportParams = new GeneralCommandParameterCompleter(asList("to",
-                "without-access-events", "with-audit-events", "with-monitoring-events", "with-events",
-                "with-users-and-roles", "with-repository-permissions"));
+        /**
+         * Replicate Completer
+         */
+        Completer replicate = new StringsCompleter("replicate");
+        Completer firstProfileName = new ParameterCompleter(list());
+        Completer direction = new ParameterCompleter("to");
+        Completer secondProfileName = new CustomParameterCompleter(list());
 
-        StringsCompleter importCmd = new StringsCompleter("import");
-        GeneralCommandParameterCompleter importParams = new GeneralCommandParameterCompleter(asList("with-audit-events",
-                "with-access-events", "with-monitoring-events", "with-events", "with-update",
-                "with-skip-user-update"));
 
-        StringsCompleter help = new StringsCompleter("help");
-        GeneralCommandParameterCompleter helpParams = new GeneralCommandParameterCompleter(asList("login", "logout", "import",
+        /**
+         * Export Completer
+         */
+        Completer export = new StringsCompleter("export");
+        Completer all = new StringsCompleter("all");
+        Completer repo = new StringsCompleter("repo");
+        Completer role = new StringsCompleter("role");
+        Completer user = new StringsCompleter("user");
+        Completer path = new RepositoryPathCompleter();
+
+
+        /**
+         * Import Completer
+         */
+        Completer import_ = new StringsCompleter("import");
+        Completer file = new FileNameCompleter();
+        Completer events = new CommandCommonParameterCompleter("with-audit-events", "with-access-events",
+                "with-monitoring-events", "with-events", "with-update", "with-skip-user-update");
+
+
+        /**
+         * Help Completer
+         */
+        Completer help = new StringsCompleter("help");
+        Completer helpParameters = new CommandCommonParameterCompleter(asList("login", "logout", "import",
                 "export", "exit", "show", "session", "replicate", "profile"));
 
 
-        ArgumentCompleter loginCompleter = new ArgumentCompleter(login, loginParams);
-        ArgumentCompleter exportCompleter = new ArgumentCompleter(export, exportParams);
-        ArgumentCompleter helpCompleter = new ArgumentCompleter(help, helpParams);
-        ArgumentCompleter showCompleter = new ArgumentCompleter(show, showParams);
-        ArgumentCompleter importCompleter = new ArgumentCompleter(importCmd, importParams);
-        ArgumentCompleter profileCompleter = new ArgumentCompleter(profile, profileParams);
-        ArgumentCompleter replicateCompleter = new ArgumentCompleter(replicate, replicateParams);
+        Completer loginCompleter = new ArgumentCompleter(login, loginParameters);
+        Completer helpCompleter = new ArgumentCompleter(help, helpParameters, new NullCompleter());
+        Completer showCompleter = new ArgumentCompleter(show, showParameters, new NullCompleter());
+        Completer importCompleter = new ArgumentCompleter(import_, file, events);
+        Completer profileCompleter = new ArgumentCompleter(profile, profileParameters, new NullCompleter());
+        Completer replicateCompleter = new ArgumentCompleter(replicate, firstProfileName, direction,
+                secondProfileName, new NullCompleter());
 
-        aggregator = new AggregateCompleter(exit, clear, logout, replicateCompleter, profileCompleter, session, loginCompleter, importCompleter, showCompleter, exportCompleter, helpCompleter);
+        aggregator = new AggregateCompleter(exit,
+                // fixme!
+                // replace this workaround with the better logic
+                new ArgumentCompleter(export, new NullCompleter()),
+                new ArgumentCompleter(export, all, new NullCompleter()),
+                new ArgumentCompleter(export, repo, new NullCompleter()),
+                new ArgumentCompleter(export, repo, path, events),
+                new ArgumentCompleter(export, role, new NullCompleter()),
+                new ArgumentCompleter(export, user, new NullCompleter()),
+
+                clear, logout, replicateCompleter, profileCompleter, session, loginCompleter,
+                importCompleter, showCompleter, helpCompleter);
     }
 
     public AggregateCompleter getAggregator() {
         return aggregator;
     }
-
-    /**
-     * Profiles pre-loaded profile names. todo: move the method to the separate class!
-     *
-     * @return list
-     */
-    private static List<String> getProfileNames() {
-        File file = new File(getProperty("user.dir"));
-        List<String> profileNames = new ArrayList<>();
-        try {
-            Set<Profile> profiles = new ProfileReader(file + FILE).read().getProfiles();
-            for (Profile p : profiles) {
-                String name = p.getName();
-                if (name != null && !name.isEmpty()) {
-                    profileNames.add(name);
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return profileNames;
-    }
-
-
 }

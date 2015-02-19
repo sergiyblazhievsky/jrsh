@@ -1,7 +1,7 @@
 package com.jaspersoft.jasperserver.shell.completion.completer;
 
-import com.jaspersoft.jasperserver.shell.completion.CollectionUtil;
-import com.jaspersoft.jasperserver.shell.completion.CompleterUtil;
+import com.jaspersoft.jasperserver.shell.completion.util.ConverterUtil;
+import com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil;
 import jline.console.completer.Completer;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.tuple.Pair;
@@ -34,11 +34,18 @@ public class RepositoryPathCompleter implements Completer {
         if (resources == null) {
             return -1;
         }
-        String common = CompleterUtil.commonSubstring(translated, CollectionUtil.convert(resources));
+        String common = CompleterUtil.commonSubstring(translated, ConverterUtil.convert(resources));
         String diff = CompleterUtil.diff(translated, common);
         if (!diff.isEmpty()) {
             candidates.clear();
             candidates.add(diff);
+
+            // |||||||
+            // logging
+            // |||||||
+            if (candidates.size() > 1) {
+                log.info(String.format("o_O: %s", candidates.size()));
+            }
             return translated.length();
         }
         Set<String> cuts = new HashSet<>();
@@ -64,6 +71,13 @@ public class RepositoryPathCompleter implements Completer {
             if (translated.endsWith("/")) {
                 candidates.clear();
                 candidates.add(" ");
+
+                // |||||||
+                // logging
+                // |||||||
+                if (candidates.size() > 1) {
+                    log.info(String.format("Huh: %s", candidates.size()));
+                }
                 return translated.length() - 1;
             }
         }
@@ -89,10 +103,31 @@ public class RepositoryPathCompleter implements Completer {
                 if (!d.equals("/")) {
                     if (candidates.size() > 1) {
                         if (candidates.contains("/")) {
+
+                            // |||||||
+                            // logging
+                            // |||||||
+                            if (candidates.size() > 1) {
+                                log.info(String.format("Ah: %s", candidates.size()));
+                            }
                             return translated.length();
                         }
                         if (candidates.contains(d) || candidates.contains("")) {
+
+                            // |||||||
+                            // logging
+                            // |||||||
+                            if (candidates.size() > 1) {
+                                log.info(String.format("Oh: %s", candidates.size()));
+                            }
                             return translated.length();
+                        }
+
+                        // |||||||
+                        // logging
+                        // |||||||
+                        if (candidates.size() > 1) {
+                            log.info(String.format("Uh: %s", candidates.size()));
                         }
                         return translated.length() - d.length();
                     }
@@ -102,6 +137,14 @@ public class RepositoryPathCompleter implements Completer {
         if (candidates.isEmpty() || (candidates.size() == 1 && candidates.contains(""))) {
             candidates.clear();
             candidates.add(" ");
+        }
+
+
+        // |||||||
+        // logging
+        // |||||||
+        if (candidates.size() > 1) {
+            log.info(String.format("Nah: %s", candidates.size()));
         }
         return translated.length();
     }

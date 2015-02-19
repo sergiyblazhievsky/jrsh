@@ -1,5 +1,6 @@
-package com.jaspersoft.jasperserver.shell.command;
+package com.jaspersoft.jasperserver.shell.command.impl;
 
+import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.context.Context;
 import com.jaspersoft.jasperserver.shell.context.ContextAware;
 import com.jaspersoft.jasperserver.shell.exception.InterfaceException;
@@ -24,7 +25,7 @@ public class HelpCommand extends Command implements ContextAware {
     }
 
     @Override
-    void run() {
+    public void run() {
         Parameter p = parameter("anonymous");
         if (p != null && !p.getValues().isEmpty()) {
             try {

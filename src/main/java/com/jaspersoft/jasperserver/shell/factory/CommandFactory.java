@@ -1,17 +1,17 @@
 package com.jaspersoft.jasperserver.shell.factory;
 
-import com.jaspersoft.jasperserver.shell.command.ClearScreenCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.ClearScreenCommand;
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.command.ExitCommand;
-import com.jaspersoft.jasperserver.shell.command.HelpCommand;
-import com.jaspersoft.jasperserver.shell.command.ImportCommand;
-import com.jaspersoft.jasperserver.shell.command.LoginCommand;
-import com.jaspersoft.jasperserver.shell.command.LogoutCommand;
-import com.jaspersoft.jasperserver.shell.command.ProfileCommand;
-import com.jaspersoft.jasperserver.shell.command.ReplicateCommand;
-import com.jaspersoft.jasperserver.shell.command.SessionCommand;
-import com.jaspersoft.jasperserver.shell.command.ShowCommand;
-import com.jaspersoft.jasperserver.shell.command.ExportCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.ExitCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.HelpCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.ImportCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.LoginCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.LogoutCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.ProfileCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.ReplicateCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.SessionCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.ShowCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.ExportCommand;
 import com.jaspersoft.jasperserver.shell.exception.parser.NoSuchCommandException;
 
 /**

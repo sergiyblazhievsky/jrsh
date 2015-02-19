@@ -1,4 +1,4 @@
-package com.jaspersoft.jasperserver.shell.completion;
+package com.jaspersoft.jasperserver.shell.completion.util;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Alexander Krasnyanskiy
  */
-public class CollectionUtil {
+public class ConverterUtil {
 
     public static List<String> convert(List<Pair<String, Boolean>> col) {
         List<String> list = new ArrayList<>();

@@ -1,8 +1,8 @@
 package com.jaspersoft.jasperserver.shell.parser;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.command.HelpCommand;
-import com.jaspersoft.jasperserver.shell.command.LoginCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.HelpCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.LoginCommand;
 import com.jaspersoft.jasperserver.shell.context.Context;
 import com.jaspersoft.jasperserver.shell.context.ContextAware;
 import com.jaspersoft.jasperserver.shell.exception.parser.UnknownInputContentException;

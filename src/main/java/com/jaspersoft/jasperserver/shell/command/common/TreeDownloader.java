@@ -1,4 +1,4 @@
-package com.jaspersoft.jasperserver.shell.command.repository;
+package com.jaspersoft.jasperserver.shell.command.common;
 
 import com.jaspersoft.jasperserver.dto.resources.ClientResourceLookup;
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter;

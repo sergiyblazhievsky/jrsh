@@ -1,4 +1,4 @@
-package com.jaspersoft.jasperserver.shell.command.repo;
+package com.jaspersoft.jasperserver.shell.command.common;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import static java.util.regex.Pattern.quote;
 public class TreeConverter {
 
     public TreeNode toTree(List<String> arr, String path) {
-        TreeNode root = new TreeNode("\u2510                   ", new ArrayList<TreeNode>());
+        TreeNode root = new TreeNode("\u2510                        ", new ArrayList<TreeNode>());
         TreeNode tempRoot = root;
         for (String line : arr) {
             List<String> lines = convert(line);

@@ -1,4 +1,4 @@
-package com.jaspersoft.jasperserver.shell.command.export;
+package com.jaspersoft.jasperserver.shell.command.common;
 
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exportservice.ExportParameter;
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exportservice.ExportTaskAdapter;

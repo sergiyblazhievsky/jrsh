@@ -1,10 +1,11 @@
-package com.jaspersoft.jasperserver.shell.command;
+package com.jaspersoft.jasperserver.shell.command.impl;
 
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exportservice.ExportParameter;
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exportservice.ExportTaskAdapter;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.core.exceptions.AuthenticationFailedException;
 import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
+import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.exception.CannotCreateFileException;
 import com.jaspersoft.jasperserver.shell.exception.SessionIsNotAvailableException;
 import com.jaspersoft.jasperserver.shell.exception.UnspecifiedRoleException;
@@ -47,7 +48,8 @@ public class ExportCommand extends Command {
     public ExportCommand() {
         name = "export";
         description = "Export configuration of JasperReportsServer.";
-        usageDescription = "\tUsage: export <repo|user|role|all> <repo-path> to <file-path>\t[without-access-events] [without-audit-events] [without-access-events]\n" +
+        usageDescription = "\tUsage: export <repo|user|role|all> <repo-path> to <file-path>\t[without-access-events] " +
+                "[without-audit-events] [without-access-events]\n" +
                 "\t\t\t\t\t\t\t\t\t\t[without-monitoring-events] [without-users-and-roles]";
 
         parameters.add(new Parameter().setName("anonymous")/*.setOptional(true)*/.setMultiple(true));
@@ -61,7 +63,7 @@ public class ExportCommand extends Command {
     }
 
     @Override
-    void run() {
+    public void run() {
         Session session = SessionFactory.getInstance();
         String path; // or may be a command
         String to = null;
@@ -72,9 +74,6 @@ public class ExportCommand extends Command {
 
         if (!values.isEmpty()) {
             path = values.get(1);
-            /*
-              some validation ?
-            */
         } else {
             Command cmd = createCommand("help");
             cmd.parameter("anonymous").setValues(asList("export"));
@@ -167,7 +166,7 @@ public class ExportCommand extends Command {
             new FileOutputStream(file).write(readFully(entity, -1, false));
 
 
-            // fixme: for Windows?
+            //fixme: Windows!
             //File f = new File(getProperty("user.dir") + "/" + file);
             //new FileOutputStream(f).write(readFully(entity, -1, false));
 

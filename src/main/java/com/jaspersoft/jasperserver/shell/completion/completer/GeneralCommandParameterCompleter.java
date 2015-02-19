@@ -1,11 +1,12 @@
-package com.jaspersoft.jasperserver.shell.completion;
+package com.jaspersoft.jasperserver.shell.completion.completer;
 
+import com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil;
 import jline.console.completer.StringsCompleter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jaspersoft.jasperserver.shell.completion.CompleterUtil.filter;
+import static com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil.filter;
 import static jline.internal.Preconditions.checkNotNull;
 
 /**

@@ -1,7 +1,7 @@
 package com.jaspersoft.jasperserver.shell;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.completion.CompletionConfigurator;
+import com.jaspersoft.jasperserver.shell.completion.CompletionConfigurer;
 import com.jaspersoft.jasperserver.shell.context.Context;
 import com.jaspersoft.jasperserver.shell.exception.InterfaceException;
 import com.jaspersoft.jasperserver.shell.exception.parser.MandatoryParameterException;
@@ -38,7 +38,7 @@ public class App {
             console = new ConsoleReader();
             out.println("Welcome to JRSH v1.0-alpha!\n");
             console.setPrompt("\u001B[1m>>> \u001B[0m");
-            AggregateCompleter aggregator = new CompletionConfigurator().getAggregator();
+            AggregateCompleter aggregator = new CompletionConfigurer().getAggregator();
             console.addCompleter(aggregator);
             String input;
 

@@ -1,10 +1,11 @@
-package com.jaspersoft.jasperserver.shell.command;
+package com.jaspersoft.jasperserver.shell.command.impl;
 
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.importservice.ImportParameter;
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.importservice.ImportTaskRequestAdapter;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
 import com.jaspersoft.jasperserver.shell.ExecutionMode;
+import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.exception.WrongPathParameterException;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import lombok.SneakyThrows;
@@ -42,7 +43,7 @@ public class ImportCommand extends Command {
     }
 
     @Override
-    void run() {
+    public void run() {
 
         session = getInstance();
         String path = parameter("anonymous").getValues().get(0);

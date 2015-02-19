@@ -1,4 +1,6 @@
-package com.jaspersoft.jasperserver.shell.command;
+package com.jaspersoft.jasperserver.shell.command.impl;
+
+import com.jaspersoft.jasperserver.shell.command.Command;
 
 import java.io.IOException;
 
@@ -13,7 +15,7 @@ public class ClearScreenCommand extends Command {
     }
 
     @Override
-    void run() {
+    public void run() {
         try {
             reader.clearScreen();
         } catch (IOException ignored) {

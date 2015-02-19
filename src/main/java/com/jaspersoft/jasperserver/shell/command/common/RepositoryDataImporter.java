@@ -1,4 +1,4 @@
-package com.jaspersoft.jasperserver.shell.command.import_;
+package com.jaspersoft.jasperserver.shell.command.common;
 
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.importservice.ImportTaskRequestAdapter;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;

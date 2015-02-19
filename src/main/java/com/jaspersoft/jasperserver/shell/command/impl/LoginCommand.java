@@ -1,7 +1,8 @@
-package com.jaspersoft.jasperserver.shell.command;
+package com.jaspersoft.jasperserver.shell.command.impl;
 
 import com.jaspersoft.jasperserver.shell.ExecutionMode;
-import com.jaspersoft.jasperserver.shell.command.repository.TreeDownloader;
+import com.jaspersoft.jasperserver.shell.command.Command;
+import com.jaspersoft.jasperserver.shell.command.common.TreeDownloader;
 import com.jaspersoft.jasperserver.shell.completion.completer.RepositoryPathCompleter;
 import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingException;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
@@ -27,7 +28,7 @@ public class LoginCommand extends Command {
     }
 
     @Override
-    void run() {
+    public void run() {
 
         List<String> serverParamValues = parameter("server").getValues();
         List<String> usernameParamValues = parameter("username").getValues();

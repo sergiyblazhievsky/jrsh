@@ -1,4 +1,6 @@
-package com.jaspersoft.jasperserver.shell.command;
+package com.jaspersoft.jasperserver.shell.command.impl;
+
+import com.jaspersoft.jasperserver.shell.command.Command;
 
 import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.uptime;
 import static java.lang.System.out;
@@ -14,7 +16,7 @@ public class SessionCommand extends Command {
     }
 
     @Override
-    void run() {
+    public void run() {
         if (profile.getUrl() == null && profile.getUsername() == null) {
             out.println("There's no active session.");
         } else {

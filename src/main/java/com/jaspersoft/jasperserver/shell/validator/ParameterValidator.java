@@ -1,7 +1,7 @@
 package com.jaspersoft.jasperserver.shell.validator;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.command.LoginCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.LoginCommand;
 import com.jaspersoft.jasperserver.shell.exception.parser.MandatoryParameterException;
 import com.jaspersoft.jasperserver.shell.exception.parser.ParameterValueSizeException;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;

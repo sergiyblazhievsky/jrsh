@@ -1,6 +1,6 @@
 package com.jaspersoft.jasperserver.shell.completion.completer;
 
-import com.jaspersoft.jasperserver.shell.completion.CompleterUtil;
+import com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil;
 import com.jaspersoft.jasperserver.shell.completion.ParameterHolder;
 import jline.console.completer.StringsCompleter;
 import lombok.extern.java.Log;

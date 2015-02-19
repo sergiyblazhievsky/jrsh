@@ -1,11 +1,11 @@
 package com.jaspersoft.jasperserver.shell.factory;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.command.ExitCommand;
-import com.jaspersoft.jasperserver.shell.command.ExportCommand;
-import com.jaspersoft.jasperserver.shell.command.HelpCommand;
-import com.jaspersoft.jasperserver.shell.command.LoginCommand;
-import com.jaspersoft.jasperserver.shell.command.LogoutCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.ExitCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.ExportCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.HelpCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.LoginCommand;
+import com.jaspersoft.jasperserver.shell.command.impl.LogoutCommand;
 import com.jaspersoft.jasperserver.shell.exception.parser.NoSuchCommandException;
 import org.testng.Assert;
 import org.testng.annotations.Test;

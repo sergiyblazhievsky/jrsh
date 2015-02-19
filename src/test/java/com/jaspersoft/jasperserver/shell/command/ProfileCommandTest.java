@@ -1,5 +1,6 @@
 package com.jaspersoft.jasperserver.shell.command;
 
+import com.jaspersoft.jasperserver.shell.command.impl.ProfileCommand;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.testng.PowerMockTestCase;
 import org.testng.annotations.AfterMethod;
@@ -19,7 +20,7 @@ import static org.powermock.api.support.membermodification.MemberMatcher.everyth
 import static org.powermock.api.support.membermodification.MemberModifier.suppress;
 
 /**
- * Unit tests for {@link com.jaspersoft.jasperserver.shell.command.ProfileCommand}
+ * Unit tests for {@link com.jaspersoft.jasperserver.shell.command.impl.ProfileCommand}
  */
 @PrepareForTest({ProfileCommand.class, PrintStream.class})
 public class ProfileCommandTest extends PowerMockTestCase {

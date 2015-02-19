@@ -1,4 +1,4 @@
-package com.jaspersoft.jasperserver.shell.completion;
+package com.jaspersoft.jasperserver.shell.completion.util;
 
 import java.util.Collection;
 import java.util.Set;
