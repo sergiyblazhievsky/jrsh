@@ -16,6 +16,7 @@ import static jline.internal.Preconditions.checkNotNull;
  * @author Alexander Krasnyanskiy
  */
 @Log
+@Deprecated
 public class RepositoryPathCompleter implements Completer {
 
     public static List<Pair<String, Boolean>> resources;
