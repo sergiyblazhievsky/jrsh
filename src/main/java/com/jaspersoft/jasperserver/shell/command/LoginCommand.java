@@ -60,10 +60,10 @@ public class LoginCommand extends Command {
 
 
         /**
-         * Черный хак!!! Убрать!
+         * Dirty hack! Delete it!
          */
         if (RepositoryPathCompleter.resources == null || RepositoryPathCompleter.resources.isEmpty()){
-            RepositoryPathCompleter.resources = new TreeDownloader().list();
+            RepositoryPathCompleter.resources = new TreeDownloader().markedList();
         }
 
 

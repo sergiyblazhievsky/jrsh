@@ -3,6 +3,8 @@ package com.jaspersoft.jasperserver.shell.command.repository;
 import com.jaspersoft.jasperserver.dto.resources.ClientResourceLookup;
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter;
 import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,16 @@ public class TreeDownloader {
         List<String> list = new ArrayList<>();
         for (ClientResourceLookup lup : download()) {
             list.add(lup.getUri());
+        }
+        return list;
+    }
+
+    public List<Pair<String, Boolean>> markedList() {
+        List<Pair<String, Boolean>> list = new ArrayList<>();
+        for (ClientResourceLookup lup : download()) {
+            String uri = lup.getUri();
+            String resType = lup.getResourceType();
+            list.add(new ImmutablePair<>(uri, "folder".equals(resType)));
         }
         return list;
     }
