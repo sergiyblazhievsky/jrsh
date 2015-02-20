@@ -53,7 +53,7 @@ public class ContextTest {
     public void should_contain_proper_command_description() {
 
         /** When **/
-        Map<String, String> description = context.getCmdDescription();
+        Map<String, String> description = context.getDescription();
         String descForImport = description.get("import");
         String descForExport = description.get("export");
 

@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Test suite" parallel="classes" thread-count="10">
+    <test name="Unit tests" verbose="1" annotations="JDK" thread-count="10" parallel="classes">
+        <parameter name="driver" value="com.mysql.jdbc.Driver"/>
+        <parameter name="url" value="jdbc:mysql://localhost:3306/db"/>
+        <packages>
+            <package name="com.jaspersoft.jasperserver.shell.*"/>
+        </packages>
+    </test>
+</suite>

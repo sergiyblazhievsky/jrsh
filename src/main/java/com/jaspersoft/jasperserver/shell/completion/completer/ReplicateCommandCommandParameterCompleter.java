@@ -20,7 +20,7 @@ public class ReplicateCommandCommandParameterCompleter extends GeneralCommandPar
 
     private List<String> params = new ArrayList<>();
     private List<String> copy = new ArrayList<>();
-    private final static String direction = "to";
+    private final static String direction = "to"; // fixme: delete it!
 
     public ReplicateCommandCommandParameterCompleter(List<String> params) {
         this.params.addAll(params);

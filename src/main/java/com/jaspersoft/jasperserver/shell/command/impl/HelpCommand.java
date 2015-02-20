@@ -43,7 +43,7 @@ public class HelpCommand extends Command implements ContextAware {
             out.print("Usage: <command> [options] [args]\n"
                     + "Type 'help <command>' for help on a specific command.\n");
             out.println("\n\u001B[30;47mAvailable commands: \u001B[0m");
-            for (Entry<String, String> e : context.getCmdDescription().entrySet()) {
+            for (Entry<String, String> e : context.getDescription().entrySet()) {
                 if (e.getKey() != null) {
                     out.printf("\t%s\t\t%s\n", e.getKey(), e.getValue());
                 }

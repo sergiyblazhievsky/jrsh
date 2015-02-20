@@ -21,7 +21,7 @@ public class ReplicateCommandParameterCompleter extends CommandCommonParameterCo
 
     private List<String> params = new ArrayList<>();
     private List<String> copy = new ArrayList<>();
-    private final static String direction = "to";
+    private final static String direction = "to"; // TODO: wtf?
 
     public ReplicateCommandParameterCompleter(List<String> params) {
         this.params.addAll(params);

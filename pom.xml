@@ -161,6 +161,18 @@
                     <repoToken>8YGj6GbVkSsyA0w6brFpSfX9mqvR6fDT5</repoToken>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>suite.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
         </plugins>
+
     </build>
 </project>
