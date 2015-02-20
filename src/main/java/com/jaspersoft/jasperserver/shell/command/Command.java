@@ -1,6 +1,8 @@
 package com.jaspersoft.jasperserver.shell.command;
 
 import com.jaspersoft.jasperserver.shell.ExecutionMode;
+import com.jaspersoft.jasperserver.shell.command.common.TreeDownloader;
+import com.jaspersoft.jasperserver.shell.completion.completer.RepositoryPathCompleter;
 import com.jaspersoft.jasperserver.shell.exception.CannotCreateFileException;
 import com.jaspersoft.jasperserver.shell.exception.CannotSaveProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingException;
@@ -14,7 +16,7 @@ import com.jaspersoft.jasperserver.shell.exception.server.GeneralServerException
 import com.jaspersoft.jasperserver.shell.exception.server.JrsResourceNotFoundException;
 import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
-import com.jaspersoft.jasperserver.shell.profile.ProfileUtil;
+import com.jaspersoft.jasperserver.shell.profile.util.ProfileUtil;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import jline.console.ConsoleReader;
 import lombok.Data;
@@ -36,7 +38,7 @@ import static java.lang.System.out;
 public abstract class Command implements Executable, ConsoleReaderAware {
 
     protected String name;
-    protected String description; // todo: rename to `briefDescription`
+    protected String description;
     protected String usageDescription;
     protected List<Parameter> parameters = new ArrayList<>();
     protected static Profile profile = getInstance();
@@ -63,6 +65,15 @@ public abstract class Command implements Executable, ConsoleReaderAware {
                 if (!ProfileUtil.isEmpty(profile) && !(e instanceof GeneralServerException)) {
                     String password = askPassword();
                     SessionFactory.createSession(profile.getUrl(), profile.getUsername(), password, profile.getOrganization());
+
+
+                    /**
+                     * Dirty hack! fixme: Delete this!
+                     */
+                    if (RepositoryPathCompleter.resources == null || RepositoryPathCompleter.resources.isEmpty()){
+                        RepositoryPathCompleter.resources = new TreeDownloader().markedList();
+                    }
+
                     run();
                 } else {
                     throw new UnknownInterfaceException(e.getMessage());

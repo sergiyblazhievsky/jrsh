@@ -11,7 +11,7 @@ import com.jaspersoft.jasperserver.shell.exception.profile.CannotFindProfileConf
 import com.jaspersoft.jasperserver.shell.exception.profile.CannotLoadProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.exception.profile.WrongProfileNameException;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
-import com.jaspersoft.jasperserver.shell.profile.ProfileUtil;
+import com.jaspersoft.jasperserver.shell.profile.util.ProfileUtil;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory;

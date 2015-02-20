@@ -1,6 +1,10 @@
 package com.jaspersoft.jasperserver.shell.context;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
+import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
+import com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration;
+import com.jaspersoft.jasperserver.shell.profile.factory.ProfileFactory;
+import com.jaspersoft.jasperserver.shell.profile.util.ProfileUtil;
 import lombok.Data;
 
 import java.io.IOException;
@@ -19,20 +23,24 @@ import static java.util.Arrays.asList;
 @Deprecated
 public class Context {
 
-
-
     private Map<String, String> description = new HashMap<>();
     private List<String> dictionary
             = new ArrayList<>(asList("help", "?", "import", "replicate", "export",
             "profile", "session", "logout", "login", "exit", "show", "clear"));
 
     public Context() {
-
         try {
+
             Properties properties = new Properties();
             InputStream stream = Context.class.getClass().getResourceAsStream("/context.properties");
             properties.load(stream);
-            createConfiguration(properties.getProperty("jrsh.config.path")); // "/usr/conf/profiles.yml"
+            ProfileConfiguration cfg = createConfiguration(properties.getProperty("jrsh.config.path"));
+
+
+            Profile prof = ProfileFactory.getInstance();
+            Profile founded = ProfileUtil.find(cfg, cfg.getDefaultProfile());
+            ProfileUtil.merge(founded, prof);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

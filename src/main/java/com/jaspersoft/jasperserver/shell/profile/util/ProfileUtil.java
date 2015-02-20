@@ -1,4 +1,4 @@
-package com.jaspersoft.jasperserver.shell.profile;
+package com.jaspersoft.jasperserver.shell.profile.util;
 
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration;
@@ -43,8 +43,22 @@ public class ProfileUtil {
         ProfileConfiguration cfg = ProfileConfigurationFactory.getConfiguration();
         List<String> list = new ArrayList<>();
         for (Profile profile : cfg.getProfiles()) {
+
+            //if (profile.getName() == null) {
+            //    throw new RuntimeException("Oops!");
+            //}
+
             list.add(profile.getName());
         }
         return list;
+    }
+
+    public static void merge(Profile src, Profile dest) {
+        if (src != null && dest != null) {
+            src.setName(dest.getName());
+            src.setUrl(dest.getUrl());
+            src.setUsername(dest.getUsername());
+            src.setOrganization(dest.getOrganization());
+        }
     }
 }
