@@ -44,6 +44,7 @@ public class LoginCommand extends Command {
         String username;
         String password = null;
         String organization = null;
+        String profileName = "Current";
 
         if (!serverParamValues.isEmpty() && !usernameParamValues.isEmpty() && !passwordParamValues.isEmpty()) {
             url = parameter("server").getValues().get(0);
@@ -57,6 +58,7 @@ public class LoginCommand extends Command {
             if (!isEmpty(profile)) {
                 url = profile.getUrl();
                 username = profile.getUsername();
+                profileName = profile.getName();
                 try {
                     password = askPasswords(profile.getName());
                 } catch (IOException ignored) {}
@@ -70,10 +72,12 @@ public class LoginCommand extends Command {
 
 
         if (isEmpty(profile)) {
-            profile.setName("Current");
+            profile.setName(profileName);
             profile.setUrl(url);
             profile.setUsername(username);
             profile.setOrganization(organization);
+        } else {
+            profile.setName(profileName);
         }
 
 

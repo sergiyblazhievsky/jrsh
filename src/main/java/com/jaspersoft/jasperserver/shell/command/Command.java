@@ -16,6 +16,7 @@ import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import com.jaspersoft.jasperserver.shell.profile.ProfileUtil;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
+import com.jaspersoft.jasperserver.shell.profile.factory.ProfileFactory;
 import jline.console.ConsoleReader;
 import lombok.Data;
 import lombok.ToString;
@@ -76,7 +77,9 @@ public abstract class Command implements Executable, ConsoleReaderAware {
     private String askPassword() {
         String pass = null;
         try {
-            pass = reader.readLine("\rPlease enter the password: ", '*');
+            pass = reader.readLine("Please enter the password for <" +
+                    ProfileFactory.getInstance().getUsername() + "> at <" +
+                    ProfileFactory.getInstance().getName() + "> environment: ", '*');
         } catch (IOException ignored) {
 
         }
