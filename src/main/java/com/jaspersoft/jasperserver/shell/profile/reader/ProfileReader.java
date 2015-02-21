@@ -51,7 +51,6 @@ public class ProfileReader {
 
     @SneakyThrows
     public ProfileConfiguration read() {
-//        File ymlFile = new File(System.getProperty("user.dir") + file);
         File ymlFile = new File(file);
         FileInputStream stream = new FileInputStream(ymlFile);
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));

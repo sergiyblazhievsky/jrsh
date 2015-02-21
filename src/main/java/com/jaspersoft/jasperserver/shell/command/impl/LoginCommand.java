@@ -5,11 +5,16 @@ import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.command.common.TreeDownloader;
 import com.jaspersoft.jasperserver.shell.completion.completer.RepositoryPathCompleter;
 import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingException;
+import com.jaspersoft.jasperserver.shell.exception.WrongPasswordException;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
+import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
+import com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory;
 
+import java.io.IOException;
 import java.util.List;
 
 import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.createSession;
+import static com.jaspersoft.jasperserver.shell.profile.ProfileUtil.isEmpty;
 import static java.lang.System.out;
 
 /**
@@ -37,7 +42,7 @@ public class LoginCommand extends Command {
 
         String url;
         String username;
-        String password;
+        String password = null;
         String organization = null;
 
         if (!serverParamValues.isEmpty() && !usernameParamValues.isEmpty() && !passwordParamValues.isEmpty()) {
@@ -48,29 +53,55 @@ public class LoginCommand extends Command {
                 organization = parameter("organization").getValues().get(0);
             }
         } else {
-            throw new MandatoryParameterMissingException();
+            // if default profile is already loaded, we use it for login
+            if (!isEmpty(profile)) {
+                url = profile.getUrl();
+                username = profile.getUsername();
+                try {
+                    password = askPasswords(profile.getName());
+                } catch (IOException ignored) {}
+            } else {
+                throw new MandatoryParameterMissingException();
+            }
         }
+
 
         createSession(url, username, password, organization);
 
-        profile.setName("current");
-        profile.setUrl(url);
-        profile.setUsername(username);
-        profile.setOrganization(organization);
 
+        if (isEmpty(profile)) {
+            profile.setName("Current");
+            profile.setUrl(url);
+            profile.setUsername(username);
+            profile.setOrganization(organization);
+        }
 
 
         /**
          * Dirty hack! Delete it!
          */
-        if (RepositoryPathCompleter.resources == null || RepositoryPathCompleter.resources.isEmpty()){
+        if (RepositoryPathCompleter.resources == null || RepositoryPathCompleter.resources.isEmpty()) {
             RepositoryPathCompleter.resources = new TreeDownloader().markedList();
         }
 
 
-
-        if (getMode().equals(ExecutionMode.SHELL)){
+        if (getMode().equals(ExecutionMode.SHELL)) {
             out.println("You've logged in.");
         }
+    }
+
+    private String askPasswords(String jrsName) throws IOException {
+        String username = "from whom?";
+        for (Profile p : ProfileConfigurationFactory.getConfiguration().getProfiles()) {
+            if (jrsName.equals(p.getName())) {
+                username = p.getUsername();
+            }
+        }
+        String pass = reader.readLine("Please enter the password for <" + username + "> at <" + jrsName + "> environment: ", '*');
+        if (pass.equals("")) {
+            throw new WrongPasswordException();
+        }
+        reader.setPrompt("\u001B[1m>>> \u001B[0m");
+        return pass;
     }
 }

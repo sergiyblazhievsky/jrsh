@@ -1,0 +1,7 @@
+<suite name="Test suite" parallel="classes" thread-count="10">
+    <test name="Default tests" verbose="1" annotations="JDK" thread-count="10" parallel="classes">
+        <packages>
+            <package name="com.jaspersoft.jasperserver.shell.*"/>
+        </packages>
+    </test>
+</suite>

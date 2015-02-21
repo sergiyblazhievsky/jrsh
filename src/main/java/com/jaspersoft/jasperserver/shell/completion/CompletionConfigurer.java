@@ -28,9 +28,24 @@ public class CompletionConfigurer {
         Completer session = new StringsCompleter("session");
         Completer logout = new StringsCompleter("logout");
 
-        Completer profile = new StringsCompleter("profile");
-        Completer profileParameters = new CommandCommonParameterCompleter("save", "load", "list");
+        //Completer profile = new StringsCompleter("profile");
+        //Completer profileParameters = new CommandCommonParameterCompleter("save", "load", "default", "list");
 
+
+        /**
+         * Profile Completer
+         */
+        Completer profile = new StringsCompleter("profile");
+        Completer save = new StringsCompleter("save");
+        Completer load = new StringsCompleter("load");
+        Completer default_ = new StringsCompleter("default");
+        Completer list = new StringsCompleter("list");
+        Completer available = new StringsCompleter(list());
+
+
+        /**
+         * Login Completer
+         */
         Completer login = new StringsCompleter("login");
         Completer loginParameters = new CommandCommonParameterCompleter("--server", "--username", "--password");
 
@@ -79,7 +94,7 @@ public class CompletionConfigurer {
         Completer helpCompleter = new ArgumentCompleter(help, helpParameters, new NullCompleter());
         Completer showCompleter = new ArgumentCompleter(show, showParameters, new NullCompleter());
         Completer importCompleter = new ArgumentCompleter(import_, file, events);
-        Completer profileCompleter = new ArgumentCompleter(profile, profileParameters, new NullCompleter());
+        //Completer profileCompleter = new ArgumentCompleter(profile, profileParameters, new NullCompleter());
         Completer replicateCompleter = new ArgumentCompleter(replicate, firstProfileName, direction,
                 secondProfileName, new NullCompleter());
 
@@ -93,7 +108,18 @@ public class CompletionConfigurer {
                 new ArgumentCompleter(export, role, new NullCompleter()),
                 new ArgumentCompleter(export, user, new NullCompleter()),
 
-                clear, logout, replicateCompleter, profileCompleter, session, loginCompleter,
+                clear, logout, replicateCompleter,
+
+                //profileCompleter,
+
+                new ArgumentCompleter(profile, new NullCompleter()),
+                new ArgumentCompleter(profile, save, new NullCompleter()),
+                new ArgumentCompleter(profile, load, new NullCompleter()),
+                new ArgumentCompleter(profile, default_, new NullCompleter()),
+                new ArgumentCompleter(profile, default_, available, new NullCompleter()),
+                new ArgumentCompleter(profile, list, new NullCompleter()),
+
+                session, loginCompleter,
                 importCompleter, showCompleter, helpCompleter);
     }
 

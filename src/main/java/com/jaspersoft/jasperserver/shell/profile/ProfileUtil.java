@@ -47,4 +47,13 @@ public class ProfileUtil {
         }
         return list;
     }
+
+    public static void copy(Profile src, Profile dest) {
+        if (src != null && dest != null) {
+            src.setName(dest.getName());
+            src.setUrl(dest.getUrl());
+            src.setUsername(dest.getUsername());
+            src.setOrganization(dest.getOrganization());
+        }
+    }
 }

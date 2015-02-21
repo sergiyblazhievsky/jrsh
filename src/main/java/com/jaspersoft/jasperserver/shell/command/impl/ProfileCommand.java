@@ -1,10 +1,16 @@
 package com.jaspersoft.jasperserver.shell.command.impl;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
+import com.jaspersoft.jasperserver.shell.context.Context;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
+import com.jaspersoft.jasperserver.shell.profile.ProfileUtil;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration;
-import com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Properties;
 
 import static com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory.getConfiguration;
 import static java.lang.System.out;
@@ -14,7 +20,7 @@ import static java.lang.System.out;
  */
 public class ProfileCommand extends Command {
 
-    // TODO: implement me!
+    private Properties properties;
 
     public ProfileCommand() {
         name = "profile";
@@ -22,7 +28,18 @@ public class ProfileCommand extends Command {
         parameters.add(new Parameter().setName("anonymous").setMultiple(true).setOptional(true));
         parameters.add(new Parameter().setName("load").setOptional(true));
         parameters.add(new Parameter().setName("save").setOptional(true));
+        parameters.add(new Parameter().setName("default").setOptional(true));
         parameters.add(new Parameter().setName("list").setOptional(true));
+
+        initProperties();
+    }
+
+    private void initProperties() {
+        properties = new Properties();
+        InputStream stream = Context.class.getClass().getResourceAsStream("/context.properties");
+        try {
+            properties.load(stream);
+        } catch (IOException ignored) {/* NOP */}
     }
 
     @Override
@@ -37,40 +54,50 @@ public class ProfileCommand extends Command {
         }
 
         if (parameter("load").isAvailable()) {
+
+
             // todo!
-            //out.println("Loaded.");
-        }
-        else if (parameter("save").isAvailable()) {
-            ProfileConfiguration cfg = ProfileConfigurationFactory.getConfiguration();
-            if ("current".equals(profile.getName())) {
-                String n = null;
-                if (parameter("anonymous").isAvailable()) {
-                    n = parameter("anonymous").getValues().get(0);
-                }
-                //cfg.getProfiles().add(profile.setName(n == null ? "Profile-" + new Random().nextInt(Integer.MAX_VALUE) : n));
-                //try {
-                //ProfileUtil.persist(cfg, file);
-                //} catch (IOException e) {
-                //    throw new CannotSaveProfileConfiguration();
-                //}
-                out.println("Saved.");
-            } else if (profile.getName() != null) {
-                out.println("It is already saved.");
-            } else {
-                out.println("You need to load profile configuration first.");
-            }
-        }
-        else if (parameter("list").isAvailable()) {
+
+
+        } else if (parameter("save").isAvailable()) {
+
+
+            // todo!
+
+
+        } else if (parameter("list").isAvailable()) {
             ProfileConfiguration cfg = getConfiguration();
-            if (cfg == null) {
-                out.println("You need to load profile configuration first.");
+            if (cfg == null) out.println("You need to load profile configuration first.");
+            else for (Profile p : cfg.getProfiles())
+                out.printf(cfg.getDefaultProfile().equals(p.getName())
+                        ? "\t%s \u001B[31m*\u001B[0m\n"
+                        : "\t%s\n", p.getName());
+        } else if (parameter("default").isAvailable()) {
+            ProfileConfiguration cfg = getConfiguration();
+            List<String> vals = parameter("anonymous").getValues();
+            if (vals.isEmpty()) {
+                throw new RuntimeException("Oops!");
             } else {
+                String value = "";
+                if (vals.size() > 1) {
+                    value = vals.get(1);
+                } else if (vals.size() == 1){
+                    value = vals.get(0);
+                }
+                String founded = "";
                 for (Profile p : cfg.getProfiles()) {
-                    if (cfg.getDefaultProfile().equals(p.getName())) {
-                        out.printf("\t%s \u001B[31m*\u001B[0m\n", p.getName()); // mark default profile with `*`
-                    } else {
-                        out.printf("\t%s\n", p.getName());
+                    if (p.getName().equals(value)) {
+                        founded = value;
                     }
+                }
+                if (founded.isEmpty()) {
+                    throw new RuntimeException("There is no profile with such name!");
+                }
+                cfg.setDefaultProfile(founded);
+                try {
+                    ProfileUtil.persist(cfg, properties.getProperty("jrsh.config.path"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e.getMessage());
                 }
             }
         } else if (profile.getUrl() != null && profile.getUsername() != null) {

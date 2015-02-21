@@ -15,6 +15,11 @@ public final class ProfileFactory {
     }
 
     public static Profile getInstance() {
-        return instance != null ? instance : new Profile();
+        if (instance != null) {
+            return instance;
+        } else {
+            instance = new Profile();
+            return instance;
+        }
     }
 }

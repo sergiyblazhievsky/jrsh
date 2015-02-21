@@ -1,0 +1,19 @@
+# ==========================================================================
+# === Do not attempt to modify this file manually. All changes should be ===
+# === done programmatically. In the case of manual modification, the     ===
+# === correct performance of the application just cannot be guaranteed.  ===
+# ==========================================================================
+---
+default: JRS-2
+profiles:
+  - name: JRS-1
+    url: http://localhost:8080/jasperserver-pro
+    username: superuser
+
+  - name: JRS-2
+    url: http://localhost:8080/jasperserver-pro
+    username: superuser
+
+  - name: JRS-3
+    url: http://localhost:8080/jasperserver-pro
+    username: superuser
