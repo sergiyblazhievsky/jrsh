@@ -48,7 +48,7 @@ public class ExportCommand extends Command {
     public ExportCommand() {
         name = "export";
         description = "Export configuration of JasperReportsServer.";
-        usageDescription = "\tUsage: export <repo|user|role|all> <repo-path> to <file-path>\t[without-access-events] " +
+        usageDescription = "\tUsage: export repo <repo-path> to <file-path>\t[without-access-events] " +
                 "[without-audit-events] [without-access-events]\n" +
                 "\t\t\t\t\t\t\t\t\t\t[without-monitoring-events] [without-users-and-roles]";
 

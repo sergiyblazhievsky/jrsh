@@ -8,13 +8,13 @@ import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingExce
 import com.jaspersoft.jasperserver.shell.exception.WrongPasswordException;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
-import com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory;
 
 import java.io.IOException;
 import java.util.List;
 
 import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.createSession;
 import static com.jaspersoft.jasperserver.shell.profile.ProfileUtil.isEmpty;
+import static com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory.getConfiguration;
 import static java.lang.System.out;
 
 /**
@@ -54,7 +54,7 @@ public class LoginCommand extends Command {
                 organization = parameter("organization").getValues().get(0);
             }
         } else {
-            // if default profile is already loaded, we use it for login
+            // if default profile is already loaded, then we use it for login operation
             if (!isEmpty(profile)) {
                 url = profile.getUrl();
                 username = profile.getUsername();
@@ -81,8 +81,8 @@ public class LoginCommand extends Command {
         }
 
 
-        /**
-         * Dirty hack! Delete it!
+        /*
+         * Hack! todo: Delete it!
          */
         if (RepositoryPathCompleter.resources == null || RepositoryPathCompleter.resources.isEmpty()) {
             RepositoryPathCompleter.resources = new TreeDownloader().markedList();
@@ -96,9 +96,9 @@ public class LoginCommand extends Command {
 
     private String askPasswords(String jrsName) throws IOException {
         String username = "from whom?";
-        for (Profile p : ProfileConfigurationFactory.getConfiguration().getProfiles()) {
-            if (jrsName.equals(p.getName())) {
-                username = p.getUsername();
+        for (Profile profile : getConfiguration().getProfiles()) {
+            if (jrsName.equals(profile.getName())) {
+                username = profile.getUsername();
             }
         }
         String pass = reader.readLine("Please enter the password for <" + username + "> at <" + jrsName + "> environment: ", '*');

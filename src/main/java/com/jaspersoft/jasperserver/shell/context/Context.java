@@ -1,10 +1,8 @@
 package com.jaspersoft.jasperserver.shell.context;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.profile.ProfileUtil;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration;
-import com.jaspersoft.jasperserver.shell.profile.factory.ProfileFactory;
 import lombok.Data;
 
 import java.io.FileNotFoundException;
@@ -17,8 +15,10 @@ import java.util.Map;
 import java.util.Properties;
 
 import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.createCommand;
+import static com.jaspersoft.jasperserver.shell.profile.ProfileUtil.copy;
 import static com.jaspersoft.jasperserver.shell.profile.ProfileUtil.find;
 import static com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory.createConfiguration;
+import static com.jaspersoft.jasperserver.shell.profile.factory.ProfileFactory.getInstance;
 import static java.util.Arrays.asList;
 
 @Data
@@ -36,8 +36,9 @@ public class Context {
             initProperties();
             ProfileConfiguration cfg = createConfiguration(properties.getProperty("jrsh.config.path"));
             if (cfg != null) {
-                Profile profile = ProfileFactory.getInstance();
-                ProfileUtil.copy(profile, find(cfg, cfg.getDefaultProfile()));
+                Profile currentProfile = getInstance();
+                Profile defaultProfile = find(cfg, cfg.getDefaultProfile());
+                copy(currentProfile, defaultProfile);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -50,7 +51,7 @@ public class Context {
 
     private void initProperties() {
         properties = new Properties();
-        InputStream stream = Context.class.getClass().getResourceAsStream("/context.properties");
+        InputStream stream = Context.class.getClass().getResourceAsStream("/config.properties");
         try {
             properties.load(stream);
         } catch (IOException ignored) {/* NOP */}

@@ -66,7 +66,6 @@ public class ImportCommand extends Command {
         if (withSkipUserUpdate.isAvailable()) params.add(ImportParameter.SKIP_USER_UPDATE);
 
         if (getMode().equals(ExecutionMode.SHELL)) {
-
             Thread spinner = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -74,7 +73,6 @@ public class ImportCommand extends Command {
                 }
             });
             spinner.setDaemon(true);
-
             File file = readFile(path);
             ImportTaskRequestAdapter task = session.importService().newTask();
 

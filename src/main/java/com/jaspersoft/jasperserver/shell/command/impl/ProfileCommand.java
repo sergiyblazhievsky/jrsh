@@ -36,7 +36,7 @@ public class ProfileCommand extends Command {
 
     private void initProperties() {
         properties = new Properties();
-        InputStream stream = Context.class.getClass().getResourceAsStream("/context.properties");
+        InputStream stream = Context.class.getClass().getResourceAsStream("/config.properties");
         try {
             properties.load(stream);
         } catch (IOException ignored) {/* NOP */}

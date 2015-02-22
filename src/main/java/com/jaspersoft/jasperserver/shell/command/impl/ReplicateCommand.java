@@ -14,7 +14,6 @@ import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import com.jaspersoft.jasperserver.shell.profile.ProfileUtil;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration;
-import com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory;
 import lombok.SneakyThrows;
 
 import java.io.FileNotFoundException;
@@ -22,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.createImmutable;
+import static com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory.getConfiguration;
 import static java.lang.System.out;
 import static java.lang.Thread.sleep;
 
@@ -35,7 +35,7 @@ public class ReplicateCommand extends Command {
         description = "Replicate JRS configuration from one JRS to another.";
         usageDescription = "\tUsage: replicate <src-profile-name> to <dest-profile-name>";
         parameters.add(new Parameter().setName("anonymous").setMultiple(true));
-        parameters.add(new Parameter().setName("to")/* todo bug in parser! */.setOptional(true));
+        parameters.add(new Parameter().setName("to")/* todo: bug in parser! */.setOptional(true));
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ReplicateCommand extends Command {
             public void run() {print();}
         });
         spinner.setDaemon(true);
-        ProfileConfiguration config = ProfileConfigurationFactory.getConfiguration();
+        ProfileConfiguration config = getConfiguration();
         try {
             if (config == null) {
                 throw new CannotFindProfileConfigurationException();
@@ -83,10 +83,10 @@ public class ReplicateCommand extends Command {
     }
 
     private String askPasswords(String jrsName) throws IOException {
-        String username = "from whom?";
-        for (Profile p : ProfileConfigurationFactory.getConfiguration().getProfiles()) {
-            if (jrsName.equals(p.getName())){
-                username = p.getUsername();
+        String username = "who is this man?";
+        for (Profile profile : getConfiguration().getProfiles()) {
+            if (jrsName.equals(profile.getName())){
+                username = profile.getUsername();
             }
         }
         String pass = reader.readLine("Please enter the password for <" + username + "> at <" + jrsName + "> environment: ", '*');

@@ -1,8 +1,8 @@
 package com.jaspersoft.jasperserver.shell.command.impl;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 
+import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.getInstance;
 import static java.lang.System.out;
 
 /**
@@ -16,7 +16,7 @@ public class LogoutCommand extends Command {
 
     @Override
     public void run() {
-        SessionFactory.getInstance().logout();
+        getInstance().logout();
         out.println("You've logged out.");
     }
 }

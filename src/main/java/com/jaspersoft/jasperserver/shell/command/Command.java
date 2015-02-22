@@ -16,7 +16,6 @@ import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import com.jaspersoft.jasperserver.shell.profile.ProfileUtil;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
-import com.jaspersoft.jasperserver.shell.profile.factory.ProfileFactory;
 import jline.console.ConsoleReader;
 import lombok.Data;
 import lombok.ToString;
@@ -52,15 +51,21 @@ public abstract class Command implements Executable, ConsoleReaderAware {
         try {
             run();
         } catch (Exception e) {
+
+            // TODO: replace with Strategy Pattern
+
             if (mode.equals(SHELL)) {
+                // design error ->
                 if (e instanceof WrongPathParameterException || e instanceof CannotCreateFileException || e instanceof CannotLoadProfileConfiguration || e instanceof CannotSaveProfileConfiguration) {
                     out.printf("i/o error: %s\n", e.getMessage());
                     return;
                 }
+                // design error ->
                 if (e instanceof WrongRepositoryPathFormatException || e instanceof JrsResourceNotFoundException || e instanceof ParameterValueSizeException || /* for replicate if [to] doesn't exist */ e instanceof WrongProfileNameException ||  e instanceof MandatoryParameterMissingException) {
                     out.printf("error: %s\n", e.getMessage());
                     return;
                 }
+                // design error ->
                 if (!ProfileUtil.isEmpty(profile) && !(e instanceof GeneralServerException)) {
                     String password = askPassword();
                     SessionFactory.createSession(profile.getUrl(), profile.getUsername(), password, profile.getOrganization());
@@ -71,15 +76,17 @@ public abstract class Command implements Executable, ConsoleReaderAware {
             } else {
                 throw new UnknownInterfaceException(e.getMessage());
             }
+
+            // todo: END
         }
     }
 
     private String askPassword() {
         String pass = null;
         try {
-            pass = reader.readLine("Please enter the password for <" +
-                    ProfileFactory.getInstance().getUsername() + "> at <" +
-                    ProfileFactory.getInstance().getName() + "> environment: ", '*');
+            String username = getInstance().getUsername();
+            String jrsName = getInstance().getName();
+            pass = reader.readLine("Please enter the password for <" + username + "> at <" + jrsName + "> environment: ", '*');
         } catch (IOException ignored) {
 
         }
