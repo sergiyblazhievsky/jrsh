@@ -20,7 +20,7 @@ public class TreeDownloader {
         try {
             lookups = SessionFactory.getInstance().resourcesService().resources()
                     .parameter(ResourceSearchParameter.FOLDER_URI, "/")
-                    .parameter(ResourceSearchParameter.LIMIT, "10000")
+                    .parameter(ResourceSearchParameter.LIMIT, "5000")
                     .search().getEntity().getResourceLookups();
         } catch (Exception e) {
             // if we doesn't have a session yet

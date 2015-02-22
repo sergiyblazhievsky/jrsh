@@ -28,10 +28,6 @@ public class CompletionConfigurer {
         Completer session = new StringsCompleter("session");
         Completer logout = new StringsCompleter("logout");
 
-        //Completer profile = new StringsCompleter("profile");
-        //Completer profileParameters = new CommandCommonParameterCompleter("save", "load", "default", "list");
-
-
         /**
          * Profile Completer
          */
@@ -43,9 +39,6 @@ public class CompletionConfigurer {
         Completer available = new StringsCompleter(list());
 
 
-        /**
-         * Login Completer
-         */
         Completer login = new StringsCompleter("login");
         Completer loginParameters = new CommandCommonParameterCompleter("--server", "--username", "--password");
 
@@ -99,18 +92,28 @@ public class CompletionConfigurer {
                 secondProfileName, new NullCompleter());
 
         aggregator = new AggregateCompleter(exit,
+
                 // fixme!
-                // replace this workaround with the better logic
+                /*
                 new ArgumentCompleter(export, new NullCompleter()),
                 new ArgumentCompleter(export, all, new NullCompleter()),
                 new ArgumentCompleter(export, repo, new NullCompleter()),
                 new ArgumentCompleter(export, repo, path, events),
                 new ArgumentCompleter(export, role, new NullCompleter()),
                 new ArgumentCompleter(export, user, new NullCompleter()),
+*/
+
+                new ArgumentCompleter(export, new NullCompleter()),
+                new ArgumentCompleter(export, all, new NullCompleter()),
+                new ArgumentCompleter(export, repo, new NullCompleter()),
+                new ArgumentCompleter(export, repo, path, events),
+                new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), new NullCompleter()),
+                new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), file, new NullCompleter()),
+                new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), file, events),
+                new ArgumentCompleter(export, role, new NullCompleter()),
+                new ArgumentCompleter(export, user, new NullCompleter()),
 
                 clear, logout, replicateCompleter,
-
-                //profileCompleter,
 
                 new ArgumentCompleter(profile, new NullCompleter()),
                 new ArgumentCompleter(profile, save, new NullCompleter()),

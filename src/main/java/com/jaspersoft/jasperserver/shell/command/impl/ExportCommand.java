@@ -36,7 +36,6 @@ import static java.lang.Thread.sleep;
 import static java.util.Arrays.asList;
 import static sun.misc.IOUtils.readFully;
 
-
 /**
  * @author Alexander Krasnyanskiy
  */
@@ -164,12 +163,6 @@ public class ExportCommand extends Command {
             String date = sdf.format(new Date());
             String file = (to == null) ? prefix + date + postfix + ".zip" : to;
             new FileOutputStream(file).write(readFully(entity, -1, false));
-
-
-            //fixme: Windows!
-            //File f = new File(getProperty("user.dir") + "/" + file);
-            //new FileOutputStream(f).write(readFully(entity, -1, false));
-
             out.printf("\rExport status: SUCCESS\n");
             out.printf("\rFile %s was created.\n", file);
         } catch (IOException e) {
