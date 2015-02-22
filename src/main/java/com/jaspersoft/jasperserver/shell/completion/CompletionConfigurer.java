@@ -1,6 +1,7 @@
 package com.jaspersoft.jasperserver.shell.completion;
 
 import com.jaspersoft.jasperserver.shell.completion.completer.CommandCommonParameterCompleter;
+import com.jaspersoft.jasperserver.shell.completion.completer.CustomFileCompleter;
 import com.jaspersoft.jasperserver.shell.completion.completer.CustomParameterCompleter;
 import com.jaspersoft.jasperserver.shell.completion.completer.ParameterCompleter;
 import com.jaspersoft.jasperserver.shell.completion.completer.RepositoryPathCompleter;
@@ -71,7 +72,7 @@ public class CompletionConfigurer {
          */
         Completer import_ = new StringsCompleter("import");
         Completer file = new FileNameCompleter();
-        Completer events = new CommandCommonParameterCompleter("with-audit-events", "with-access-events",
+        Completer events = new StringsCompleter("with-audit-events", "with-access-events",
                 "with-monitoring-events", "with-events", "with-update", "with-skip-user-update");
 
 
@@ -79,7 +80,7 @@ public class CompletionConfigurer {
          * Help Completer
          */
         Completer help = new StringsCompleter("help");
-        Completer helpParameters = new CommandCommonParameterCompleter(asList("login", "logout", "import",
+        Completer helpParameters = new StringsCompleter(asList("login", "logout", "import",
                 "export", "exit", "show", "session", "replicate", "profile"));
 
 
@@ -87,13 +88,10 @@ public class CompletionConfigurer {
         Completer helpCompleter = new ArgumentCompleter(help, helpParameters, new NullCompleter());
         Completer showCompleter = new ArgumentCompleter(show, showParameters, new NullCompleter());
         Completer importCompleter = new ArgumentCompleter(import_, file, events);
-        //Completer profileCompleter = new ArgumentCompleter(profile, profileParameters, new NullCompleter());
-        Completer replicateCompleter = new ArgumentCompleter(replicate, firstProfileName, direction,
-                secondProfileName, new NullCompleter());
+        Completer replicateCompleter = new ArgumentCompleter(replicate, firstProfileName, direction, secondProfileName, new NullCompleter());
 
         aggregator = new AggregateCompleter(exit,
 
-                // fixme!
                 /*
                 new ArgumentCompleter(export, new NullCompleter()),
                 new ArgumentCompleter(export, all, new NullCompleter()),
@@ -101,17 +99,25 @@ public class CompletionConfigurer {
                 new ArgumentCompleter(export, repo, path, events),
                 new ArgumentCompleter(export, role, new NullCompleter()),
                 new ArgumentCompleter(export, user, new NullCompleter()),
-*/
+                */
 
+
+                // fixme!
+                /**/
                 new ArgumentCompleter(export, new NullCompleter()),
+
                 new ArgumentCompleter(export, all, new NullCompleter()),
-                new ArgumentCompleter(export, repo, new NullCompleter()),
-                new ArgumentCompleter(export, repo, path, events),
-                new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), new NullCompleter()),
-                new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), file, new NullCompleter()),
-                new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), file, events),
-                new ArgumentCompleter(export, role, new NullCompleter()),
                 new ArgumentCompleter(export, user, new NullCompleter()),
+                new ArgumentCompleter(export, role, new NullCompleter()),
+
+                new ArgumentCompleter(export, repo, new NullCompleter()),
+                new ArgumentCompleter(export, repo, path, new NullCompleter()),
+                new ArgumentCompleter(export, repo, path, events),
+                //new ArgumentCompleter(export, repo, path, events),
+                //new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), new NullCompleter()),
+                new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), new CustomFileCompleter(), new NullCompleter()),
+                new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), new CustomFileCompleter(), events),
+                /**/
 
                 clear, logout, replicateCompleter,
 

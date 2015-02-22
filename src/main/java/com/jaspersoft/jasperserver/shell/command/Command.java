@@ -1,6 +1,8 @@
 package com.jaspersoft.jasperserver.shell.command;
 
 import com.jaspersoft.jasperserver.shell.ExecutionMode;
+import com.jaspersoft.jasperserver.shell.command.common.TreeDownloader;
+import com.jaspersoft.jasperserver.shell.completion.completer.RepositoryPathCompleter;
 import com.jaspersoft.jasperserver.shell.exception.CannotCreateFileException;
 import com.jaspersoft.jasperserver.shell.exception.CannotSaveProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingException;
@@ -51,9 +53,6 @@ public abstract class Command implements Executable, ConsoleReaderAware {
         try {
             run();
         } catch (Exception e) {
-
-            // TODO: replace with Strategy Pattern
-
             if (mode.equals(SHELL)) {
                 // design error ->
                 if (e instanceof WrongPathParameterException || e instanceof CannotCreateFileException || e instanceof CannotLoadProfileConfiguration || e instanceof CannotSaveProfileConfiguration) {
@@ -69,6 +68,14 @@ public abstract class Command implements Executable, ConsoleReaderAware {
                 if (!ProfileUtil.isEmpty(profile) && !(e instanceof GeneralServerException)) {
                     String password = askPassword();
                     SessionFactory.createSession(profile.getUrl(), profile.getUsername(), password, profile.getOrganization());
+
+                    /**
+                     * Hack! fixme: Delete this!
+                     */
+                    if (RepositoryPathCompleter.resources == null || RepositoryPathCompleter.resources.isEmpty()){
+                        RepositoryPathCompleter.resources = new TreeDownloader().markedList();
+                    }
+
                     run();
                 } else {
                     throw new UnknownInterfaceException(e.getMessage());
@@ -76,8 +83,6 @@ public abstract class Command implements Executable, ConsoleReaderAware {
             } else {
                 throw new UnknownInterfaceException(e.getMessage());
             }
-
-            // todo: END
         }
     }
 
