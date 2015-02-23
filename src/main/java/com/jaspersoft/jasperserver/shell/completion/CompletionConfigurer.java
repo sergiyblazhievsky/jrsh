@@ -93,6 +93,9 @@ public class CompletionConfigurer {
         aggregator = new AggregateCompleter(exit,
 
                 /*
+
+                Works fine!
+
                 new ArgumentCompleter(export, new NullCompleter()),
                 new ArgumentCompleter(export, all, new NullCompleter()),
                 new ArgumentCompleter(export, repo, new NullCompleter()),
