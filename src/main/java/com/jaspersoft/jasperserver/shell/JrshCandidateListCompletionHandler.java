@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * @author Alexander Krasnyanskiy
  */
-public class CustomCandidateListCompletionHandler implements CompletionHandler {
+public class JrshCandidateListCompletionHandler implements CompletionHandler {
 
     public boolean complete(final ConsoleReader reader, final List<CharSequence> candidates, final int pos) throws IOException {
         CursorBuffer buf = reader.getCursorBuffer();
@@ -86,8 +86,8 @@ public class CustomCandidateListCompletionHandler implements CompletionHandler {
 
         reader.println();
 
-        if (reader instanceof CustomConsoleReader) {
-            ((CustomConsoleReader)reader).printRows(candidates);
+        if (reader instanceof JrshConsoleReader) {
+            ((JrshConsoleReader)reader).printRows(candidates);
         } else {
             reader.printColumns(candidates);
         }
@@ -135,7 +135,7 @@ public class CustomCandidateListCompletionHandler implements CompletionHandler {
         DISPLAY_CANDIDATES,
         DISPLAY_CANDIDATES_YES,
         DISPLAY_CANDIDATES_NO,;
-        private static final ResourceBundle bundle = ResourceBundle.getBundle(CustomCandidateListCompletionHandler.class.getName(), Locale.getDefault());
+        private static final ResourceBundle bundle = ResourceBundle.getBundle(JrshCandidateListCompletionHandler.class.getName(), Locale.getDefault());
 
         public String format(final Object... args) {
             if (bundle == null) {

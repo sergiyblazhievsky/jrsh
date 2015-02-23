@@ -25,7 +25,6 @@ import static java.util.Arrays.asList;
  * @author Alexander Krasnyanskiy
  */
 public class App {
-
     public static void main(String[] args) throws IOException {
         Context context = new Context();
         Queue<Command> queue = null;
@@ -38,7 +37,7 @@ public class App {
         if (args.length < 1) {
             console = new ConsoleReader();
 //            console = new CustomConsoleReader();
-            console.setCompletionHandler(new CustomCandidateListCompletionHandler());
+//            console.setCompletionHandler(new JrshCandidateListCompletionHandler());
             out.println("Welcome to JRSH v1.0-alpha!\n");
             console.setPrompt("\u001B[1m>>> \u001B[0m");
             AggregateCompleter aggregator = new CompletionConfigurer().getAggregator();

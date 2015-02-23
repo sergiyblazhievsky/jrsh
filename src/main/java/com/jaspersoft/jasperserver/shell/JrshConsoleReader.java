@@ -11,24 +11,24 @@ import java.util.Collection;
 /**
  * @author Alexander Krasnyanskiy
  */
-public class CustomConsoleReader extends ConsoleReader {
+public class JrshConsoleReader extends ConsoleReader {
 
-    public CustomConsoleReader() throws IOException {
+    public JrshConsoleReader() throws IOException {
     }
 
-    public CustomConsoleReader(InputStream in, OutputStream out) throws IOException {
+    public JrshConsoleReader(InputStream in, OutputStream out) throws IOException {
         super(in, out);
     }
 
-    public CustomConsoleReader(InputStream in, OutputStream out, Terminal term) throws IOException {
+    public JrshConsoleReader(InputStream in, OutputStream out, Terminal term) throws IOException {
         super(in, out, term);
     }
 
-    public CustomConsoleReader(String appName, InputStream in, OutputStream out, Terminal term) throws IOException {
+    public JrshConsoleReader(String appName, InputStream in, OutputStream out, Terminal term) throws IOException {
         super(appName, in, out, term);
     }
 
-    public CustomConsoleReader(String appName, InputStream in, OutputStream out, Terminal term, String encoding) throws IOException {
+    public JrshConsoleReader(String appName, InputStream in, OutputStream out, Terminal term, String encoding) throws IOException {
         super(appName, in, out, term, encoding);
     }
 

@@ -87,6 +87,9 @@ public class LoginCommand extends Command {
         if (RepositoryPathCompleter.resources == null || RepositoryPathCompleter.resources.isEmpty()) {
             RepositoryPathCompleter.resources = new TreeDownloader().markedList();
         }
+//        if (FolderRepositoryPathCompleter.resources == null || FolderRepositoryPathCompleter.resources.isEmpty()) {
+//            FolderRepositoryPathCompleter.resources = new TreeDownloader().filteredList(Filter.FOLDER);
+//        }
 
 
         if (getMode().equals(ExecutionMode.SHELL)) {

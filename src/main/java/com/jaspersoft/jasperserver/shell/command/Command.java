@@ -60,7 +60,7 @@ public abstract class Command implements Executable, ConsoleReaderAware {
                     return;
                 }
                 // design error ->
-                if (e instanceof WrongRepositoryPathFormatException || e instanceof JrsResourceNotFoundException || e instanceof ParameterValueSizeException || /* for replicate if [to] doesn't exist */ e instanceof WrongProfileNameException ||  e instanceof MandatoryParameterMissingException) {
+                if (e instanceof WrongRepositoryPathFormatException || e instanceof JrsResourceNotFoundException || e instanceof ParameterValueSizeException || /* for replicate if [to] doesn't exist */ e instanceof WrongProfileNameException || e instanceof MandatoryParameterMissingException) {
                     out.printf("error: %s\n", e.getMessage());
                     return;
                 }
@@ -72,9 +72,13 @@ public abstract class Command implements Executable, ConsoleReaderAware {
                     /**
                      * Hack! fixme: Delete this!
                      */
-                    if (RepositoryPathCompleter.resources == null || RepositoryPathCompleter.resources.isEmpty()){
+                    if (RepositoryPathCompleter.resources == null || RepositoryPathCompleter.resources.isEmpty()) {
                         RepositoryPathCompleter.resources = new TreeDownloader().markedList();
                     }
+//                    if (FolderRepositoryPathCompleter.resources == null || FolderRepositoryPathCompleter.resources.isEmpty()) {
+//                        FolderRepositoryPathCompleter.resources = new TreeDownloader().filteredList(TreeDownloader.Filter.FOLDER);
+//                    }
+
 
                     run();
                 } else {
@@ -91,7 +95,7 @@ public abstract class Command implements Executable, ConsoleReaderAware {
         try {
             String username = getInstance().getUsername();
             String jrsName = getInstance().getName();
-            pass = reader.readLine("Please enter the password for <" + username + "> at <" + jrsName + "> environment: ", '*');
+            pass = reader.readLine("\rPlease enter the password for <" + username + "> at <" + jrsName + "> environment: ", '*');
         } catch (IOException ignored) {
 
         }

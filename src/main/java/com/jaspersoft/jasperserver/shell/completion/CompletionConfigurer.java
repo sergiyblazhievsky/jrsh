@@ -3,6 +3,7 @@ package com.jaspersoft.jasperserver.shell.completion;
 import com.jaspersoft.jasperserver.shell.completion.completer.CommandCommonParameterCompleter;
 import com.jaspersoft.jasperserver.shell.completion.completer.CustomFileCompleter;
 import com.jaspersoft.jasperserver.shell.completion.completer.CustomParameterCompleter;
+import com.jaspersoft.jasperserver.shell.completion.completer.FolderRepositoryPathCompleter;
 import com.jaspersoft.jasperserver.shell.completion.completer.ParameterCompleter;
 import com.jaspersoft.jasperserver.shell.completion.completer.RepositoryPathCompleter;
 import jline.console.completer.AggregateCompleter;
@@ -86,16 +87,15 @@ public class CompletionConfigurer {
 
         Completer loginCompleter = new ArgumentCompleter(login, loginParameters);
         Completer helpCompleter = new ArgumentCompleter(help, helpParameters, new NullCompleter());
-        Completer showCompleter = new ArgumentCompleter(show, showParameters, new NullCompleter());
+        Completer showCompleter = new ArgumentCompleter(show, showParameters, new FolderRepositoryPathCompleter(), new NullCompleter());
         Completer importCompleter = new ArgumentCompleter(import_, file, events);
-        Completer replicateCompleter = new ArgumentCompleter(replicate, firstProfileName, direction, secondProfileName, new NullCompleter());
+        Completer replicateCompleter = new ArgumentCompleter(replicate, firstProfileName,
+                direction, secondProfileName, new NullCompleter());
 
         aggregator = new AggregateCompleter(exit,
 
                 /*
-
-                Works fine!
-
+                //Works fine!
                 new ArgumentCompleter(export, new NullCompleter()),
                 new ArgumentCompleter(export, all, new NullCompleter()),
                 new ArgumentCompleter(export, repo, new NullCompleter()),

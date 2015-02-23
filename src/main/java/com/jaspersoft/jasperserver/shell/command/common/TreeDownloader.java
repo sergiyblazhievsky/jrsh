@@ -46,5 +46,21 @@ public class TreeDownloader {
         }
         return list;
     }
+
+//    public List<Pair<String, Boolean>> filteredList(Filter filter) {
+//        List<Pair<String, Boolean>> list = new ArrayList<>();
+//        for (ClientResourceLookup lup : download()) {
+//            String uri = lup.getUri();
+//            String resType = lup.getResourceType();
+//            if (resType.equals(filter.toString().toLowerCase())) {
+//                list.add(new ImmutablePair<>(uri, filter.toString().toLowerCase().equals(resType)));
+//            }
+//        }
+//        return list;
+//    }
+//
+//    public enum Filter {
+//        FOLDER, ALL
+//    }
 }
 
