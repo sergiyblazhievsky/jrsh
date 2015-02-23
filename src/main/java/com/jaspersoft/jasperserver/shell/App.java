@@ -29,15 +29,15 @@ public class App {
         Context context = new Context();
         Queue<Command> queue = null;
         ConsoleReader console;
-//        CustomConsoleReader console;
+        //CustomConsoleReader console;
         CommandParser parser = new CommandParser(new ParameterValidator());
         parser.setContext(context);
         LogManager.getLogManager().reset();
 
         if (args.length < 1) {
             console = new ConsoleReader();
-//            console = new CustomConsoleReader();
-//            console.setCompletionHandler(new JrshCandidateListCompletionHandler());
+            //console = new CustomConsoleReader();
+            //console.setCompletionHandler(new JrshCandidateListCompletionHandler());
             out.println("Welcome to JRSH v1.0-alpha!\n");
             console.setPrompt("\u001B[1m>>> \u001B[0m");
             AggregateCompleter aggregator = new CompletionConfigurer().getAggregator();

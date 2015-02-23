@@ -6,6 +6,8 @@ import com.jaspersoft.jasperserver.shell.completion.completer.RepositoryPathComp
 import com.jaspersoft.jasperserver.shell.exception.CannotCreateFileException;
 import com.jaspersoft.jasperserver.shell.exception.CannotSaveProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingException;
+import com.jaspersoft.jasperserver.shell.exception.NoProfileWithSuchNameException;
+import com.jaspersoft.jasperserver.shell.exception.NotSpecifiedProfileNameException;
 import com.jaspersoft.jasperserver.shell.exception.UnknownInterfaceException;
 import com.jaspersoft.jasperserver.shell.exception.WrongPathParameterException;
 import com.jaspersoft.jasperserver.shell.exception.parser.ParameterValueSizeException;
@@ -55,12 +57,14 @@ public abstract class Command implements Executable, ConsoleReaderAware {
         } catch (Exception e) {
             if (mode.equals(SHELL)) {
                 // design error ->
+                // fixme
                 if (e instanceof WrongPathParameterException || e instanceof CannotCreateFileException || e instanceof CannotLoadProfileConfiguration || e instanceof CannotSaveProfileConfiguration) {
                     out.printf("i/o error: %s\n", e.getMessage());
                     return;
                 }
                 // design error ->
-                if (e instanceof WrongRepositoryPathFormatException || e instanceof JrsResourceNotFoundException || e instanceof ParameterValueSizeException || /* for replicate if [to] doesn't exist */ e instanceof WrongProfileNameException || e instanceof MandatoryParameterMissingException) {
+                // fixme
+                if (e instanceof WrongRepositoryPathFormatException || e instanceof JrsResourceNotFoundException || e instanceof ParameterValueSizeException || /* for replicate if [to] doesn't exist */ e instanceof WrongProfileNameException || e instanceof MandatoryParameterMissingException || e instanceof NoProfileWithSuchNameException || e instanceof NotSpecifiedProfileNameException) {
                     out.printf("error: %s\n", e.getMessage());
                     return;
                 }

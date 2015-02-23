@@ -76,3 +76,20 @@ STEP #3
 jrs-1 jrs-3
 
 >>> replicate jrs-2 to
+
+
+
+
+
+
+***
+
+
+>>> profile default
+JRS-1   JRS-2   JRS-3
+
+
+>>> profile load JRS-
+JRS-1   JRS-2   JRS-3
+
+>>> profile save JRS-5-CLOUD

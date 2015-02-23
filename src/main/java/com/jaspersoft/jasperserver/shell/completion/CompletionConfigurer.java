@@ -73,24 +73,21 @@ public class CompletionConfigurer {
          */
         Completer import_ = new StringsCompleter("import");
         Completer file = new FileNameCompleter();
-        Completer events = new StringsCompleter("with-audit-events", "with-access-events",
-                "with-monitoring-events", "with-events", "with-update", "with-skip-user-update");
+        Completer events = new StringsCompleter("with-audit-events", "with-access-events", "with-monitoring-events", "with-events", "with-update", "with-skip-user-update");
 
 
         /**
          * Help Completer
          */
         Completer help = new StringsCompleter("help");
-        Completer helpParameters = new StringsCompleter(asList("login", "logout", "import",
-                "export", "exit", "show", "session", "replicate", "profile"));
+        Completer helpParameters = new StringsCompleter(asList("login", "logout", "import", "export", "exit", "show", "session", "replicate", "profile"));
 
 
         Completer loginCompleter = new ArgumentCompleter(login, loginParameters);
         Completer helpCompleter = new ArgumentCompleter(help, helpParameters, new NullCompleter());
         Completer showCompleter = new ArgumentCompleter(show, showParameters, new FolderRepositoryPathCompleter(), new NullCompleter());
         Completer importCompleter = new ArgumentCompleter(import_, file, events);
-        Completer replicateCompleter = new ArgumentCompleter(replicate, firstProfileName,
-                direction, secondProfileName, new NullCompleter());
+        Completer replicateCompleter = new ArgumentCompleter(replicate, firstProfileName, direction, secondProfileName, new NullCompleter());
 
         aggregator = new AggregateCompleter(exit,
 
@@ -127,6 +124,7 @@ public class CompletionConfigurer {
                 new ArgumentCompleter(profile, new NullCompleter()),
                 new ArgumentCompleter(profile, save, new NullCompleter()),
                 new ArgumentCompleter(profile, load, new NullCompleter()),
+                new ArgumentCompleter(profile, load, available, new NullCompleter()),
                 new ArgumentCompleter(profile, default_, new NullCompleter()),
                 new ArgumentCompleter(profile, default_, available, new NullCompleter()),
                 new ArgumentCompleter(profile, list, new NullCompleter()),

@@ -2,8 +2,12 @@ package com.jaspersoft.jasperserver.shell.command.impl;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.context.Context;
+import com.jaspersoft.jasperserver.shell.exception.CannotSaveProfileConfiguration;
+import com.jaspersoft.jasperserver.shell.exception.NoProfileWithSuchNameException;
+import com.jaspersoft.jasperserver.shell.exception.NotSpecifiedProfileNameException;
+import com.jaspersoft.jasperserver.shell.exception.profile.CannotSaveProfileException;
+import com.jaspersoft.jasperserver.shell.exception.profile.NotUniqueProfileNameException;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
-import com.jaspersoft.jasperserver.shell.profile.ProfileUtil;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration;
 
@@ -12,6 +16,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 
+import static com.jaspersoft.jasperserver.shell.profile.ProfileUtil.persist;
 import static com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory.getConfiguration;
 import static java.lang.System.out;
 
@@ -52,18 +57,45 @@ public class ProfileCommand extends Command {
                 out.println("Not available.");
             }
         }
-
         if (parameter("load").isAvailable()) {
-
-
             // todo!
+            List<String> vals = parameter("anonymous").getValues();
+            String profileName = vals.get(0);
+            ProfileConfiguration cfg = getConfiguration();
+            Profile loaded = null;
+            for (Profile p : cfg.getProfiles()) {
+                if (p.getName().equals(profileName)) {
+                    loaded = p;
+                }
+            }
+            if (loaded == null){
+                throw new NoProfileWithSuchNameException(profileName);
+            } else {
+                // copy profile
+                profile.setName(loaded.getName());
+                profile.setOrganization(loaded.getOrganization());
+                profile.setUrl(loaded.getUrl());
+                profile.setUsername(loaded.getUsername());
 
-
+                System.out.println("Loaded.");
+            }
         } else if (parameter("save").isAvailable()) {
-
-
-            // todo!
-
+            List<String> vals = parameter("anonymous").getValues();
+            String profileName = vals.get(0);
+            ProfileConfiguration cfg = getConfiguration();
+            for (Profile p : cfg.getProfiles()) {
+                if (p.getName().equals(/*profile.getName()*/profileName)) {
+                    throw new NotUniqueProfileNameException();
+                }
+            }
+            profile.setName(profileName);
+            cfg.getProfiles().add(profile);
+            try {
+                persist(cfg, properties.getProperty("jrsh.config.path"));
+                System.out.println("Saved.");
+            } catch (IOException e) {
+                throw new CannotSaveProfileException();
+            }
 
         } else if (parameter("list").isAvailable()) {
             ProfileConfiguration cfg = getConfiguration();
@@ -76,12 +108,12 @@ public class ProfileCommand extends Command {
             ProfileConfiguration cfg = getConfiguration();
             List<String> vals = parameter("anonymous").getValues();
             if (vals.isEmpty()) {
-                throw new RuntimeException("Oops!");
+                throw new NotSpecifiedProfileNameException();
             } else {
                 String value = "";
                 if (vals.size() > 1) {
                     value = vals.get(1);
-                } else if (vals.size() == 1){
+                } else if (vals.size() == 1) {
                     value = vals.get(0);
                 }
                 String founded = "";
@@ -91,21 +123,22 @@ public class ProfileCommand extends Command {
                     }
                 }
                 if (founded.isEmpty()) {
-                    throw new RuntimeException("There is no profile with such name!");
+                    throw new NoProfileWithSuchNameException(value);
                 }
                 cfg.setDefaultProfile(founded);
+
                 try {
-                    ProfileUtil.persist(cfg, properties.getProperty("jrsh.config.path"));
+                    persist(cfg, properties.getProperty("jrsh.config.path"));
                 } catch (IOException e) {
-                    throw new RuntimeException(e.getMessage());
+                    throw new CannotSaveProfileConfiguration();
                 }
             }
         } else if (profile.getUrl() != null && profile.getUsername() != null) {
-            out.printf("\nprofile name:\t%s" + "\nserver url:\t%s" + "\nusername:\t%s" + "\norganization:\t%s\n\n",
+            out.printf("\nProfile name:\t%s" + "\nServer url:\t%s" + "\nUsername:\t%s" + "\nOrganization:\t%s\n\n",
                     profile.getName(),
                     profile.getUrl(),
                     profile.getUsername(),
-                    profile.getOrganization() == null ? "unknown" : profile.getOrganization()
+                    profile.getOrganization() == null ? "\u001B[31mundefined\u001B[0m" : profile.getOrganization()
             );
         }
     }

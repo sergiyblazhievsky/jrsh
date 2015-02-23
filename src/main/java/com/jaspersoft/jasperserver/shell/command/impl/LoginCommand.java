@@ -55,7 +55,7 @@ public class LoginCommand extends Command {
             }
         } else {
             // if default profile is already loaded, then we use it for login operation
-            if (!isEmpty(profile)) {
+            if (!isEmpty(profile)) { // >>> login (without parameter)
                 url = profile.getUrl();
                 username = profile.getUsername();
                 profileName = profile.getName();
@@ -87,10 +87,6 @@ public class LoginCommand extends Command {
         if (RepositoryPathCompleter.resources == null || RepositoryPathCompleter.resources.isEmpty()) {
             RepositoryPathCompleter.resources = new TreeDownloader().markedList();
         }
-//        if (FolderRepositoryPathCompleter.resources == null || FolderRepositoryPathCompleter.resources.isEmpty()) {
-//            FolderRepositoryPathCompleter.resources = new TreeDownloader().filteredList(Filter.FOLDER);
-//        }
-
 
         if (getMode().equals(ExecutionMode.SHELL)) {
             out.println("You've logged in.");

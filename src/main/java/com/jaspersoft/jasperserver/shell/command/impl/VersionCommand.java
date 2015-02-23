@@ -8,16 +8,13 @@ import com.jaspersoft.jasperserver.shell.command.Command;
 public class VersionCommand extends Command {
 
     public VersionCommand() {
-        name = "show";
-        description = "Show JRSH version information.";
+        name = "version";
+        description = "Show JRSH version and paths.";
         usageDescription = "\tUsage:  jrsh version";
     }
 
     @Override
     public void run() {
-        System.out.println("Version");
-        System.out.println("Path1");
-        System.out.println("Path2");
-        System.out.println("Path3");
+        // TODO: implement me!
     }
 }

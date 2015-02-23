@@ -11,6 +11,7 @@ import java.util.Collection;
 /**
  * @author Alexander Krasnyanskiy
  */
+@Deprecated
 public class JrshConsoleReader extends ConsoleReader {
 
     public JrshConsoleReader() throws IOException {

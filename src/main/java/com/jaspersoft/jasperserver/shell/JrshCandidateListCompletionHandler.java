@@ -16,6 +16,7 @@ import java.util.Set;
 /**
  * @author Alexander Krasnyanskiy
  */
+@Deprecated
 public class JrshCandidateListCompletionHandler implements CompletionHandler {
 
     public boolean complete(final ConsoleReader reader, final List<CharSequence> candidates, final int pos) throws IOException {
