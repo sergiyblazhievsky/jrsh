@@ -40,14 +40,14 @@ public class ProfileReader {
         yml = new Yaml(new SkipEmptyRepresenter(), options);
     }
 
-    @SneakyThrows
-    public ProfileConfiguration read(String file) {
-        File ymlFile = new File(file);
-        FileInputStream stream = new FileInputStream(ymlFile);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        Map config = yml.loadAs(reader, Map.class);
-        return convert(config);
-    }
+//    @SneakyThrows
+//    public ProfileConfiguration read(String file) {
+//        File ymlFile = new File(file);
+//        FileInputStream stream = new FileInputStream(ymlFile);
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+//        Map config = yml.loadAs(reader, Map.class);
+//        return convert(config);
+//    }
 
     @SneakyThrows
     public ProfileConfiguration read() {

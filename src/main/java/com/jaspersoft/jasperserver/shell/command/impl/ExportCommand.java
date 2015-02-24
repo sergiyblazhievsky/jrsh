@@ -161,6 +161,9 @@ public class ExportCommand extends Command {
                 prefix = "export-repo-";
             }
             String date = sdf.format(new Date());
+            if (values.size() == 3 && parameter("to").isAvailable()) {
+                to = values.get(2);
+            }
             String file = (to == null) ? prefix + date + postfix + ".zip" : to;
             new FileOutputStream(file).write(readFully(entity, -1, false));
             out.printf("\rExport status: SUCCESS\n");
@@ -218,8 +221,8 @@ public class ExportCommand extends Command {
         }
     }
 
-    private String removeQuotes(String path){
-        if (!path.isEmpty()){
+    private String removeQuotes(String path) {
+        if (!path.isEmpty()) {
             if (path.charAt(0) == '"' && path.charAt(path.length() - 1) == '"') {
                 return path.substring(1, path.length() - 1);
             }

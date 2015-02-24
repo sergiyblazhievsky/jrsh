@@ -81,12 +81,6 @@ public abstract class Command implements Executable, ConsoleReaderAware {
                         RepositoryPathCompleter.resources = new TreeDownloader().markedList();
                     }
 
-                    // TODO: remove
-                    /*if (CustomRepositoryPathCompleter.resources == null || CustomRepositoryPathCompleter.resources.isEmpty()) {
-                        CustomRepositoryPathCompleter.resources = new TreeDownloader().markedList();
-                    }*/
-
-
                     run();
                 } else {
                     throw new UnknownInterfaceException(e.getMessage());

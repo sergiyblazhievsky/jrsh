@@ -82,7 +82,7 @@ public class CustomFileCompleter implements Completer {
 
         // todo! diff
         if (matches == 0 && candidates.isEmpty()){
-            candidates.add(" ");
+            candidates.add(""); // was " " wait for space from user
             return buffer.length();
         }
 
