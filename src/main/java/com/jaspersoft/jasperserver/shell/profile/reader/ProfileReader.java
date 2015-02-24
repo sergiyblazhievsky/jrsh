@@ -55,7 +55,6 @@ public class ProfileReader {
         FileInputStream stream = new FileInputStream(ymlFile);
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         Map config = yml.loadAs(reader, Map.class);
-        if (config == null) return new ProfileConfiguration();
         return convert(config);
     }
 

@@ -10,6 +10,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 
 import static org.yaml.snakeyaml.DumperOptions.FlowStyle.BLOCK;
 
@@ -48,8 +49,8 @@ public class ProfileWriter {
      *
      * @param cfg given profile configuration.
      */
-    @SneakyThrows
-    public void write(ProfileConfiguration cfg) {
+    //@SneakyThrows
+    public void write(ProfileConfiguration cfg) throws IOException {
 
         if (cfg.getProfiles().size() == 1 && (cfg.getDefaultProfile() == null || cfg.getDefaultProfile().equals(""))) {
             for (Profile profile : cfg.getProfiles()) {
@@ -96,7 +97,7 @@ public class ProfileWriter {
 
 
         str = str.replace("!!set", "");
-        str = str.replace("com.test.profile.entity.ProfileConfiguration", "---");
+        str = str.replace("com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration", "---");
         str = str.replace("}", "");
         str = str.replace("{", "");
         str = str.replace("\0", "");

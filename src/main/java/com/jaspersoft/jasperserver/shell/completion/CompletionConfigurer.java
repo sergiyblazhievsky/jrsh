@@ -23,6 +23,10 @@ public class CompletionConfigurer {
 
     private AggregateCompleter aggregator;
 
+    // fixme!
+    // hack
+    public static StringsCompleter available = new StringsCompleter(list());
+
     public CompletionConfigurer() {
 
         Completer exit = new StringsCompleter("exit");
@@ -38,7 +42,8 @@ public class CompletionConfigurer {
         Completer load = new StringsCompleter("load");
         Completer default_ = new StringsCompleter("default");
         Completer list = new StringsCompleter("list");
-        Completer available = new StringsCompleter(list());
+        //StringsCompleter available = new StringsCompleter(list());
+
 
 
         Completer login = new StringsCompleter("login");

@@ -1,6 +1,7 @@
 package com.jaspersoft.jasperserver.shell.command.impl;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
+import com.jaspersoft.jasperserver.shell.completion.CompletionConfigurer;
 import com.jaspersoft.jasperserver.shell.context.Context;
 import com.jaspersoft.jasperserver.shell.exception.CannotSaveProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.exception.NoProfileWithSuchNameException;
@@ -10,13 +11,14 @@ import com.jaspersoft.jasperserver.shell.exception.profile.NotUniqueProfileNameE
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration;
+import com.jaspersoft.jasperserver.shell.profile.reader.ProfileReader;
+import com.jaspersoft.jasperserver.shell.profile.writer.ProfileWriter;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 
-import static com.jaspersoft.jasperserver.shell.profile.ProfileUtil.persist;
 import static com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory.getConfiguration;
 import static java.lang.System.out;
 
@@ -26,6 +28,8 @@ import static java.lang.System.out;
 public class ProfileCommand extends Command {
 
     private Properties properties;
+    private ProfileWriter writer;
+    private ProfileReader reader;
 
     public ProfileCommand() {
         name = "profile";
@@ -37,6 +41,8 @@ public class ProfileCommand extends Command {
         parameters.add(new Parameter().setName("list").setOptional(true));
 
         initProperties();
+        writer = new ProfileWriter(properties.getProperty("jrsh.config.path"));
+        reader = new ProfileReader(properties.getProperty("jrsh.config.path"));
     }
 
     private void initProperties() {
@@ -60,15 +66,26 @@ public class ProfileCommand extends Command {
         if (parameter("load").isAvailable()) {
             // todo!
             List<String> vals = parameter("anonymous").getValues();
-            String profileName = vals.get(0);
-            ProfileConfiguration cfg = getConfiguration();
+            String profileName = vals.isEmpty() ? "" : vals.get(0);
+            ProfileConfiguration cfg = /*getConfiguration();*/reader.read();
+
+            if (profileName == null || profileName.isEmpty()) {
+                throw new NotSpecifiedProfileNameException();
+            }
+
+            // if current in-mem config is different than loaded then merge them
+            if (!cfg.equals(getConfiguration())) {
+                getConfiguration().setProfiles(cfg.getProfiles());
+                getConfiguration().setDefaultProfile(cfg.getDefaultProfile());
+            }
+
             Profile loaded = null;
             for (Profile p : cfg.getProfiles()) {
                 if (p.getName().equals(profileName)) {
                     loaded = p;
                 }
             }
-            if (loaded == null){
+            if (loaded == null) {
                 throw new NoProfileWithSuchNameException(profileName);
             } else {
                 // copy profile
@@ -91,7 +108,8 @@ public class ProfileCommand extends Command {
             profile.setName(profileName);
             cfg.getProfiles().add(profile);
             try {
-                persist(cfg, properties.getProperty("jrsh.config.path"));
+                writer.write(cfg);
+                CompletionConfigurer.available.getStrings().add(profileName); // :(
                 System.out.println("Saved.");
             } catch (IOException e) {
                 throw new CannotSaveProfileException();
@@ -128,7 +146,8 @@ public class ProfileCommand extends Command {
                 cfg.setDefaultProfile(founded);
 
                 try {
-                    persist(cfg, properties.getProperty("jrsh.config.path"));
+                    //persist(cfg, properties.getProperty("jrsh.config.path"));
+                    writer.write(cfg);
                 } catch (IOException e) {
                     throw new CannotSaveProfileConfiguration();
                 }

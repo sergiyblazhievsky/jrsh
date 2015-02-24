@@ -13,6 +13,7 @@ import com.jaspersoft.jasperserver.shell.exception.WrongPathParameterException;
 import com.jaspersoft.jasperserver.shell.exception.parser.ParameterValueSizeException;
 import com.jaspersoft.jasperserver.shell.exception.parser.WrongRepositoryPathFormatException;
 import com.jaspersoft.jasperserver.shell.exception.profile.CannotLoadProfileConfiguration;
+import com.jaspersoft.jasperserver.shell.exception.profile.NotUniqueProfileNameException;
 import com.jaspersoft.jasperserver.shell.exception.profile.WrongProfileNameException;
 import com.jaspersoft.jasperserver.shell.exception.server.GeneralServerException;
 import com.jaspersoft.jasperserver.shell.exception.server.JrsResourceNotFoundException;
@@ -64,7 +65,7 @@ public abstract class Command implements Executable, ConsoleReaderAware {
                 }
                 // design error ->
                 // fixme
-                if (e instanceof WrongRepositoryPathFormatException || e instanceof JrsResourceNotFoundException || e instanceof ParameterValueSizeException || /* for replicate if [to] doesn't exist */ e instanceof WrongProfileNameException || e instanceof MandatoryParameterMissingException || e instanceof NoProfileWithSuchNameException || e instanceof NotSpecifiedProfileNameException) {
+                if (e instanceof WrongRepositoryPathFormatException || e instanceof JrsResourceNotFoundException || e instanceof ParameterValueSizeException || /* for replicate if [to] doesn't exist */ e instanceof WrongProfileNameException || e instanceof MandatoryParameterMissingException || e instanceof NoProfileWithSuchNameException || e instanceof NotSpecifiedProfileNameException || e instanceof NotUniqueProfileNameException) {
                     out.printf("error: %s\n", e.getMessage());
                     return;
                 }

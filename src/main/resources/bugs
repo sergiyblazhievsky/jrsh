@@ -1,3 +1,6 @@
+
+{1}
+
 >>> profile default JRS-1
 >>> profile
 profile
@@ -10,3 +13,57 @@ JRS-1         JRS-2-CLOUD   JRS-3-CLOUD
 >>> profile default JRS-2
 Please enter the password for <superuser> at <JRS-1> environment:
 error: Unauthorized
+
+
+
+{2}
+
+>>> profile load FAKE
+Loaded.
+>>> profile
+profile
+>>> profile list
+        JRS-1
+        DUMMY
+        XXL
+        JRS-3-CLOUD
+        FAKE
+        JRS-2-CLOUD
+        FAKE
+
+
+- WHERE IS MY STAR?!
+
+
+
+{3}
+
+>>> profile load
+JRS-1         JRS-2-CLOUD   JRS-3-CLOUD   XXL_JRS
+>>> profile load JRS-
+JRS-1         JRS-2-CLOUD   JRS-3-CLOUD
+>>> profile load JRS-
+JRS-1         JRS-2-CLOUD   JRS-3-CLOUD
+>>> profile load JRS-3-CLOUD
+Loaded.
+>>> profile
+profile
+>>> profile
+
+Profile name:   JRS-3-CLOUD
+Server url:     http://50.17.102.111/jasperserver-pro
+Username:       superuser
+Organization:   undefined
+
+>>> profile
+profile
+>>> profile default
+default
+>>> profile default
+JRS-1         JRS-2-CLOUD   JRS-3-CLOUD   XXL_JRS
+>>> profile default JRS-
+JRS-1         JRS-2-CLOUD   JRS-3-CLOUD
+>>> profile default JRS-3-CLOUD
+Please enter the password for <superuser> at <JRS-3-CLOUD> environment:
+error: Unauthorized
+
