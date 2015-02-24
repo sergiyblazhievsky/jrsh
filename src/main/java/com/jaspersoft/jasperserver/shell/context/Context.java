@@ -34,7 +34,7 @@ public class Context {
     public Context() {
         try {
             initProperties();
-            ProfileConfiguration cfg = createConfiguration(properties.getProperty("jrsh.config.path"));
+            ProfileConfiguration cfg = createConfiguration(System.getenv("JRSH_HOME") + properties.getProperty("jrsh.config.path"));
             if (cfg != null) {
                 Profile currentProfile = getInstance();
                 Profile defaultProfile = find(cfg, cfg.getDefaultProfile());
@@ -54,6 +54,8 @@ public class Context {
         InputStream stream = Context.class.getClass().getResourceAsStream("/config.properties");
         try {
             properties.load(stream);
-        } catch (IOException ignored) {/* NOP */}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

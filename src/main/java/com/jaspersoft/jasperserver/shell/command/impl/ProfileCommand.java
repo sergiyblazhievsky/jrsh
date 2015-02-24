@@ -41,8 +41,8 @@ public class ProfileCommand extends Command {
         parameters.add(new Parameter().setName("list").setOptional(true));
 
         initProperties();
-        writer = new ProfileWriter(properties.getProperty("jrsh.config.path"));
-        reader = new ProfileReader(properties.getProperty("jrsh.config.path"));
+        writer = new ProfileWriter(System.getenv("JRSH_HOME") + properties.getProperty("jrsh.config.path"));
+        reader = new ProfileReader(System.getenv("JRSH_HOME") + properties.getProperty("jrsh.config.path"));
     }
 
     private void initProperties() {
@@ -146,7 +146,6 @@ public class ProfileCommand extends Command {
                 cfg.setDefaultProfile(founded);
 
                 try {
-                    //persist(cfg, properties.getProperty("jrsh.config.path"));
                     writer.write(cfg);
                 } catch (IOException e) {
                     throw new CannotSaveProfileConfiguration();

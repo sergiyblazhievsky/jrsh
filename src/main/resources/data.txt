@@ -93,3 +93,7 @@ JRS-1   JRS-2   JRS-3
 JRS-1   JRS-2   JRS-3
 
 >>> profile save JRS-5-CLOUD
+
+
+
+#jrsh.config.path=/Users/alexkrasnyaskiy/IdeaProjects/jrsh/src/main/resources/profiles.yml
