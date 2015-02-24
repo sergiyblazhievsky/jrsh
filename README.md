@@ -33,6 +33,12 @@ The current stable release of JRSH: 1.0-alpha.
 - [Source](https://github.com/Krasnyanskiy/jrsh)
 - [Bin archive](https://github.com/Krasnyanskiy/jrsh/archive/v1.0-RC2.zip)
 
+## How to setup environment
+It is very important to prepare environment variables before you start, so that `PATH` environment variable must contain `JRSH_HOME` local variable like
+```bash
+JRSH_HOME=path/to/your/jrsh_work_folder
+```
+Thus `jrsh_work_folder` should contain `lib`, `conf`, and `bin` folders.
 ## How to build
 To build executable Java archive, just pen a terminal window and invoke
 ```java
