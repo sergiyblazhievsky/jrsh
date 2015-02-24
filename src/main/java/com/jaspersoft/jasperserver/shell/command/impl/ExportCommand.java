@@ -209,6 +209,7 @@ public class ExportCommand extends Command {
         while (true) {
             if (counter == 4) {
                 counter = 0;
+                out.print("\r                          ");
                 out.print("\rExporting resources");
             }
             out.print(".");

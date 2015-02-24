@@ -35,9 +35,9 @@ public class App {
         LogManager.getLogManager().reset();
 
         if (args.length < 1) {
-            console = new ConsoleReader();
-            //console = new CustomConsoleReader();
-            //console.setCompletionHandler(new JrshCandidateListCompletionHandler());
+            //console = new ConsoleReader();
+            console = new JrshConsoleReader();
+            console.setCompletionHandler(new JrshCandidateListCompletionHandler());
             out.println("Welcome to JRSH v1.0-alpha!\n");
             console.setPrompt("\u001B[1m>>> \u001B[0m");
             AggregateCompleter aggregator = new CompletionConfigurer().getAggregator();

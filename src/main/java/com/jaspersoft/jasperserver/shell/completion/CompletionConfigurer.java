@@ -70,7 +70,7 @@ public class CompletionConfigurer {
         Completer repo = new StringsCompleter("repo");
         Completer role = new StringsCompleter("role");
         Completer user = new StringsCompleter("user");
-        Completer path = new RepositoryPathCompleter();
+        Completer path = new RepositoryPathCompleter(); /*new CustomRepositoryPathCompleter();*/
 
 
         /**
@@ -108,7 +108,7 @@ public class CompletionConfigurer {
 
 
                 // fixme!
-                /**/
+                /*
                 new ArgumentCompleter(export, new NullCompleter()),
 
                 new ArgumentCompleter(export, all, new NullCompleter()),
@@ -122,7 +122,21 @@ public class CompletionConfigurer {
                 //new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), new NullCompleter()),
                 new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), new CustomFileCompleter(), new NullCompleter()),
                 new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), new CustomFileCompleter(), events),
-                /**/
+                */
+
+
+                new ArgumentCompleter(export, new NullCompleter()),
+
+                new ArgumentCompleter(export, all, new NullCompleter()),
+                new ArgumentCompleter(export, user, new NullCompleter()),
+                new ArgumentCompleter(export, role, new NullCompleter()),
+
+                new ArgumentCompleter(export, repo, new NullCompleter()),
+                new ArgumentCompleter(export, repo, path, new NullCompleter()),
+                new ArgumentCompleter(export, repo, path, events),
+
+                new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), new CustomFileCompleter(), events/*, new NullCompleter()*/),
+
 
                 clear, logout, replicateCompleter,
 

@@ -37,7 +37,7 @@ public class JrshConsoleReader extends ConsoleReader {
      * Prints candidates in rows. One candidate per line.
      *
      * @param candidates given candidates
-     * @throws IOException
+     * @throws java.io.IOException
      * @since 1.0RC5
      */
     public void printRows(Collection<CharSequence> candidates) throws IOException {

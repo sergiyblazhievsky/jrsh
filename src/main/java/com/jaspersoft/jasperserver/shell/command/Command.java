@@ -80,9 +80,11 @@ public abstract class Command implements Executable, ConsoleReaderAware {
                     if (RepositoryPathCompleter.resources == null || RepositoryPathCompleter.resources.isEmpty()) {
                         RepositoryPathCompleter.resources = new TreeDownloader().markedList();
                     }
-//                    if (FolderRepositoryPathCompleter.resources == null || FolderRepositoryPathCompleter.resources.isEmpty()) {
-//                        FolderRepositoryPathCompleter.resources = new TreeDownloader().filteredList(TreeDownloader.Filter.FOLDER);
-//                    }
+
+                    // TODO: remove
+                    /*if (CustomRepositoryPathCompleter.resources == null || CustomRepositoryPathCompleter.resources.isEmpty()) {
+                        CustomRepositoryPathCompleter.resources = new TreeDownloader().markedList();
+                    }*/
 
 
                     run();

@@ -88,6 +88,13 @@ public class LoginCommand extends Command {
             RepositoryPathCompleter.resources = new TreeDownloader().markedList();
         }
 
+
+        // TODO: remove
+        /*if (CustomRepositoryPathCompleter.resources == null || CustomRepositoryPathCompleter.resources.isEmpty()) {
+            CustomRepositoryPathCompleter.resources = new TreeDownloader().markedList();
+        }*/
+
+
         if (getMode().equals(ExecutionMode.SHELL)) {
             out.println("You've logged in.");
         }

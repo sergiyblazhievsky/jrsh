@@ -47,7 +47,7 @@ public class JrshCandidateListCompletionHandler implements CompletionHandler {
 
     /**
      * Print out the candidates. If the size of the candidates is greater than the
-     * {@link ConsoleReader#getAutoprintThreshold}, they prompt with a warning.
+     * {@link jline.console.ConsoleReader#getAutoprintThreshold}, they prompt with a warning.
      *
      * @param candidates the list of candidates to print
      */
@@ -85,17 +85,16 @@ public class JrshCandidateListCompletionHandler implements CompletionHandler {
             candidates = copy;
         }
 
-        reader.println();
-
-        if (reader instanceof JrshConsoleReader) {
-            ((JrshConsoleReader)reader).printRows(candidates);
-        } else {
+        if (candidates.size() > 1) {
+            reader.println();
             reader.printColumns(candidates);
+        } else {
+            reader.print("\r");
         }
     }
 
     /**
-     * Returns a root that matches all the {@link String} elements of the specified {@link List},
+     * Returns a root that matches all the {@link String} elements of the specified {@link java.util.List},
      * or null if there are no commonalities. For example, if the list contains
      * <i>foobar</i>, <i>foobaz</i>, <i>foobuz</i>, the method will return <i>foob</i>.
      */
