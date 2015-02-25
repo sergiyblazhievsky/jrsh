@@ -1,27 +1,30 @@
 package com.jaspersoft.jasperserver.shell.completion.completer;
 
 import com.jaspersoft.jasperserver.shell.completion.util.ConverterUtil;
-import com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil;
 import jline.console.completer.Completer;
-import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil.commonSubstring;
+import static com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil.diff;
 import static jline.internal.Preconditions.checkNotNull;
 
 /**
  * @author Alexander Krasnyanskiy
  */
-@Log
+@Log4j
 @Deprecated
 public class RepositoryPathCompleter implements Completer {
 
     public static List<Pair<String, Boolean>> resources;
+    private int curs;
 
     public int complete(String buffer, final int cursor, final List<CharSequence> candidates) {
+        curs = cursor;
         checkNotNull(candidates);
         if (buffer == null) {
             buffer = "";
@@ -30,12 +33,17 @@ public class RepositoryPathCompleter implements Completer {
         return matchFiles(translated, resources, candidates);
     }
 
+
+    // TODO   ->  /p
+    // public/    properties/
+
+
     protected int matchFiles(String translated, List<Pair<String, Boolean>> resources, List<CharSequence> candidates) {
         if (resources == null) {
             return -1;
         }
-        String common = CompleterUtil.commonSubstring(translated, ConverterUtil.convert(resources));
-        String diff = CompleterUtil.diff(translated, common);
+        String common = commonSubstring(translated, ConverterUtil.convert(resources));
+        String diff = diff(translated, common);
         if (!diff.isEmpty()) {
             candidates.clear();
             candidates.add(diff);
@@ -94,7 +102,9 @@ public class RepositoryPathCompleter implements Completer {
                         if (candidates.contains(d) || candidates.contains("")) {
                             return translated.length();
                         }
-                        return translated.length() - d.length();
+                        log.info(String.format("<%d - %d - %d>", translated.length() - d.length(), d.length(), curs));
+                        return translated.length() - d.length() == 0 ? translated.length() - d.length() + 1 : translated.length() - d.length();
+                        //return translated.length() - d.length();
                     }
                 }
             }

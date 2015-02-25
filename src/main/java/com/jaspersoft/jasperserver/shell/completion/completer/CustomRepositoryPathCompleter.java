@@ -93,7 +93,8 @@ public class CustomRepositoryPathCompleter implements Completer
                         if (candidates.contains(d) || candidates.contains("")) {
                             return translated.length();
                         }
-                        return translated.length() - d.length();
+                        //return translated.length() - d.length();
+                        return translated.length() - d.length() == 0 ? translated.length() - d.length() + 1 : translated.length() - d.length();
                     }
                 }
             }

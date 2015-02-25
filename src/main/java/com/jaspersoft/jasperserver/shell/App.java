@@ -8,7 +8,6 @@ import com.jaspersoft.jasperserver.shell.exception.parser.MandatoryParameterExce
 import com.jaspersoft.jasperserver.shell.exception.server.ServerException;
 import com.jaspersoft.jasperserver.shell.handler.JrshCandidateListCompletionHandler;
 import com.jaspersoft.jasperserver.shell.parser.CommandParser;
-import com.jaspersoft.jasperserver.shell.reader.JrshConsoleReader;
 import com.jaspersoft.jasperserver.shell.validator.ParameterValidator;
 import jline.console.ConsoleReader;
 import jline.console.completer.AggregateCompleter;
@@ -35,7 +34,7 @@ public class App {
         parser.setContext(context);
         LogManager.getLogManager().reset();
         if (args.length < 1) {
-            console = new JrshConsoleReader();
+            console = new ConsoleReader();
             console.setCompletionHandler(new JrshCandidateListCompletionHandler());
             out.println("Welcome to JRSH v1.0-alpha!\n");
             console.setPrompt("\u001B[1m>>> \u001B[0m");
