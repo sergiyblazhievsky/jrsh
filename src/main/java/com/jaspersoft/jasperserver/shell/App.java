@@ -6,7 +6,9 @@ import com.jaspersoft.jasperserver.shell.context.Context;
 import com.jaspersoft.jasperserver.shell.exception.InterfaceException;
 import com.jaspersoft.jasperserver.shell.exception.parser.MandatoryParameterException;
 import com.jaspersoft.jasperserver.shell.exception.server.ServerException;
+import com.jaspersoft.jasperserver.shell.handler.JrshCandidateListCompletionHandler;
 import com.jaspersoft.jasperserver.shell.parser.CommandParser;
+import com.jaspersoft.jasperserver.shell.reader.JrshConsoleReader;
 import com.jaspersoft.jasperserver.shell.validator.ParameterValidator;
 import jline.console.ConsoleReader;
 import jline.console.completer.AggregateCompleter;
@@ -29,13 +31,10 @@ public class App {
         Context context = new Context();
         Queue<Command> queue = null;
         ConsoleReader console;
-        //CustomConsoleReader console;
         CommandParser parser = new CommandParser(new ParameterValidator());
         parser.setContext(context);
         LogManager.getLogManager().reset();
-
         if (args.length < 1) {
-            //console = new ConsoleReader();
             console = new JrshConsoleReader();
             console.setCompletionHandler(new JrshCandidateListCompletionHandler());
             out.println("Welcome to JRSH v1.0-alpha!\n");
@@ -43,7 +42,6 @@ public class App {
             AggregateCompleter aggregator = new CompletionConfigurer().getAggregator();
             console.addCompleter(aggregator);
             String input;
-
             while ((input = console.readLine().trim()) != null) {
                 if ("".equals(input)) continue;
                 try {
@@ -60,7 +58,7 @@ public class App {
                         cmd.parameter("anonymous").setValues(asList(e.getMessage()));
                         cmd.execute();
                     } else {
-                        out.printf("error: %s\n", e.getMessage());
+                        out.printf("\rerror: %s                     \n", e.getMessage());
                     }
                     continue;
                 }
@@ -69,9 +67,9 @@ public class App {
                         if (c != null) c.execute();
                     }
                 } catch (ServerException e) {
-                    out.printf("error: %s\n", e.getMessage());
+                    out.printf("\rerror: %s                     \n", e.getMessage());
                 } catch (InterfaceException e) {
-                    out.println(e.getMessage());
+                    out.println("\r" + e.getMessage());
                 }
             }
         } else {

@@ -19,7 +19,9 @@ public class ExitCommand extends Command {
     public void run() {
         try {
             getInstance().logout();
-        } catch (Exception ignored) {/* NOP */} finally {
+        } catch (Exception ignored) {
+            exit(1);
+        } finally {
             exit(0);
         }
     }

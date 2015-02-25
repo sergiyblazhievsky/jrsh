@@ -6,6 +6,6 @@ package com.jaspersoft.jasperserver.shell.exception;
 public class UnspecifiedUserNameException extends InterfaceException {
 
     public UnspecifiedUserNameException() {
-        super("=>");
+        super("You need to specify username.");
     }
 }

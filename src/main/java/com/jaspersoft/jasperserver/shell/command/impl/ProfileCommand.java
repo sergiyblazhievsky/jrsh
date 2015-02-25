@@ -3,7 +3,7 @@ package com.jaspersoft.jasperserver.shell.command.impl;
 import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.completion.CompletionConfigurer;
 import com.jaspersoft.jasperserver.shell.context.Context;
-import com.jaspersoft.jasperserver.shell.exception.CannotSaveProfileConfiguration;
+import com.jaspersoft.jasperserver.shell.exception.CannotSaveProfileConfigurationException;
 import com.jaspersoft.jasperserver.shell.exception.NoProfileWithSuchNameException;
 import com.jaspersoft.jasperserver.shell.exception.NotSpecifiedProfileNameException;
 import com.jaspersoft.jasperserver.shell.exception.profile.CannotSaveProfileException;
@@ -98,32 +98,56 @@ public class ProfileCommand extends Command {
             }
         } else if (parameter("save").isAvailable()) {
             List<String> vals = parameter("anonymous").getValues();
-            String profileName = vals.get(0);
-            ProfileConfiguration cfg = getConfiguration();
-            for (Profile p : cfg.getProfiles()) {
-                if (p.getName().equals(/*profile.getName()*/profileName)) {
+            if (vals.isEmpty()) {
+                throw new NotSpecifiedProfileNameException();
+            }
+            String profileName = vals.get(0); // defined by user
+            ProfileConfiguration cfg = reader.read();
+            for (Profile profile : cfg.getProfiles()) {
+                if (profile.getName().equals(/*profile.getName()*/profileName)) {
                     throw new NotUniqueProfileNameException();
                 }
             }
+            String tmpName = profile.getName();
             profile.setName(profileName);
             cfg.getProfiles().add(profile);
             try {
                 writer.write(cfg);
-                CompletionConfigurer.available.getStrings().add(profileName); // :(
+                CompletionConfigurer.available.getStrings().add(profileName);
                 System.out.println("Saved.");
             } catch (IOException e) {
+                profile.setName(tmpName);
                 throw new CannotSaveProfileException();
             }
-
         } else if (parameter("list").isAvailable()) {
-            ProfileConfiguration cfg = getConfiguration();
-            if (cfg == null) out.println("You need to load profile configuration first.");
-            else for (Profile p : cfg.getProfiles())
-                out.printf(cfg.getDefaultProfile().equals(p.getName())
-                        ? "\t%s \u001B[31m*\u001B[0m\n"
-                        : "\t%s\n", p.getName());
+            ProfileConfiguration cfg = /*getConfiguration();*/reader.read();
+            if (cfg == null) {
+                out.println("You need to load profile configuration first.");
+            } else {
+
+                List<String> vals = parameter("anonymous").getValues();
+                if (vals.size() == 1) {
+                    String pName = vals.get(0);
+                    for (Profile profile : cfg.getProfiles()) {
+                        if (profile.getName().equals(pName)) {
+                            out.printf("\nProfile name:\t%s" + "\nServer url:\t%s" + "\nUsername:\t%s" + "\nOrganization:\t%s\n\n",
+                                    profile.getName(),
+                                    profile.getUrl(),
+                                    profile.getUsername(),
+                                    profile.getOrganization() == null ? "\u001B[31mundefined\u001B[0m" : profile.getOrganization()
+                            );
+                            return;
+                        }
+                    }
+                }
+                if (vals.isEmpty()){
+                    for (Profile p : cfg.getProfiles()) {
+                        out.printf(cfg.getDefaultProfile().equals(p.getName()) ? "\t%s \u001B[31m*\u001B[0m\n" : "\t%s\n", p.getName());
+                    }
+                }
+            }
         } else if (parameter("default").isAvailable()) {
-            ProfileConfiguration cfg = getConfiguration();
+            ProfileConfiguration cfg = /*getConfiguration();*/reader.read();
             List<String> vals = parameter("anonymous").getValues();
             if (vals.isEmpty()) {
                 throw new NotSpecifiedProfileNameException();
@@ -144,11 +168,11 @@ public class ProfileCommand extends Command {
                     throw new NoProfileWithSuchNameException(value);
                 }
                 cfg.setDefaultProfile(founded);
-
                 try {
                     writer.write(cfg);
+                    System.out.println("Saved.");
                 } catch (IOException e) {
-                    throw new CannotSaveProfileConfiguration();
+                    throw new CannotSaveProfileConfigurationException();
                 }
             }
         } else if (profile.getUrl() != null && profile.getUsername() != null) {

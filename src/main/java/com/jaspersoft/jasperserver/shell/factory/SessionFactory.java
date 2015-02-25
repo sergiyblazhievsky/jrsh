@@ -79,7 +79,15 @@ public final class SessionFactory {
                 .appendMinutes().appendSuffix(" minute ", " minutes ")
                 .appendSeconds().appendSuffix(" second ", " seconds ")
                 .toFormatter();
+        if (sessionStartTime == null){
+            sessionStartTime = currentTimeMillis();
+        }
         Period period = new Period(sessionStartTime, currentTimeMillis());
         return hoursMinutesSeconds.print(period);
+    }
+
+    public static void invalidate(){
+        instance = null;
+        sessionStartTime = null;
     }
 }

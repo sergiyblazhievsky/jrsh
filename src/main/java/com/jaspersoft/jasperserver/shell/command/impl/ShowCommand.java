@@ -1,5 +1,6 @@
 package com.jaspersoft.jasperserver.shell.command.impl;
 
+import com.jaspersoft.jasperserver.dto.resources.ClientResourceListWrapper;
 import com.jaspersoft.jasperserver.dto.resources.ClientResourceLookup;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.core.exceptions.ResourceNotFoundException;
@@ -10,7 +11,6 @@ import com.jaspersoft.jasperserver.shell.command.common.TreeNode;
 import com.jaspersoft.jasperserver.shell.exception.server.JrsResourceNotFoundException;
 import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
-import lombok.SneakyThrows;
 
 import java.util.List;
 
@@ -18,7 +18,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter.FOLDER_URI;
 import static com.jaspersoft.jasperserver.shell.validator.RepositoryPathValidatorUtil.validate;
 import static java.lang.System.out;
-import static java.lang.Thread.sleep;
 
 /**
  * @author Alexander Krasnyanskiy
@@ -38,10 +37,13 @@ public class ShowCommand extends Command {
 
     @Override
     public void run() {
+
         session = SessionFactory.getInstance();
+
         Parameter repoParam = parameter("repo");
         Parameter anonParam = parameter("anonymous");
         Parameter infoParam = parameter("server-info");
+
         if (repoParam.isAvailable()) {
             if (anonParam.getValues().isEmpty()) {
                 printTree("");
@@ -51,7 +53,7 @@ public class ShowCommand extends Command {
         } else if (infoParam.isAvailable()) {
             printInfo();
         } else {
-            out.println("See `help show`.");
+            out.println("See help for 'show' command.");
         }
     }
 
@@ -77,36 +79,41 @@ public class ShowCommand extends Command {
     }
 
     void printTree(String path) {
-        Thread spinner = new Thread(new Runnable() {
-            @SneakyThrows
-            public void run() {
-                int counter = 0;
-                out.print("Resources loading");
-                while (true) {
-                    if (counter == 4) {
-                        counter = 0;
-                        out.print("\rResources loading");
-                    }
-                    out.print(".");
-                    sleep(250);
-                    counter++;
-                }
-            }
-        });
-        spinner.setDaemon(true);
+//        Thread spinner = new Thread(new Runnable() {
+//            @SneakyThrows
+//            public void run() {
+//                int counter = 0;
+//                out.print("Resources loading");
+//                while (true) {
+//                    if (counter == 4) {
+//                        counter = 0;
+//                        out.print("\rResources loading");
+//                    }
+//                    out.print(".");
+//                    sleep(250);
+//                    counter++;
+//                }
+//            }
+//        });
+//        spinner.setDaemon(true);
         List<ClientResourceLookup> resources = null;
         validate(path);
         try {
-            spinner.start();
-            resources = session.resourcesService().resources()
-                    .parameter(FOLDER_URI, "".equals(path) ? "/" : path)
-                    .search().getEntity().getResourceLookups();
+//            spinner.start();
+            ClientResourceListWrapper tmp = session.resourcesService().resources().parameter(FOLDER_URI, path).search().getEntity();
+
+            //if (tmp != null){
+                resources = tmp.getResourceLookups();
+            //} else {
+            //    out.print("\rNo content to show.");
+            //}
+
         } catch (ResourceNotFoundException e) {
             out.print("\r");
             throw new JrsResourceNotFoundException(path);
-        } finally {
+        } /*finally {
             spinner.stop();
-        }
+        }*/
         List<String> list = newArrayList();
         TreeConverter converter = new TreeConverter();
         for (ClientResourceLookup lookup : resources) {

@@ -147,6 +147,8 @@ public class CompletionConfigurer {
                 new ArgumentCompleter(profile, default_, new NullCompleter()),
                 new ArgumentCompleter(profile, default_, available, new NullCompleter()),
                 new ArgumentCompleter(profile, list, new NullCompleter()),
+                new ArgumentCompleter(profile, list, available, new NullCompleter()),
+
 
                 session, loginCompleter,
                 importCompleter, showCompleter, helpCompleter);

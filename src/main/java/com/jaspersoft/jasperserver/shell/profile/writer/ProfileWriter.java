@@ -63,6 +63,7 @@ public class ProfileWriter {
         writer.flush();
         writer.close();
         polish(file, true);
+        writer.close();
     }
 
     @SneakyThrows

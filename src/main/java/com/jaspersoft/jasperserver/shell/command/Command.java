@@ -1,25 +1,22 @@
 package com.jaspersoft.jasperserver.shell.command;
 
 import com.jaspersoft.jasperserver.shell.ExecutionMode;
-import com.jaspersoft.jasperserver.shell.command.common.TreeDownloader;
-import com.jaspersoft.jasperserver.shell.completion.completer.RepositoryPathCompleter;
 import com.jaspersoft.jasperserver.shell.exception.CannotCreateFileException;
-import com.jaspersoft.jasperserver.shell.exception.CannotSaveProfileConfiguration;
+import com.jaspersoft.jasperserver.shell.exception.CannotSaveProfileConfigurationException;
 import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingException;
 import com.jaspersoft.jasperserver.shell.exception.NoProfileWithSuchNameException;
 import com.jaspersoft.jasperserver.shell.exception.NotSpecifiedProfileNameException;
+import com.jaspersoft.jasperserver.shell.exception.SessionIsNotAvailableException;
 import com.jaspersoft.jasperserver.shell.exception.UnknownInterfaceException;
+import com.jaspersoft.jasperserver.shell.exception.WrongPasswordException;
 import com.jaspersoft.jasperserver.shell.exception.WrongPathParameterException;
 import com.jaspersoft.jasperserver.shell.exception.parser.ParameterValueSizeException;
 import com.jaspersoft.jasperserver.shell.exception.parser.WrongRepositoryPathFormatException;
 import com.jaspersoft.jasperserver.shell.exception.profile.CannotLoadProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.exception.profile.NotUniqueProfileNameException;
 import com.jaspersoft.jasperserver.shell.exception.profile.WrongProfileNameException;
-import com.jaspersoft.jasperserver.shell.exception.server.GeneralServerException;
 import com.jaspersoft.jasperserver.shell.exception.server.JrsResourceNotFoundException;
-import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
-import com.jaspersoft.jasperserver.shell.profile.ProfileUtil;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import jline.console.ConsoleReader;
 import lombok.Data;
@@ -59,30 +56,32 @@ public abstract class Command implements Executable, ConsoleReaderAware {
             if (mode.equals(SHELL)) {
                 // design error ->
                 // fixme
-                if (e instanceof WrongPathParameterException || e instanceof CannotCreateFileException || e instanceof CannotLoadProfileConfiguration || e instanceof CannotSaveProfileConfiguration) {
-                    out.printf("i/o error: %s\n", e.getMessage());
+                if (e instanceof WrongPathParameterException || e instanceof CannotCreateFileException || e instanceof CannotLoadProfileConfiguration || e instanceof CannotSaveProfileConfigurationException) {
+                    out.printf("\ri/o error: %s\n", e.getMessage());
+                    reader.setPrompt("\u001B[1m>>> \u001B[0m");
                     return;
                 }
                 // design error ->
                 // fixme
-                if (e instanceof WrongRepositoryPathFormatException || e instanceof JrsResourceNotFoundException || e instanceof ParameterValueSizeException || /* for replicate if [to] doesn't exist */ e instanceof WrongProfileNameException || e instanceof MandatoryParameterMissingException || e instanceof NoProfileWithSuchNameException || e instanceof NotSpecifiedProfileNameException || e instanceof NotUniqueProfileNameException) {
-                    out.printf("error: %s\n", e.getMessage());
+                if (e instanceof WrongRepositoryPathFormatException || e instanceof JrsResourceNotFoundException || e instanceof ParameterValueSizeException || e instanceof WrongPasswordException || /* for replicate if [to] doesn't exist */ e instanceof WrongProfileNameException || e instanceof MandatoryParameterMissingException || e instanceof NoProfileWithSuchNameException || e instanceof NotSpecifiedProfileNameException || e instanceof NotUniqueProfileNameException || e instanceof SessionIsNotAvailableException) {
+                    out.printf("\rerror: %s\n", e.getMessage());
+                    reader.setPrompt("\u001B[1m>>> \u001B[0m");
                     return;
                 }
                 // design error ->
-                if (!ProfileUtil.isEmpty(profile) && !(e instanceof GeneralServerException)) {
+                /*if (!ProfileUtil.isEmpty(profile) && !(e instanceof GeneralServerException)) {
                     String password = askPassword();
                     SessionFactory.createSession(profile.getUrl(), profile.getUsername(), password, profile.getOrganization());
 
-                    /**
+                    *//**
                      * Hack! fixme: Delete this!
-                     */
+                     *//*
                     if (RepositoryPathCompleter.resources == null || RepositoryPathCompleter.resources.isEmpty()) {
                         RepositoryPathCompleter.resources = new TreeDownloader().markedList();
                     }
 
                     run();
-                } else {
+                }*/ else {
                     throw new UnknownInterfaceException(e.getMessage());
                 }
             } else {

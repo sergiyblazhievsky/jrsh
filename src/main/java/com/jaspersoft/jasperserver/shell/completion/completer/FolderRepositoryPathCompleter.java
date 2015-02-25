@@ -16,14 +16,14 @@ import static jline.internal.Preconditions.checkNotNull;
  */
 public class FolderRepositoryPathCompleter extends RepositoryPathCompleter {
 
-    public static List<Pair<String, Boolean>> resources;
+    public static List<Pair<String, Boolean>> resources = new ArrayList<>();
 
     public int complete(String buffer, final int cursor, final List<CharSequence> candidates) {
 
-        if (resources == null){
-            resources = new ArrayList<>();
+        if (RepositoryPathCompleter.resources != null) {
+            resources.clear();
             for (Pair<String, Boolean> res : RepositoryPathCompleter.resources) {
-                if (res.getValue()){
+                if (res.getValue()) {
                     resources.add(res);
                 }
             }
@@ -38,7 +38,7 @@ public class FolderRepositoryPathCompleter extends RepositoryPathCompleter {
     }
 
     protected int matchFiles(String translated, List<Pair<String, Boolean>> resources, List<CharSequence> candidates) {
-        if (resources == null) {
+        if (resources == null || resources.isEmpty()) {
             return -1;
         }
         String common = CompleterUtil.commonSubstring(translated, ConverterUtil.convert(resources));

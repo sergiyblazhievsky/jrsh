@@ -23,7 +23,7 @@ public class TreeDownloader {
                     .parameter(ResourceSearchParameter.LIMIT, "5000")
                     .search().getEntity().getResourceLookups();
         } catch (Exception e) {
-            // if we doesn't have a session yet
+            // if we doesn't have a session
             lookups = new ArrayList<>();
         }
         return lookups;

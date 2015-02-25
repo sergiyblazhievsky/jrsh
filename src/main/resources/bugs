@@ -67,3 +67,40 @@ JRS-1         JRS-2-CLOUD   JRS-3-CLOUD
 Please enter the password for <superuser> at <JRS-3-CLOUD> environment:
 error: Unauthorized
 
+
+{4}
+>>> profile
+
+Profile name:	Current
+Server url:	http://localhost:8080/jasperserver-pro
+Username:	superuser
+Organization:	undefined
+
+>>> profile save ABC
+Saved.
+>>> login --
+--server     --username   --password
+>>> login
+Please enter the password for <superuser> at <ABC> environment: *********
+You've logged in.
+>>> profile
+save       load       default    list
+>>> login --
+--server     --username   --password
+>>> login --server --
+--server     --username   --password
+>>> login --server http://localhost:8080/jasperserver-pro --
+--server     --username   --password
+>>> login --server http://localhost:8080/jasperserver-pro --password superuser --
+--server     --username   --password
+>>> login --server http://localhost:8080/jasperserver-pro --password superuser --username superuser
+You've logged in.
+>>> profile
+
+Profile name:	Current
+Server url:	http://localhost:8080/jasperserver-pro
+Username:	superuser
+Organization:	undefined
+
+>>> profile save DEF
+Please enter the password for <superuser> at <DEF> environment:

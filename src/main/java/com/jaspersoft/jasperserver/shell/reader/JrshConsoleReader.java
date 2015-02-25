@@ -1,4 +1,4 @@
-package com.jaspersoft.jasperserver.shell;
+package com.jaspersoft.jasperserver.shell.reader;
 
 import jline.Terminal;
 import jline.console.ConsoleReader;
