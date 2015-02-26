@@ -10,7 +10,6 @@ import com.jaspersoft.jasperserver.shell.exception.CannotCreateFileException;
 import com.jaspersoft.jasperserver.shell.exception.SessionIsNotAvailableException;
 import com.jaspersoft.jasperserver.shell.exception.UnspecifiedRoleException;
 import com.jaspersoft.jasperserver.shell.exception.UnspecifiedUserNameException;
-import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
@@ -29,6 +28,7 @@ import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.
 import static com.jaspersoft.jasperserver.shell.ExecutionMode.SHELL;
 import static com.jaspersoft.jasperserver.shell.ExecutionMode.TOOL;
 import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.createCommand;
+import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.getInstance;
 import static java.lang.String.format;
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -63,7 +63,7 @@ public class ExportCommand extends Command {
 
     @Override
     public void run() {
-        Session session = SessionFactory.getInstance();
+        Session session = getInstance();
         String path;
         String to = null;
         String role = null;

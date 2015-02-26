@@ -2,6 +2,7 @@ package com.jaspersoft.jasperserver.shell.command.impl;
 
 import com.jaspersoft.jasperserver.dto.resources.ClientResourceListWrapper;
 import com.jaspersoft.jasperserver.dto.resources.ClientResourceLookup;
+import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.core.exceptions.ResourceNotFoundException;
 import com.jaspersoft.jasperserver.jaxrs.client.dto.common.ServerInfo;
@@ -9,7 +10,6 @@ import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.command.common.TreeConverter;
 import com.jaspersoft.jasperserver.shell.command.common.TreeNode;
 import com.jaspersoft.jasperserver.shell.exception.server.JrsResourceNotFoundException;
-import com.jaspersoft.jasperserver.shell.exception.server.NoRepositoryContentException;
 import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 
@@ -18,6 +18,7 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter.FOLDER_URI;
 import static com.jaspersoft.jasperserver.shell.validator.RepositoryPathValidatorUtil.validate;
+import static java.lang.String.format;
 import static java.lang.System.out;
 
 /**
@@ -60,7 +61,7 @@ public class ShowCommand extends Command {
 
     private void printInfo() {
         ServerInfo info = session.serverInfoService().details().getEntity();
-        out.printf("\nExpiration: \u001B[31m%s\u001B[0m\n"+
+        out.printf("\nExpiration: \u001B[31m%s\u001B[0m\n" +
                         "\nVersion: %s" +
                         "\nFeatures: %s" +
                         "\nEdition: %s" +
@@ -98,15 +99,23 @@ public class ShowCommand extends Command {
 //        });
 //        spinner.setDaemon(true);
         List<ClientResourceLookup> resources;
+
+        int directoriesNumber = 0;
+        int filesNumber = 0;
+
         validate(path);
         try {
 //            spinner.start();
-            ClientResourceListWrapper tmp = session.resourcesService().resources().parameter(FOLDER_URI, path).search().getEntity();
+            ClientResourceListWrapper tmp = session.resourcesService().resources().parameter(FOLDER_URI, path).parameter(ResourceSearchParameter.LIMIT, "3500").search().getEntity();
 
-            if (tmp != null){
+            if (tmp != null) {
                 resources = tmp.getResourceLookups();
             } else {
-                throw new NoRepositoryContentException();
+                // then we have an empty folder here
+                out.println(path.substring(path.lastIndexOf('/')));
+                out.println(format("\n%d directories, %d files", directoriesNumber, filesNumber));
+                return;
+                //throw new NoRepositoryContentException();
             }
 
         } catch (ResourceNotFoundException e) {
@@ -115,13 +124,21 @@ public class ShowCommand extends Command {
         } /*finally {
             spinner.stop();
         }*/
+
+
         List<String> list = newArrayList();
         TreeConverter converter = new TreeConverter();
         for (ClientResourceLookup lookup : resources) {
             list.add(lookup.getUri());
+            if ("folder".equals(lookup.getResourceType())) {
+                directoriesNumber++;
+            } else {
+                filesNumber++;
+            }
         }
         TreeNode tree = converter.toTree(list, path);
         out.print("\r");
         tree.print();
+        out.println(format("\n%d directories, %d files", directoriesNumber, filesNumber));
     }
 }
