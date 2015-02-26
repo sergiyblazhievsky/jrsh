@@ -1,6 +1,5 @@
 package com.jaspersoft.jasperserver.shell.completion.completer;
 
-import com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil;
 import com.jaspersoft.jasperserver.shell.completion.util.ConverterUtil;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -9,11 +8,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil.commonSubstring;
+import static com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil.diff;
 import static jline.internal.Preconditions.checkNotNull;
 
 /**
  * @author Alexander Krasnyanskiy
  */
+@Deprecated
 public class FolderRepositoryPathCompleter extends RepositoryPathCompleter {
 
     public static List<Pair<String, Boolean>> resources = new ArrayList<>();
@@ -41,8 +43,8 @@ public class FolderRepositoryPathCompleter extends RepositoryPathCompleter {
         if (resources == null || resources.isEmpty()) {
             return -1;
         }
-        String common = CompleterUtil.commonSubstring(translated, ConverterUtil.convert(resources));
-        String diff = CompleterUtil.diff(translated, common);
+        String common = commonSubstring(translated, ConverterUtil.convert(resources));
+        String diff = diff(translated, common);
         if (!diff.isEmpty()) {
             candidates.clear();
             candidates.add(diff);
@@ -101,8 +103,8 @@ public class FolderRepositoryPathCompleter extends RepositoryPathCompleter {
                         if (candidates.contains(d) || candidates.contains("")) {
                             return translated.length();
                         }
-                        //return translated.length() - d.length();
-                        return translated.length() - d.length() == 0 ? translated.length() - d.length() + 1 : translated.length() - d.length();
+                        return translated.length() - d.length() == 0
+                                ? translated.length() - d.length() + 1 : translated.length() - d.length();
                     }
                 }
             }

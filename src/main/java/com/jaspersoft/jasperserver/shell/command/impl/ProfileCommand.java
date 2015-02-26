@@ -33,7 +33,7 @@ public class ProfileCommand extends Command {
 
     public ProfileCommand() {
         name = "profile";
-        description = "Show current profile information.";
+        description = "Allows manipulate of user profiles.";
         parameters.add(new Parameter().setName("anonymous").setMultiple(true).setOptional(true));
         parameters.add(new Parameter().setName("load").setOptional(true));
         parameters.add(new Parameter().setName("save").setOptional(true));
@@ -141,6 +141,9 @@ public class ProfileCommand extends Command {
                     }
                 }
                 if (vals.isEmpty()){
+                    //
+                    // print profile list
+                    //
                     for (Profile p : cfg.getProfiles()) {
                         out.printf(cfg.getDefaultProfile().equals(p.getName()) ? "\t%s \u001B[31m*\u001B[0m\n" : "\t%s\n", p.getName());
                     }

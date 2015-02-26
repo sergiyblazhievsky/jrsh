@@ -21,10 +21,10 @@ import static jline.internal.Preconditions.checkNotNull;
 public class RepositoryPathCompleter implements Completer {
 
     public static List<Pair<String, Boolean>> resources;
-    private int curs;
+    //private int curs;
 
     public int complete(String buffer, final int cursor, final List<CharSequence> candidates) {
-        curs = cursor;
+        //curs = cursor;
         checkNotNull(candidates);
         if (buffer == null) {
             buffer = "";
@@ -33,13 +33,8 @@ public class RepositoryPathCompleter implements Completer {
         return matchFiles(translated, resources, candidates);
     }
 
-
-    // TODO   ->  /p
-    // public/    properties/
-
-
     protected int matchFiles(String translated, List<Pair<String, Boolean>> resources, List<CharSequence> candidates) {
-        if (resources == null) {
+        if (resources == null || resources.isEmpty()) {
             return -1;
         }
         String common = commonSubstring(translated, ConverterUtil.convert(resources));
@@ -79,14 +74,14 @@ public class RepositoryPathCompleter implements Completer {
             candidates.clear();
             candidates.addAll(cuts);
         }
-        String bob = "";
+        String s = "";
         int i = translated.lastIndexOf('/');
         if (i >= 0) {
-            bob = translated.substring(i);
+            s = translated.substring(i);
         }
         boolean flag = true;
         for (String cut : cuts) {
-            if (!cut.startsWith(bob)) {
+            if (!cut.startsWith(s)) {
                 flag = false;
             }
         }
@@ -102,9 +97,9 @@ public class RepositoryPathCompleter implements Completer {
                         if (candidates.contains(d) || candidates.contains("")) {
                             return translated.length();
                         }
-                        log.info(String.format("<%d - %d - %d>", translated.length() - d.length(), d.length(), curs));
-                        return translated.length() - d.length() == 0 ? translated.length() - d.length() + 1 : translated.length() - d.length();
-                        //return translated.length() - d.length();
+                        //log.info(String.format("<%d - %d - %d>", translated.length() - d.length(), d.length(), curs));
+                        return translated.length() - d.length() == 0
+                                ? translated.length() - d.length() + 1 : translated.length() - d.length();
                     }
                 }
             }

@@ -9,6 +9,7 @@ import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.command.common.TreeConverter;
 import com.jaspersoft.jasperserver.shell.command.common.TreeNode;
 import com.jaspersoft.jasperserver.shell.exception.server.JrsResourceNotFoundException;
+import com.jaspersoft.jasperserver.shell.exception.server.NoRepositoryContentException;
 import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 
@@ -96,17 +97,17 @@ public class ShowCommand extends Command {
 //            }
 //        });
 //        spinner.setDaemon(true);
-        List<ClientResourceLookup> resources = null;
+        List<ClientResourceLookup> resources;
         validate(path);
         try {
 //            spinner.start();
             ClientResourceListWrapper tmp = session.resourcesService().resources().parameter(FOLDER_URI, path).search().getEntity();
 
-            //if (tmp != null){
+            if (tmp != null){
                 resources = tmp.getResourceLookups();
-            //} else {
-            //    out.print("\rNo content to show.");
-            //}
+            } else {
+                throw new NoRepositoryContentException();
+            }
 
         } catch (ResourceNotFoundException e) {
             out.print("\r");

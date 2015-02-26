@@ -45,7 +45,11 @@ public class HelpCommand extends Command implements ContextAware {
             out.println("\n\u001B[30;47mAvailable commands: \u001B[0m");
             for (Entry<String, String> e : context.getCmdDescription().entrySet()) {
                 if (e.getKey() != null) {
-                    out.printf("\t%s\t\t%s\n", e.getKey(), e.getValue());
+                    if (e.getKey().equals("replicate")) {
+                        out.printf("\t%s\t%s\n", e.getKey(), e.getValue());
+                    } else {
+                        out.printf("\t%s\t\t%s\n", e.getKey(), e.getValue());
+                    }
                 }
             }
         }

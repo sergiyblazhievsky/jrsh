@@ -1,3 +1,18 @@
+{-1}
+
+Strange message!
+
+>>> profile show
+
+Profile name:   JRS-3-CLOUD
+Server url:     http://50.17.102.111/jasperserver-pro
+Username:       superuser
+Organization:   undefined
+
+See help for 'show' command.
+
+
+
 {0}
 
 >>> export repo /p[TAB]   => export repo p    ::   пропадает слэш
