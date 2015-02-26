@@ -64,10 +64,9 @@ public class ProfileCommand extends Command {
             }
         }
         if (parameter("load").isAvailable()) {
-            // todo!
-            List<String> vals = parameter("anonymous").getValues();
-            String profileName = vals.isEmpty() ? "" : vals.get(0);
-            ProfileConfiguration cfg = /*getConfiguration();*/reader.read();
+            List<String> names = parameter("anonymous").getValues();
+            String profileName = names.isEmpty() ? "" : names.get(0);
+            ProfileConfiguration cfg = reader.read();
 
             if (profileName == null || profileName.isEmpty()) {
                 throw new NotSpecifiedProfileNameException();
@@ -97,14 +96,14 @@ public class ProfileCommand extends Command {
                 System.out.println("Loaded.");
             }
         } else if (parameter("save").isAvailable()) {
-            List<String> vals = parameter("anonymous").getValues();
-            if (vals.isEmpty()) {
+            List<String> names = parameter("anonymous").getValues();
+            if (names.isEmpty()) {
                 throw new NotSpecifiedProfileNameException();
             }
-            String profileName = vals.get(0); // defined by user
+            String profileName = names.get(0); // defined by user
             ProfileConfiguration cfg = reader.read();
             for (Profile profile : cfg.getProfiles()) {
-                if (profile.getName().equals(/*profile.getName()*/profileName)) {
+                if (profile.getName().equals(profileName)) {
                     throw new NotUniqueProfileNameException();
                 }
             }
@@ -120,46 +119,49 @@ public class ProfileCommand extends Command {
                 throw new CannotSaveProfileException();
             }
         } else if (parameter("list").isAvailable()) {
-            ProfileConfiguration cfg = /*getConfiguration();*/reader.read();
+            ProfileConfiguration cfg = reader.read();
             if (cfg == null) {
                 out.println("You need to load profile configuration first.");
             } else {
 
-                List<String> vals = parameter("anonymous").getValues();
-                if (vals.size() == 1) {
-                    String pName = vals.get(0);
-                    for (Profile profile : cfg.getProfiles()) {
-                        if (profile.getName().equals(pName)) {
-                            out.printf("\nProfile name:\t%s" + "\nServer url:\t%s" + "\nUsername:\t%s" + "\nOrganization:\t%s\n\n",
-                                    profile.getName(),
-                                    profile.getUrl(),
-                                    profile.getUsername(),
-                                    profile.getOrganization() == null ? "\u001B[31mundefined\u001B[0m" : profile.getOrganization()
-                            );
-                            return;
+                List<String> names = parameter("anonymous").getValues();
+                if (names.size() > 0) {
+                    boolean foundProfile = false;
+                    for (String profileName : names) {
+                        for (Profile profile : cfg.getProfiles()) {
+                            if (profile.getName().equals(profileName)) {
+                                foundProfile = true;
+                                out.printf("\nProfile name:\t%s" + "\nServer url:\t%s" + "\nUsername:\t%s" + "\nOrganization:\t%s\n\n",
+                                        profile.getName(),
+                                        profile.getUrl(),
+                                        profile.getUsername(),
+                                        profile.getOrganization() == null ? "\u001B[31mundefined\u001B[0m" : profile.getOrganization()
+                                );
+                            }
                         }
                     }
+                    if (!foundProfile) { // there is nothing to show
+                        out.printf("No profile found for given input.");
+                    }
                 }
-                if (vals.isEmpty()){
-                    //
+                if (names.isEmpty()) {
                     // print profile list
-                    //
                     for (Profile p : cfg.getProfiles()) {
                         out.printf(cfg.getDefaultProfile().equals(p.getName()) ? "\t%s \u001B[31m*\u001B[0m\n" : "\t%s\n", p.getName());
                     }
                 }
             }
         } else if (parameter("default").isAvailable()) {
-            ProfileConfiguration cfg = /*getConfiguration();*/reader.read();
-            List<String> vals = parameter("anonymous").getValues();
-            if (vals.isEmpty()) {
+            ProfileConfiguration cfg = reader.read();
+            List<String> names = parameter("anonymous").getValues();
+            if (names.isEmpty()) {
                 throw new NotSpecifiedProfileNameException();
             } else {
                 String value = "";
-                if (vals.size() > 1) {
-                    value = vals.get(1);
-                } else if (vals.size() == 1) {
-                    value = vals.get(0);
+                if (names.size() > 1) {
+                    value = names.get(1);
+                } else if (names.size() == 1) {
+                    value = names.get(0);
                 }
                 String founded = "";
                 for (Profile p : cfg.getProfiles()) {

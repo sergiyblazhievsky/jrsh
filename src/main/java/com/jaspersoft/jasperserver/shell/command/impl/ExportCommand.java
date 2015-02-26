@@ -64,7 +64,7 @@ public class ExportCommand extends Command {
     @Override
     public void run() {
         Session session = SessionFactory.getInstance();
-        String path; // or may be a command
+        String path;
         String to = null;
         String role = null;
         String user = null;
@@ -72,7 +72,11 @@ public class ExportCommand extends Command {
         List<String> values = parameter("anonymous").getValues();
 
         if (!values.isEmpty()) {
-            path = values.get(1);
+            if (values.size() == 1) {
+                path = values.get(0);
+            } else {
+                path = values.get(1);
+            }
         } else {
             Command cmd = createCommand("help");
             cmd.parameter("anonymous").setValues(asList("export"));
