@@ -7,7 +7,7 @@ import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
 import com.jaspersoft.jasperserver.shell.ExecutionMode;
 import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.exception.WrongPathParameterException;
-import com.jaspersoft.jasperserver.shell.parameter.Parameter;
+import com.jaspersoft.jasperserver.shell.Parameter;
 import lombok.SneakyThrows;
 
 import java.io.File;
@@ -15,7 +15,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.getInstance;
+import static com.jaspersoft.jasperserver.shell.SessionFactory.getInstance;
 import static java.lang.System.out;
 import static java.lang.Thread.sleep;
 

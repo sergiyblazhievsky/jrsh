@@ -1,9 +1,9 @@
 package com.jaspersoft.jasperserver.shell.command.impl;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
+import com.jaspersoft.jasperserver.shell.SessionFactory;
 
-import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.uptime;
+import static com.jaspersoft.jasperserver.shell.SessionFactory.uptime;
 import static java.lang.System.out;
 
 /**

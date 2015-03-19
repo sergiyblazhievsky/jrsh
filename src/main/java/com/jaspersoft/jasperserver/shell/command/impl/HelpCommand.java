@@ -1,11 +1,11 @@
 package com.jaspersoft.jasperserver.shell.command.impl;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.context.Context;
-import com.jaspersoft.jasperserver.shell.context.ContextAware;
+import com.jaspersoft.jasperserver.shell.Context;
+import com.jaspersoft.jasperserver.shell.ContextAware;
 import com.jaspersoft.jasperserver.shell.exception.InterfaceException;
-import com.jaspersoft.jasperserver.shell.factory.CommandFactory;
-import com.jaspersoft.jasperserver.shell.parameter.Parameter;
+import com.jaspersoft.jasperserver.shell.CommandFactory;
+import com.jaspersoft.jasperserver.shell.Parameter;
 
 import java.util.Map.Entry;
 

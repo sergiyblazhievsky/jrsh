@@ -88,7 +88,6 @@ public final class ResourcesUtil {
      * @return pure resource name
      */
     public static String extract(String buffer) {
-
         // Input validation
         Preconditions.checkNotNull(buffer, "Buffer cannot be null.");
         Preconditions.checkState(!"".equals(buffer), "Buffer cannot be empty.");

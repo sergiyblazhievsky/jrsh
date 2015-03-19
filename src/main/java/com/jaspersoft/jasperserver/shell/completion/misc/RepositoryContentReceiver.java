@@ -14,9 +14,8 @@ import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.Res
 import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter.RECURSIVE;
 
 /**
- * Receiver.
+ * @author Alexander Krasnyanskiy
  */
-//@Log4j
 public class RepositoryContentReceiver {
 
     private Connector connector;
@@ -26,29 +25,28 @@ public class RepositoryContentReceiver {
     }
 
     /**
-     * Download resources.
+     * Downloads resources.
      *
      * @param path resource identifier
      * @return content
      */
     public Response receive(String path) {
-        Map<String, Boolean> lookups = new HashMap<>(); // <URL, isFolder>
+        Map<String, Boolean> lookups = new HashMap<>();
         Response resp = new Response();
         try {
             List<ClientResourceLookup> list = getResourceLookups(path);
-            //log.info(String.format("1st call result: [%s]", list));
             for (ClientResourceLookup lookup : list) {
                 String uri = lookup.getUri();
                 String resType = lookup.getResourceType();
-                lookups.put(uri, resType.equals("folder") /* is resource a folder? */);
+                lookups.put(uri, resType.equals("folder"));
             }
             resp.setSuccess(true);
-        } catch (IllegalParameterValueException | NullPointerException | BadRequestException | ResourceNotFoundException e1) {
+        } catch (IllegalParameterValueException | NullPointerException |
+                BadRequestException | ResourceNotFoundException e1) {
             resp.setSuccess(false);
             try {
                 if (e1 instanceof ResourceNotFoundException) {
                     String cut = path.substring(path.lastIndexOf("/"));
-                    //log.info(String.format("1.5 cut: [%s]", cut));
                     path = StringUtils.removeEnd(path, cut);
                     if ("".equals(path)) {
                         path = "/";
@@ -60,7 +58,8 @@ public class RepositoryContentReceiver {
                         lookups.put(uri, resType.equals("folder"));
                     }
                 }
-            } catch (IllegalParameterValueException | NullPointerException | BadRequestException | ResourceNotFoundException ignored) {
+            } catch (IllegalParameterValueException | NullPointerException |
+                    BadRequestException | ResourceNotFoundException ignored) {
                 /* BadRequestException => when input equals to >>> export /organizations/org) */
             }
         }
@@ -69,7 +68,7 @@ public class RepositoryContentReceiver {
     }
 
 
-    public boolean isSessionAcceable() {
+    public boolean isSessionAccessible() {
         try {
             connector.connect();
             return true;

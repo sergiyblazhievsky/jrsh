@@ -1,4 +1,4 @@
-package com.jaspersoft.jasperserver.shell.parameter;
+package com.jaspersoft.jasperserver.shell;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

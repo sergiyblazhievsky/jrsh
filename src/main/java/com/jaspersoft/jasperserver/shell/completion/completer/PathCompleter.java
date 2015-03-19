@@ -15,7 +15,6 @@ import static com.jaspersoft.jasperserver.shell.completion.util.ResourcesUtil.pr
 /**
  * @author Alexander Krasnyanskiy
  */
-//@Log4j
 public class PathCompleter implements Completer {
 
     private RepositoryContentReceiver receiver;
@@ -25,9 +24,9 @@ public class PathCompleter implements Completer {
     }
 
     @Override
-    public int complete(final String path, final int cursor, final List<CharSequence> candidates) {
-
-        if (!receiver.isSessionAcceable()) {
+    public int complete(final String path, final int cursor,
+                        final List<CharSequence> candidates) {
+        if (!receiver.isSessionAccessible()) {
             return path == null ? -1 : path.length();
         }
 
@@ -43,7 +42,9 @@ public class PathCompleter implements Completer {
         }
 
 
-        if (cursor < path.length()) { // don't move the cursor back and try to complete the input
+        if (cursor < path.length()) {
+            // don't move the cursor back and try to complete
+            // the input
             return path.length();
         }
 
@@ -53,13 +54,16 @@ public class PathCompleter implements Completer {
         lastToken = normalize(lastToken);
         final String extracted = extract(lastToken);
         final int cutLen = extracted.length();
+
         resp = receiver.receive(lastToken);
         resources = resp.getLookups();
         processedResources = process(resources);
         filtered = filter(extracted, processedResources);
 
         // may occur when you enter the wrong path
-        if (resp.isSuccess() && !path.endsWith("/")) { // to prevent NPE when press [TAB] after >>> export
+        if (resp.isSuccess() && !path.endsWith("/")) {
+            // to prevent NPE when press [TAB] after
+            // >>> export
             candidates.clear();
             candidates.add("/");
             return path.length();
@@ -81,7 +85,8 @@ public class PathCompleter implements Completer {
             candidates.addAll(filtered);
             return inputLength - cutLen;
         } else {
-            // prevent print candidates for previous folder if wrong resources name been entered
+            // prevent print candidates for previous folder
+            // if wrong resources name been entered
             // Example /public/Samples/XXXZZZ[TAB] => don't print hints
             if (!path.endsWith("/")) {
                 candidates.clear();

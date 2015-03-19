@@ -10,8 +10,8 @@ import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.command.support.TreeConverter;
 import com.jaspersoft.jasperserver.shell.command.support.TreeNode;
 import com.jaspersoft.jasperserver.shell.exception.server.JrsResourceNotFoundException;
-import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
-import com.jaspersoft.jasperserver.shell.parameter.Parameter;
+import com.jaspersoft.jasperserver.shell.SessionFactory;
+import com.jaspersoft.jasperserver.shell.Parameter;
 
 import java.util.List;
 

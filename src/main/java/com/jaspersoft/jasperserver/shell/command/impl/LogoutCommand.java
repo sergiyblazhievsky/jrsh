@@ -2,8 +2,8 @@ package com.jaspersoft.jasperserver.shell.command.impl;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
 
-import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.getInstance;
-import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.invalidate;
+import static com.jaspersoft.jasperserver.shell.SessionFactory.getInstance;
+import static com.jaspersoft.jasperserver.shell.SessionFactory.invalidate;
 import static java.lang.System.out;
 
 /**

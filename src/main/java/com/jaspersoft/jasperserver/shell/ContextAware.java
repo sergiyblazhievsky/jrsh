@@ -1,4 +1,4 @@
-package com.jaspersoft.jasperserver.shell.context;
+package com.jaspersoft.jasperserver.shell;
 
 @Deprecated
 public interface ContextAware {

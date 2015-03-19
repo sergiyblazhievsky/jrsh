@@ -1,4 +1,4 @@
-package com.jaspersoft.jasperserver.shell.context;
+package com.jaspersoft.jasperserver.shell;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.createCommand;
+import static com.jaspersoft.jasperserver.shell.CommandFactory.createCommand;
 import static com.jaspersoft.jasperserver.shell.profile.ProfileUtil.copy;
 import static com.jaspersoft.jasperserver.shell.profile.ProfileUtil.find;
 import static com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory.createConfiguration;

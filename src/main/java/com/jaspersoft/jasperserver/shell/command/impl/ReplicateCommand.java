@@ -10,7 +10,7 @@ import com.jaspersoft.jasperserver.shell.exception.parser.UnknownParserException
 import com.jaspersoft.jasperserver.shell.exception.profile.CannotFindProfileConfigurationException;
 import com.jaspersoft.jasperserver.shell.exception.profile.CannotLoadProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.exception.profile.WrongProfileNameException;
-import com.jaspersoft.jasperserver.shell.parameter.Parameter;
+import com.jaspersoft.jasperserver.shell.Parameter;
 import com.jaspersoft.jasperserver.shell.profile.ProfileUtil;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration;
@@ -20,7 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.createImmutable;
+import static com.jaspersoft.jasperserver.shell.SessionFactory.createImmutable;
 import static com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory.getConfiguration;
 import static java.lang.System.out;
 import static java.lang.Thread.sleep;

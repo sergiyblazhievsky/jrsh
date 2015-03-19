@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Map;
 
 /**
- * @author Aaron Meir
+ * @author Alexander Krasnyanskiy
  */
 @Data
 public class Response {

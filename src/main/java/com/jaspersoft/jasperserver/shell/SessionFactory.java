@@ -1,4 +1,4 @@
-package com.jaspersoft.jasperserver.shell.factory;
+package com.jaspersoft.jasperserver.shell;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.JasperserverRestClient;
 import com.jaspersoft.jasperserver.jaxrs.client.core.RestClientConfiguration;

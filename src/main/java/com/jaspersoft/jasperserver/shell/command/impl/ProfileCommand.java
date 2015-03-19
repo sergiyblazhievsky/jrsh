@@ -2,13 +2,13 @@ package com.jaspersoft.jasperserver.shell.command.impl;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.completion.CompletionConfigurer;
-import com.jaspersoft.jasperserver.shell.context.Context;
+import com.jaspersoft.jasperserver.shell.Context;
 import com.jaspersoft.jasperserver.shell.exception.CannotSaveProfileConfigurationException;
 import com.jaspersoft.jasperserver.shell.exception.NoProfileWithSuchNameException;
 import com.jaspersoft.jasperserver.shell.exception.NotSpecifiedProfileNameException;
 import com.jaspersoft.jasperserver.shell.exception.profile.CannotSaveProfileException;
 import com.jaspersoft.jasperserver.shell.exception.profile.NotUniqueProfileNameException;
-import com.jaspersoft.jasperserver.shell.parameter.Parameter;
+import com.jaspersoft.jasperserver.shell.Parameter;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import com.jaspersoft.jasperserver.shell.profile.entity.ProfileConfiguration;
 import com.jaspersoft.jasperserver.shell.profile.reader.ProfileReader;

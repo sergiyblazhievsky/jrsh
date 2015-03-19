@@ -1,19 +1,16 @@
-package com.jaspersoft.jasperserver.shell.parser;
+package com.jaspersoft.jasperserver.shell;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.command.impl.HelpCommand;
 import com.jaspersoft.jasperserver.shell.command.impl.LoginCommand;
-import com.jaspersoft.jasperserver.shell.context.Context;
-import com.jaspersoft.jasperserver.shell.context.ContextAware;
 import com.jaspersoft.jasperserver.shell.exception.parser.UnknownInputContentException;
 import com.jaspersoft.jasperserver.shell.exception.parser.UnknownParserException;
-import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import com.jaspersoft.jasperserver.shell.validator.ParameterValidator;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
-import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.createCommand;
+import static com.jaspersoft.jasperserver.shell.CommandFactory.createCommand;
 
 /**
  * @author Alexander Krasnyanskiy

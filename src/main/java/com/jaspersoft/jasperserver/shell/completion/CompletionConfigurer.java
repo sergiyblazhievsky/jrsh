@@ -22,8 +22,8 @@ public class CompletionConfigurer {
 
     private AggregateCompleter aggregator;
 
-    // hack
-    public static StringsCompleter available = new StringsCompleter(list()); // FIXME: Delete this line!
+    // FIXME: Delete available!
+    public static StringsCompleter available = new StringsCompleter(list());
 
     public CompletionConfigurer() {
 
@@ -46,7 +46,8 @@ public class CompletionConfigurer {
 
 
         Completer login = new StringsCompleter("login");
-        Completer loginParameters = new CommandCommonParameterCompleter("--server", "--username", "--password");
+        Completer loginParameters =
+                new CommandCommonParameterCompleter("--server", "--username", "--password");
 
         Completer show = new StringsCompleter("show");
         Completer showParameters = new CommandCommonParameterCompleter("repo", "server-info");
@@ -77,21 +78,26 @@ public class CompletionConfigurer {
          */
         Completer import_ = new StringsCompleter("import");
         Completer file = new FileNameCompleter();
-        Completer events = new StringsCompleter("with-audit-events", "with-access-events", "with-monitoring-events", "with-events", "with-update", "with-skip-user-update");
+        Completer events = new StringsCompleter("with-audit-events",
+                "with-access-events", "with-monitoring-events", "with-events",
+                "with-update", "with-skip-user-update");
 
 
         /**
          * Help Completer
          */
         Completer help = new StringsCompleter("help");
-        Completer helpParameters = new StringsCompleter(asList("login", "logout", "import", "export", "exit", "show", "session", "replicate", "profile"));
+        Completer helpParameters = new StringsCompleter(asList("login", "logout",
+                "import", "export", "exit", "show", "session", "replicate", "profile"));
 
 
         Completer loginCompleter = new ArgumentCompleter(login, loginParameters);
         Completer helpCompleter = new ArgumentCompleter(help, helpParameters, nil);
-        Completer showCompleter = new ArgumentCompleter(show, showParameters, new PathCompleter(), /*new FolderRepositoryPathCompleter(),*/ nil);
+        Completer showCompleter = new ArgumentCompleter(show, showParameters,
+                new PathCompleter(), nil);
         Completer importCompleter = new ArgumentCompleter(import_, file, events);
-        Completer replicateCompleter = new ArgumentCompleter(replicate, firstProfileName, direction, secondProfileName, nil);
+        Completer replicateCompleter = new ArgumentCompleter(replicate, firstProfileName,
+                direction, secondProfileName, nil);
 
         aggregator = new AggregateCompleter(exit,
 
@@ -105,7 +111,8 @@ public class CompletionConfigurer {
                 new ArgumentCompleter(export, repo, path, nil),
                 new ArgumentCompleter(export, repo, path, events),
 
-                new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), new CustomFileCompleter(), events/*, new NullCompleter()*/),
+                new ArgumentCompleter(export, repo, path, new StringsCompleter("to"),
+                        new CustomFileCompleter(), events),
 
 
                 clear, logout, replicateCompleter,
@@ -117,7 +124,7 @@ public class CompletionConfigurer {
                 new ArgumentCompleter(profile, default_, nil),
                 new ArgumentCompleter(profile, default_, available, nil),
                 new ArgumentCompleter(profile, list, nil),
-                new ArgumentCompleter(profile, list, available /*, new NullCompleter()*/),
+                new ArgumentCompleter(profile, list, available),
 
 
                 session, loginCompleter,

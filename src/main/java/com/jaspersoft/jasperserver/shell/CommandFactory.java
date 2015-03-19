@@ -1,4 +1,4 @@
-package com.jaspersoft.jasperserver.shell.factory;
+package com.jaspersoft.jasperserver.shell;
 
 import com.jaspersoft.jasperserver.shell.command.impl.ClearScreenCommand;
 import com.jaspersoft.jasperserver.shell.command.Command;

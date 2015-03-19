@@ -1,4 +1,4 @@
-package com.jaspersoft.jasperserver.shell.handler;
+package com.jaspersoft.jasperserver.shell;
 
 import jline.console.ConsoleReader;
 import jline.console.CursorBuffer;

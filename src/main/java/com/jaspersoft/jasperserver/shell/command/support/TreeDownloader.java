@@ -2,7 +2,7 @@ package com.jaspersoft.jasperserver.shell.command.support;
 
 import com.jaspersoft.jasperserver.dto.resources.ClientResourceLookup;
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter;
-import com.jaspersoft.jasperserver.shell.factory.SessionFactory;
+import com.jaspersoft.jasperserver.shell.SessionFactory;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 

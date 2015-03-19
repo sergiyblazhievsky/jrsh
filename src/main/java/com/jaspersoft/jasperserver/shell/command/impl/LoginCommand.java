@@ -4,13 +4,13 @@ import com.jaspersoft.jasperserver.shell.ExecutionMode;
 import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingException;
 import com.jaspersoft.jasperserver.shell.exception.WrongPasswordException;
-import com.jaspersoft.jasperserver.shell.parameter.Parameter;
+import com.jaspersoft.jasperserver.shell.Parameter;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 
 import java.io.IOException;
 import java.util.List;
 
-import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.createSession;
+import static com.jaspersoft.jasperserver.shell.SessionFactory.createSession;
 import static com.jaspersoft.jasperserver.shell.profile.ProfileUtil.isEmpty;
 import static com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory.getConfiguration;
 import static java.lang.System.out;

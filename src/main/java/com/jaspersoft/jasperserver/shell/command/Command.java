@@ -16,7 +16,7 @@ import com.jaspersoft.jasperserver.shell.exception.profile.CannotLoadProfileConf
 import com.jaspersoft.jasperserver.shell.exception.profile.NotUniqueProfileNameException;
 import com.jaspersoft.jasperserver.shell.exception.profile.WrongProfileNameException;
 import com.jaspersoft.jasperserver.shell.exception.server.JrsResourceNotFoundException;
-import com.jaspersoft.jasperserver.shell.parameter.Parameter;
+import com.jaspersoft.jasperserver.shell.Parameter;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
 import jline.console.ConsoleReader;
 import lombok.Data;

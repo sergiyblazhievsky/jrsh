@@ -2,12 +2,9 @@ package com.jaspersoft.jasperserver.shell;
 
 import com.jaspersoft.jasperserver.shell.command.Command;
 import com.jaspersoft.jasperserver.shell.completion.CompletionConfigurer;
-import com.jaspersoft.jasperserver.shell.context.Context;
 import com.jaspersoft.jasperserver.shell.exception.InterfaceException;
 import com.jaspersoft.jasperserver.shell.exception.parser.MandatoryParameterException;
 import com.jaspersoft.jasperserver.shell.exception.server.ServerException;
-import com.jaspersoft.jasperserver.shell.handler.JrshCandidateListCompletionHandler;
-import com.jaspersoft.jasperserver.shell.parser.CommandParser;
 import com.jaspersoft.jasperserver.shell.validator.ParameterValidator;
 import jline.console.ConsoleReader;
 import jline.console.completer.AggregateCompleter;
@@ -18,7 +15,7 @@ import java.util.logging.LogManager;
 
 import static com.google.common.base.Strings.repeat;
 import static com.jaspersoft.jasperserver.shell.ExecutionMode.TOOL;
-import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.createCommand;
+import static com.jaspersoft.jasperserver.shell.CommandFactory.createCommand;
 import static java.lang.System.exit;
 import static java.lang.System.out;
 import static java.util.Collections.singletonList;
