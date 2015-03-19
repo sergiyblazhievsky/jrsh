@@ -27,10 +27,6 @@ public class CommandCommonParameterCompleter extends StringsCompleter {
         this.params.addAll(asList(params));
     }
 
-    public CommandCommonParameterCompleter(List<String> params) {
-        this.params.addAll(params);
-    }
-
     /**
      * Populates candidates with a list of possible completions for the buffer.
      *

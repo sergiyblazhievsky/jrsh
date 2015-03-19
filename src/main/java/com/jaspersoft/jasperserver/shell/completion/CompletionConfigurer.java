@@ -3,9 +3,8 @@ package com.jaspersoft.jasperserver.shell.completion;
 import com.jaspersoft.jasperserver.shell.completion.completer.CommandCommonParameterCompleter;
 import com.jaspersoft.jasperserver.shell.completion.completer.CustomFileCompleter;
 import com.jaspersoft.jasperserver.shell.completion.completer.CustomParameterCompleter;
-import com.jaspersoft.jasperserver.shell.completion.completer.FolderRepositoryPathCompleter;
 import com.jaspersoft.jasperserver.shell.completion.completer.ParameterCompleter;
-import com.jaspersoft.jasperserver.shell.completion.completer.RepositoryPathCompleter;
+import com.jaspersoft.jasperserver.shell.completion.completer.PathCompleter;
 import jline.console.completer.AggregateCompleter;
 import jline.console.completer.ArgumentCompleter;
 import jline.console.completer.Completer;
@@ -23,11 +22,12 @@ public class CompletionConfigurer {
 
     private AggregateCompleter aggregator;
 
-    // fixme!
     // hack
-    public static StringsCompleter available = new StringsCompleter(list());
+    public static StringsCompleter available = new StringsCompleter(list()); // FIXME: Delete this line!
 
     public CompletionConfigurer() {
+
+        Completer nil = new NullCompleter();
 
         Completer exit = new StringsCompleter("exit");
         Completer clear = new StringsCompleter("clear");
@@ -42,7 +42,6 @@ public class CompletionConfigurer {
         Completer load = new StringsCompleter("load");
         Completer default_ = new StringsCompleter("default");
         Completer list = new StringsCompleter("list");
-        //StringsCompleter available = new StringsCompleter(list());
 
 
 
@@ -70,7 +69,7 @@ public class CompletionConfigurer {
         Completer repo = new StringsCompleter("repo");
         Completer role = new StringsCompleter("role");
         Completer user = new StringsCompleter("user");
-        Completer path = new RepositoryPathCompleter(); /*new CustomRepositoryPathCompleter();*/
+        Completer path = new PathCompleter();
 
 
         /**
@@ -89,50 +88,21 @@ public class CompletionConfigurer {
 
 
         Completer loginCompleter = new ArgumentCompleter(login, loginParameters);
-        Completer helpCompleter = new ArgumentCompleter(help, helpParameters, new NullCompleter());
-        Completer showCompleter = new ArgumentCompleter(show, showParameters, new FolderRepositoryPathCompleter(), new NullCompleter());
+        Completer helpCompleter = new ArgumentCompleter(help, helpParameters, nil);
+        Completer showCompleter = new ArgumentCompleter(show, showParameters, new PathCompleter(), /*new FolderRepositoryPathCompleter(),*/ nil);
         Completer importCompleter = new ArgumentCompleter(import_, file, events);
-        Completer replicateCompleter = new ArgumentCompleter(replicate, firstProfileName, direction, secondProfileName, new NullCompleter());
+        Completer replicateCompleter = new ArgumentCompleter(replicate, firstProfileName, direction, secondProfileName, nil);
 
         aggregator = new AggregateCompleter(exit,
 
-                /*
-                //Works fine!
-                new ArgumentCompleter(export, new NullCompleter()),
-                new ArgumentCompleter(export, all, new NullCompleter()),
-                new ArgumentCompleter(export, repo, new NullCompleter()),
-                new ArgumentCompleter(export, repo, path, events),
-                new ArgumentCompleter(export, role, new NullCompleter()),
-                new ArgumentCompleter(export, user, new NullCompleter()),
-                */
+                new ArgumentCompleter(export, nil),
 
+                new ArgumentCompleter(export, all, nil),
+                new ArgumentCompleter(export, user, nil),
+                new ArgumentCompleter(export, role, nil),
 
-                // fixme!
-                /*
-                new ArgumentCompleter(export, new NullCompleter()),
-
-                new ArgumentCompleter(export, all, new NullCompleter()),
-                new ArgumentCompleter(export, user, new NullCompleter()),
-                new ArgumentCompleter(export, role, new NullCompleter()),
-
-                new ArgumentCompleter(export, repo, new NullCompleter()),
-                new ArgumentCompleter(export, repo, path, new NullCompleter()),
-                new ArgumentCompleter(export, repo, path, events),
-                //new ArgumentCompleter(export, repo, path, events),
-                //new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), new NullCompleter()),
-                new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), new CustomFileCompleter(), new NullCompleter()),
-                new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), new CustomFileCompleter(), events),
-                */
-
-
-                new ArgumentCompleter(export, new NullCompleter()),
-
-                new ArgumentCompleter(export, all, new NullCompleter()),
-                new ArgumentCompleter(export, user, new NullCompleter()),
-                new ArgumentCompleter(export, role, new NullCompleter()),
-
-                new ArgumentCompleter(export, repo, new NullCompleter()),
-                new ArgumentCompleter(export, repo, path, new NullCompleter()),
+                new ArgumentCompleter(export, repo, nil),
+                new ArgumentCompleter(export, repo, path, nil),
                 new ArgumentCompleter(export, repo, path, events),
 
                 new ArgumentCompleter(export, repo, path, new StringsCompleter("to"), new CustomFileCompleter(), events/*, new NullCompleter()*/),
@@ -140,13 +110,13 @@ public class CompletionConfigurer {
 
                 clear, logout, replicateCompleter,
 
-                new ArgumentCompleter(profile, new NullCompleter()),
-                new ArgumentCompleter(profile, save, new NullCompleter()),
-                new ArgumentCompleter(profile, load, new NullCompleter()),
-                new ArgumentCompleter(profile, load, available, new NullCompleter()),
-                new ArgumentCompleter(profile, default_, new NullCompleter()),
-                new ArgumentCompleter(profile, default_, available, new NullCompleter()),
-                new ArgumentCompleter(profile, list, new NullCompleter()),
+                new ArgumentCompleter(profile, nil),
+                new ArgumentCompleter(profile, save, nil),
+                new ArgumentCompleter(profile, load, nil),
+                new ArgumentCompleter(profile, load, available, nil),
+                new ArgumentCompleter(profile, default_, nil),
+                new ArgumentCompleter(profile, default_, available, nil),
+                new ArgumentCompleter(profile, list, nil),
                 new ArgumentCompleter(profile, list, available /*, new NullCompleter()*/),
 
 

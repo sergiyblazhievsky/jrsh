@@ -22,7 +22,6 @@ import jline.console.ConsoleReader;
 import lombok.Data;
 import lombok.ToString;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,18 +89,18 @@ public abstract class Command implements Executable, ConsoleReaderAware {
         }
     }
 
-    private String askPassword() {
-        String pass = null;
-        try {
-            String username = getInstance().getUsername();
-            String jrsName = getInstance().getName();
-            pass = reader.readLine("\rPlease enter the password for <" + username + "> at <" + jrsName + "> environment: ", '*');
-        } catch (IOException ignored) {
-
-        }
-        reader.setPrompt("\u001B[1m>>> \u001B[0m");
-        return pass;
-    }
+//    private String askPassword() {
+//        String pass = null;
+//        try {
+//            String username = getInstance().getUsername();
+//            String jrsName = getInstance().getName();
+//            pass = reader.readLine("\rPlease enter the password for <" + username + "> at <" + jrsName + "> environment: ", '*');
+//        } catch (IOException ignored) {
+//
+//        }
+//        reader.setPrompt("\u001B[1m>>> \u001B[0m");
+//        return pass;
+//    }
 
     public Parameter parameter(String key) {
         for (Parameter p : parameters) {

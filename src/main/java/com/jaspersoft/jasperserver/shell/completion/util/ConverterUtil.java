@@ -8,7 +8,11 @@ import java.util.List;
 /**
  * @author Alexander Krasnyanskiy
  */
-public class ConverterUtil {
+public final class ConverterUtil {
+
+    private ConverterUtil() {
+        // Don't use it.
+    }
 
     public static List<String> convert(List<Pair<String, Boolean>> col) {
         List<String> list = new ArrayList<>();

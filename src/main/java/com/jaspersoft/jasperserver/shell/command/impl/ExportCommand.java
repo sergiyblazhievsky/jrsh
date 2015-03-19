@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import static com.google.common.base.Strings.repeat;
 import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exportservice.ExportParameter.EVERYTHING;
 import static com.jaspersoft.jasperserver.shell.ExecutionMode.SHELL;
 import static com.jaspersoft.jasperserver.shell.ExecutionMode.TOOL;
@@ -33,7 +34,7 @@ import static java.lang.String.format;
 import static java.lang.System.exit;
 import static java.lang.System.out;
 import static java.lang.Thread.sleep;
-import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static sun.misc.IOUtils.readFully;
 
 /**
@@ -64,6 +65,7 @@ public class ExportCommand extends Command {
     @Override
     public void run() {
         Session session = getInstance();
+
         String path;
         String to = null;
         String role = null;
@@ -79,7 +81,7 @@ public class ExportCommand extends Command {
             }
         } else {
             Command cmd = createCommand("help");
-            cmd.parameter("anonymous").setValues(asList("export"));
+            cmd.parameter("anonymous").setValues(singletonList("export"));
             cmd.run();
             return;
         }
@@ -96,7 +98,7 @@ public class ExportCommand extends Command {
                 if (values.size() < 2) {
                     if (getMode().equals(TOOL)) throw new UnspecifiedRoleException();
                     Command cmd = createCommand("help");
-                    cmd.parameter("anonymous").setValues(asList("export"));
+                    cmd.parameter("anonymous").setValues(singletonList("export"));
                     cmd.run();
                     return;
                 }
@@ -108,7 +110,7 @@ public class ExportCommand extends Command {
                 if (values.size() < 2) {
                     if (getMode().equals(TOOL)) exit(1);
                     Command cmd = createCommand("help");
-                    cmd.parameter("anonymous").setValues(asList("export"));
+                    cmd.parameter("anonymous").setValues(singletonList("export"));
                     cmd.run();
                     return;
                 }
@@ -165,7 +167,7 @@ public class ExportCommand extends Command {
                 prefix = "export-repo-";
             }
             String date = sdf.format(new Date());
-            if (values.size() == 3 && parameter("to").isAvailable()) {
+            if (values.size() > 3 && parameter("to").isAvailable()) { // export | repo /public to /file.zip with-events
                 to = values.get(2);
             }
             String file = (to == null) ? prefix + date + postfix + ".zip" : to;
@@ -216,7 +218,7 @@ public class ExportCommand extends Command {
         while (true) {
             if (counter == 4) {
                 counter = 0;
-                out.print("\r                          ");
+                out.printf("\r%s", repeat(" ", 21));
                 out.print("\rExporting resources");
             }
             out.print(".");

@@ -1,4 +1,0 @@
-
----
-notes:
- - when you add a new command don't forget to add it into the [context] first and into the [factory] as well!

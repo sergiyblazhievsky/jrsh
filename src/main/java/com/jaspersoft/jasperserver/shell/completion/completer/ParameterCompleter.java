@@ -35,10 +35,6 @@ public class ParameterCompleter extends StringsCompleter {
         this.params.addAll(params);
     }
 
-    public ParameterCompleter() {
-        // empty
-    }
-
     /**
      * Populates candidates with a list of possible completions for the buffer.
      *

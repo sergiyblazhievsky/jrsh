@@ -17,6 +17,7 @@ import com.jaspersoft.jasperserver.shell.exception.parser.NoSuchCommandException
 /**
  * @author Alexander Krasnyanskiy
  */
+@Deprecated
 public final class CommandFactory {
 
     private CommandFactory() {/*NOP*/}

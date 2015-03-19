@@ -1,7 +1,7 @@
 package com.jaspersoft.jasperserver.shell.completion.completer;
 
-import com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil;
 import com.jaspersoft.jasperserver.shell.completion.ParameterHolder;
+import com.jaspersoft.jasperserver.shell.completion.util.CompleterUtil;
 import jline.console.completer.StringsCompleter;
 import lombok.extern.java.Log;
 
@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static jline.internal.Preconditions.checkNotNull;
 
 /**
@@ -21,16 +20,8 @@ public class CustomParameterCompleter extends StringsCompleter {
 
     protected List<String> params = new ArrayList<>();
 
-    public CustomParameterCompleter(String... params) {
-        this.params.addAll(asList(params));
-    }
-
     public CustomParameterCompleter(Collection<String> params) {
         this.params.addAll(params);
-    }
-
-    public CustomParameterCompleter() {
-        // NOP
     }
 
     @Override

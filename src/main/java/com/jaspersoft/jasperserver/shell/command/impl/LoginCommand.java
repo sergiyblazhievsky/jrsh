@@ -2,14 +2,10 @@ package com.jaspersoft.jasperserver.shell.command.impl;
 
 import com.jaspersoft.jasperserver.shell.ExecutionMode;
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.command.common.TreeDownloader;
-import com.jaspersoft.jasperserver.shell.completion.completer.FolderRepositoryPathCompleter;
-import com.jaspersoft.jasperserver.shell.completion.completer.RepositoryPathCompleter;
 import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingException;
 import com.jaspersoft.jasperserver.shell.exception.WrongPasswordException;
 import com.jaspersoft.jasperserver.shell.parameter.Parameter;
 import com.jaspersoft.jasperserver.shell.profile.entity.Profile;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,6 +14,9 @@ import static com.jaspersoft.jasperserver.shell.factory.SessionFactory.createSes
 import static com.jaspersoft.jasperserver.shell.profile.ProfileUtil.isEmpty;
 import static com.jaspersoft.jasperserver.shell.profile.factory.ProfileConfigurationFactory.getConfiguration;
 import static java.lang.System.out;
+
+//import com.jaspersoft.jasperserver.shell.completion.completer.FolderRepositoryPathCompleter;
+//import com.jaspersoft.jasperserver.shell.completion.completer.RepositoryPathCompleter;
 
 /**
  * @author Alexander Krasnyanskiy
@@ -96,19 +95,19 @@ public class LoginCommand extends Command {
         /*
          * Hack! todo: Delete it!
          */
-        if (RepositoryPathCompleter.resources == null) {
-            RepositoryPathCompleter.resources = new TreeDownloader().markedList();
-        } else {
-            List<Pair<String, Boolean>> list = new TreeDownloader().markedList();
-            RepositoryPathCompleter.resources.clear();
-            RepositoryPathCompleter.resources.addAll(list);
-
-            for (Pair<String, Boolean> res : RepositoryPathCompleter.resources) {
-                if (res.getValue()) {
-                    FolderRepositoryPathCompleter.resources.add(res);
-                }
-            }
-        }
+//        if (RepositoryPathCompleter.resources == null) {
+//            RepositoryPathCompleter.resources = new TreeDownloader().markedList();
+//        } else {
+//            List<Pair<String, Boolean>> list = new TreeDownloader().markedList();
+//            RepositoryPathCompleter.resources.clear();
+//            RepositoryPathCompleter.resources.addAll(list);
+//
+//            for (Pair<String, Boolean> res : RepositoryPathCompleter.resources) {
+//                if (res.getValue()) {
+//                    FolderRepositoryPathCompleter.resources.add(res);
+//                }
+//            }
+//        }
 
         if (getMode().equals(ExecutionMode.SHELL)) {
             out.println("You've logged in.");

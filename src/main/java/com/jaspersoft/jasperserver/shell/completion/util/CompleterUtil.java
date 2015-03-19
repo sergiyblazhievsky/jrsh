@@ -7,7 +7,14 @@ import java.util.TreeSet;
 /**
  * @author Alexander Krasnyanskiy
  */
-public class CompleterUtil {
+public final class CompleterUtil {
+
+    /**
+     * Constructor.
+     */
+    private CompleterUtil() {
+        // Don't use it.
+    }
 
     /**
      * Returns the difference between input and common strings.

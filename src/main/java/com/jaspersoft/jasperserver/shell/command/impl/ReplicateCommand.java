@@ -2,8 +2,8 @@ package com.jaspersoft.jasperserver.shell.command.impl;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.shell.command.Command;
-import com.jaspersoft.jasperserver.shell.command.common.RepositoryDataExporter;
-import com.jaspersoft.jasperserver.shell.command.common.RepositoryDataImporter;
+import com.jaspersoft.jasperserver.shell.command.support.RepositoryDataExporter;
+import com.jaspersoft.jasperserver.shell.command.support.RepositoryDataImporter;
 import com.jaspersoft.jasperserver.shell.exception.MandatoryParameterMissingException;
 import com.jaspersoft.jasperserver.shell.exception.WrongPasswordException;
 import com.jaspersoft.jasperserver.shell.exception.parser.UnknownParserException;

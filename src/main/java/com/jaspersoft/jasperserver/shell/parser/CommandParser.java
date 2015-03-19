@@ -18,6 +18,7 @@ import static com.jaspersoft.jasperserver.shell.factory.CommandFactory.createCom
 /**
  * @author Alexander Krasnyanskiy
  */
+@Deprecated
 public class CommandParser implements ContextAware {
 
     private Context context;
