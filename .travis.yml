@@ -6,23 +6,14 @@ jdk:
 notifications:
   email:
     recipients:
-      - o.krasnianskyi@globallogic.com
-      - igor.nesterenko@globallogic.com
-      - borys.timakov@globallogic.com
+      - krasnyanskiy.alex@gmail.com
   webhooks:
-    urls:
-      - https://webhooks.gitter.im/e/57ba0193a1606d865761
+    urls: https://webhooks.gitter.im/e/57ba0193a1606d865761
     on_success: false
     on_start: false
     on_failure: always
 
-#env:
-#  global:
-#    secure: ZqkbPrUf9TsheZQ0MEAYZzThPWdJhoa9W7wlwy1oQ8rFOSaWFsx02+Fz9zrPN/V0jAvaSyZkxY8FMeAHk3n2P8tbcb/J/B0XA7wtcWC4ZIw4dKjZHhpjlVBIcGT7H+KmKyokSTuW+GNnVtWk1Et/5mnh4Z4yg3r0Px2iP3y7C3A=
-
 branches:
-  only:
-  - master
+  only: master
 
-after_success:
-  - mvn clean test jacoco:report coveralls:report
+after_success: mvn clean test jacoco:report coveralls:report
