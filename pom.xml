@@ -10,6 +10,9 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <!-- default
+             unit test
+             suite -->
         <runSuite>**/JUnitTestSuite.class</runSuite>
     </properties>
 
