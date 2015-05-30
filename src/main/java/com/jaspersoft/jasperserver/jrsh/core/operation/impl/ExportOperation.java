@@ -24,7 +24,7 @@ import java.util.List;
 
 @Data
 @Master(name = "export",
-        description = "This is an export operation.")
+        description = "This is an export operation")
 public class ExportOperation implements Operation {
 
     @Parameter(mandatory = true, dependsOn = "export", values = {

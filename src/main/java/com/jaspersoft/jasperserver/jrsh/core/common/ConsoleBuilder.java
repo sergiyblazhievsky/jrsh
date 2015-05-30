@@ -14,7 +14,7 @@ public class ConsoleBuilder {
         try {
             this.console = new ConsoleReader();
         } catch (IOException e) {
-            throw new RuntimeException("Could not create JLine console.");
+            throw new RuntimeException("Could not create JLine console");
         }
     }
 

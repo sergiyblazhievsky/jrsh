@@ -18,7 +18,7 @@ package com.jaspersoft.jasperserver.jrsh.core.script;//package com.jaspersoft.ja
 //
 //    @Test
 //    public void shouldReturnFileScript() {
-//        Script script = new ScriptBuilder(new String[]{"--script", "my_script.jrs"}).convertToScript();
+//        Script script = new ScriptBuilder(new String[]{"--script", "test_script.jrs"}).convertToScript();
 //        Assertions.assertThat(script).isInstanceOf(FileScript.class);
 //    }
 //

@@ -13,7 +13,7 @@
         <!-- default
              unit test
              suite -->
-        <runSuite>**/JUnitTestSuite.class</runSuite>
+        <runSuite>**/UnitTestSuite.class</runSuite>
     </properties>
 
     <dependencies>

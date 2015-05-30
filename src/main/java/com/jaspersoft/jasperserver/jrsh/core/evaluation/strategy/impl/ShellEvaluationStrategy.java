@@ -117,7 +117,7 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
                 }
             } catch (UserInterruptException unimportant) {
                 logout();
-                return new OperationResult("Interrupted by user.", ResultCode.INTERRUPTED, operation, null);
+                return new OperationResult("Interrupted by user", ResultCode.INTERRUPTED, operation, null);
             } finally {
                 operation = null;
             }

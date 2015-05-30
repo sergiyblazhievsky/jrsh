@@ -18,7 +18,7 @@ import static java.lang.String.format;
  * @author Alex Krasnyanskiy
  */
 @Data
-@Master(name = "login", description = "This is a login operation.")
+@Master(name = "login", description = "This is a login operation")
 public class LoginOperation implements Operation {
 
     public static int counter = 0;
