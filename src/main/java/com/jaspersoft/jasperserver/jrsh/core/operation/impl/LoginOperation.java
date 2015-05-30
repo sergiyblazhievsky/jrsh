@@ -12,6 +12,8 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.WrongCon
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode;
 import lombok.Data;
 
+import static java.lang.String.format;
+
 /**
  * @author Alex Krasnyanskiy
  */
@@ -26,10 +28,8 @@ public class LoginOperation implements Operation {
     private String password;
     private String organization;
 
-    @Parameter(
-            mandatory = true,
-            dependsOn = "login",
-            values = @Value(tokenAlias = "CS", tail = true))
+    @Parameter(mandatory = true, dependsOn = "login", values =
+    @Value(tokenAlias = "CS", tail = true))
     private String connectionString;
 
     @Override
@@ -37,19 +37,23 @@ public class LoginOperation implements Operation {
         OperationResult result;
         try {
             SessionFactory.createSharedSession(server, username, password, organization);
-            result = new OperationResult(String.format("You have logged in as [%s]", username), ResultCode.SUCCESS, this, null);
+            result = new OperationResult(
+                    format("You have logged in as [%s]", username),
+                    ResultCode.SUCCESS, this, null);
             //
             // Counting only successful attempts
             //
             counter++;
         } catch (Exception err) {
-            result = new OperationResult(String.format("Login failed [%s]", err.getMessage()), ResultCode.FAILED, this, null);
+            result = new OperationResult(
+                    format("Login failed [%s]", err.getMessage()),
+                    ResultCode.FAILED, this, null);
         }
         return result;
     }
 
     /**
-     * Parses connection string and set the fields
+     * Parses connection string and sets the fields
      *
      * @param connectionString connection string
      */
