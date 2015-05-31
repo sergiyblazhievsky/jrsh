@@ -26,6 +26,11 @@ public class HelpOperation implements Operation {
     @Override
     public OperationResult eval(Session session) {
         StringBuilder builder = new StringBuilder();
+
+        /*
+         * todo: use locales to featch metadata
+         */
+
         //if (context != null) {
             //Operation operation = OperationFactory.createOperationByName(context);
             //builder.append(getDescription(operation));
