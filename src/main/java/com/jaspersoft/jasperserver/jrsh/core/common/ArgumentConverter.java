@@ -1,6 +1,7 @@
 package com.jaspersoft.jasperserver.jrsh.core.common;
 
 import com.google.common.base.Joiner;
+import com.jaspersoft.jasperserver.jrsh.core.common.exception.CouldNotOpenScriptFileException;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class ArgumentConverter {
                         List<String> lines = readLines(new File(args[1]));
                         script = new Script(lines);
                     } catch (IOException ignored) {
-                        throw new RuntimeException("Could not open a script file: " + args[1]);
+                        throw new CouldNotOpenScriptFileException(args[1]);
                     }
                 } else if (isConnectionString(args[0])) {
                     String loginLine = "login " + args[0];

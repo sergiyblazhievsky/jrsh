@@ -1,6 +1,6 @@
 //package com.jaspersoft.jasperserver.jrsh.core;
 //
-//import com.jaspersoft.jasperserver.jrsh.core.common.DirectoryDoesNotExistException;
+//import com.jaspersoft.jasperserver.jrsh.core.common.exception.DirectoryDoesNotExistException;
 //import com.jaspersoft.jasperserver.jrsh.core.common.ZipUtil;
 //import org.junit.Assert;
 //import org.junit.Rule;

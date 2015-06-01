@@ -1,8 +1,12 @@
 package com.jaspersoft.jasperserver.jrsh.core.operation;
 
+import com.jaspersoft.jasperserver.jrsh.core.i18n.Messages;
+
 public class CouldNotCreateOperationInstance extends RuntimeException {
+
+    private static final Messages messages = new Messages("i18n/error");
+
     public CouldNotCreateOperationInstance() {
-        super("Could not create an operation instance " +
-                "(you are probably trying to instantiate an instance of abstract class)");
+        super(messages.getMessage("message.operation.instantiation.error"));
     }
 }
