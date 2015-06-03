@@ -5,6 +5,9 @@ import jline.console.completer.Completer;
 import jline.console.completer.StringsCompleter;
 import lombok.EqualsAndHashCode;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 @EqualsAndHashCode(callSuper = true)
 public class StringToken extends AbstractToken {
 

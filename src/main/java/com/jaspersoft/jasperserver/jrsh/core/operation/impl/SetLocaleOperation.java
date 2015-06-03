@@ -14,6 +14,9 @@ import java.util.Locale;
 
 import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.SUCCESS;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 @Data
 @Master(name = "set")
 public class SetLocaleOperation implements Operation {

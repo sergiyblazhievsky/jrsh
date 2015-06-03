@@ -13,6 +13,9 @@ import java.util.Set;
 
 import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.SUCCESS;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 @Data
 @Master(name = "help", tail = true)
 public class HelpOperation implements Operation {

@@ -10,6 +10,9 @@ import jline.console.completer.NullCompleter;
 
 import java.util.List;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 public class CompleterBuilder {
 
     private AggregateCompleter aggregator;

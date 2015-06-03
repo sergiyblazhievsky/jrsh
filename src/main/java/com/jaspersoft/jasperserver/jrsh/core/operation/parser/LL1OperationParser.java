@@ -59,7 +59,7 @@ public class LL1OperationParser implements OperationParser {
             }
         }
         //
-        // if unmatched then throw exception
+        // If unmatched then throw exception
         //
         Conditions.checkMatchedRulesFlag(matchedRuleExist);
         return operation;
@@ -80,7 +80,7 @@ public class LL1OperationParser implements OperationParser {
             return false;
         }
         //
-        // if at least one token in rule is unmatched,
+        // If at least one token in rule is unmatched,
         // return `false` immediately
         //
         for (int i = 0; i < ruleTokens.size(); i++) {

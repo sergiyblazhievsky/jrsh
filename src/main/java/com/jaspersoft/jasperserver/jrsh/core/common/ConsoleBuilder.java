@@ -8,6 +8,9 @@ import jline.console.history.PersistentHistory;
 
 import java.io.IOException;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 public class ConsoleBuilder {
     private ConsoleReader console;
 

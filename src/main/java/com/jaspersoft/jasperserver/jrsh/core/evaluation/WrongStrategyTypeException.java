@@ -2,6 +2,9 @@ package com.jaspersoft.jasperserver.jrsh.core.evaluation;
 
 import com.jaspersoft.jasperserver.jrsh.core.i18n.Messages;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 public class WrongStrategyTypeException extends RuntimeException {
 
     private static final Messages messages = new Messages("i18n/error");

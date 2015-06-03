@@ -15,6 +15,9 @@ import java.util.List;
 
 import static java.lang.String.format;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 public class ScriptEvaluationStrategy extends AbstractEvaluationStrategy {
     public static final String ERROR_MSG = "error in line: %s (%s)";
     private int lineCounter = 1;

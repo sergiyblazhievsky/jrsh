@@ -13,6 +13,9 @@ import static java.io.File.separator;
 import static java.io.File.separatorChar;
 import static org.apache.commons.lang3.StringUtils.chomp;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 public class ZipUtil {
 
     public static File pack(String directory) {

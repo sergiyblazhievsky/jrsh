@@ -5,6 +5,9 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Token;
 
 import static java.lang.String.format;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 public class CannotCreateTokenException extends OperationParseException {
 
     private static final Messages messages = new Messages("i18n/error");

@@ -5,6 +5,9 @@ import com.jaspersoft.jasperserver.jaxrs.client.core.RestClientConfiguration;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.core.SessionStorage;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 public class SessionFactory {
 
     private static Session SHARED_SESSION;

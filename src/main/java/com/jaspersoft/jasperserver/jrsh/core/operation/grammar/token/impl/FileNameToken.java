@@ -8,6 +8,9 @@ import lombok.EqualsAndHashCode;
 
 import java.io.File;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 @EqualsAndHashCode(callSuper = true)
 public class FileNameToken extends AbstractToken {
 

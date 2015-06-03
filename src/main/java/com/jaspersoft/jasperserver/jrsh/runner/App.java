@@ -6,6 +6,9 @@ import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.EvaluationStrat
 import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.EvaluationStrategyFactory;
 import lombok.extern.log4j.Log4j;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 @Log4j
 public class App {
     public static void main(String[] args) {

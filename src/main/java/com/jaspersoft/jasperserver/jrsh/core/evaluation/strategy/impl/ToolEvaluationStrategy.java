@@ -11,6 +11,9 @@ import java.util.Collection;
 
 import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.FAILED;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 public class ToolEvaluationStrategy extends AbstractEvaluationStrategy {
 
     @Override

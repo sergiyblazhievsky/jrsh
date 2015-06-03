@@ -24,6 +24,9 @@ import java.util.concurrent.TimeUnit;
 import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.FAILED;
 import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.SUCCESS;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 @Data
 @Log4j
 @Master(name = "import")

@@ -10,7 +10,6 @@ import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.AbstractEvaluat
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationFactory;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult;
-import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Grammar;
 import com.jaspersoft.jasperserver.jrsh.core.operation.impl.LoginOperation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.OperationGrammarParser;
@@ -24,10 +23,15 @@ import jline.console.history.History;
 import java.io.File;
 import java.io.IOException;
 
+import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.FAILED;
+import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.INTERRUPTED;
+
 /**
  * @author Alex Krasnyanskiy
  */
 public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
+
+    // todo: add i18n
 
     private ConsoleReader console;
 
@@ -104,7 +108,7 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
                     // Check initial login
                     //
                     if (operation instanceof LoginOperation && LoginOperation.counter < 1) {
-                        return new OperationResult(result.getResultMessage(), ResultCode.FAILED, operation, null);
+                        return new OperationResult(result.getResultMessage(), FAILED, operation, null);
                     }
                 }
                 line = null;
@@ -117,7 +121,7 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
                 }
             } catch (UserInterruptException unimportant) {
                 logout();
-                return new OperationResult("Interrupted by user", ResultCode.INTERRUPTED, operation, null);
+                return new OperationResult("Interrupted by user", INTERRUPTED, operation, null);
             } finally {
                 operation = null;
             }

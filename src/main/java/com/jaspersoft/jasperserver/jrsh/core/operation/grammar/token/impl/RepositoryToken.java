@@ -5,10 +5,13 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.AbstractTok
 import jline.console.completer.Completer;
 import lombok.EqualsAndHashCode;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 @EqualsAndHashCode(callSuper = true)
-public class RepositoryPathToken extends AbstractToken {
+public class RepositoryToken extends AbstractToken {
 
-    public RepositoryPathToken(String name, String value, boolean mandatory, boolean tailOfRule) {
+    public RepositoryToken(String name, String value, boolean mandatory, boolean tailOfRule) {
         super(name, value, mandatory, tailOfRule);
     }
 

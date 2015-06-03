@@ -2,7 +2,7 @@ package com.jaspersoft.jasperserver.jrsh.core.operation;
 
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Token;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.InputToken;
-import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.RepositoryPathToken;
+import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.RepositoryToken;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.StringToken;
 import com.jaspersoft.jasperserver.jrsh.core.operation.impl.ExportOperation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.impl.LoginOperation;
@@ -38,7 +38,7 @@ public class OperationReflectorTest {
         List<Token> ruleTokens = Arrays.<Token>asList(
                 new StringToken("export", "export", true, false),
                 new StringToken("RE", "repository", true, false),
-                new RepositoryPathToken("RP", "", true, true)
+                new RepositoryToken("RP", "", true, true)
         );
         List<String> inputTokens = Arrays.asList("export", "repository", "/public");
 

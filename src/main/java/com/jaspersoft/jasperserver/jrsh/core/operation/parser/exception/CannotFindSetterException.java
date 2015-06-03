@@ -4,6 +4,9 @@ import com.jaspersoft.jasperserver.jrsh.core.i18n.Messages;
 
 import static java.lang.String.format;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 public class CannotFindSetterException extends OperationParseException {
 
     private static final Messages messages = new Messages("i18n/error");

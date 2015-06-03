@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 @Data
 @AllArgsConstructor
 @Accessors(chain = true)

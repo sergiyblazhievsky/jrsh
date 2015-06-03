@@ -13,7 +13,7 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Parameter;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Value;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.FileNameToken;
-import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.RepositoryPathToken;
+import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.RepositoryToken;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.StringToken;
 import lombok.Data;
 import org.apache.commons.io.FileUtils;
@@ -23,6 +23,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Alex Krasnyanskiy
+ */
 @Data
 @Master(name = "export")
 public class ExportOperation implements Operation {
@@ -31,15 +34,13 @@ public class ExportOperation implements Operation {
 
     @Parameter(mandatory = true, dependsOn = "export", values = {
             @Value(tokenAlias = "RE", tokenClass = StringToken.class, tokenValue = "repository"),
-            //
             // seems <all> doesn't have autocompletion
-            //
             @Value(tokenAlias = "OL", tokenClass = StringToken.class, tokenValue = "all", tail = true)
     })
     private String context;
 
     @Parameter(mandatory = true, dependsOn = "RE", values =
-    @Value(tokenAlias = "RP", tokenClass = RepositoryPathToken.class, tail = true))
+    @Value(tokenAlias = "RP", tokenClass = RepositoryToken.class, tail = true))
     private String repositoryPath;
 
     @Parameter(dependsOn = "RP", values =
@@ -51,19 +52,28 @@ public class ExportOperation implements Operation {
     private String fileUri;
 
     @Parameter(dependsOn = {"F", "RP", "IUR", "IME", "RPP", "IAE"}, values =
-    @Value(tokenAlias = "UR", tokenClass = StringToken.class, tokenValue = "with-user-roles", tail = true))
+    @Value(tokenAlias = "UR", tokenClass = StringToken.class,
+           tokenValue = "with-user-roles", tail = true))
     private String withUserRoles;
+
     @Parameter(dependsOn = {"F", "RP", "UR", "IME", "RPP", "IAE"}, values =
-    @Value(tokenAlias = "IUR", tokenClass = StringToken.class, tokenValue = "with-include-audit-events", tail = true))
+    @Value(tokenAlias = "IUR", tokenClass = StringToken.class,
+           tokenValue = "with-include-audit-events", tail = true))
     private String withIncludeAuditEvents;
+
     @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "RPP", "IAE"}, values =
-    @Value(tokenAlias = "IME", tokenClass = StringToken.class, tokenValue = "with-include-monitoring-events", tail = true))
+    @Value(tokenAlias = "IME", tokenClass = StringToken.class,
+           tokenValue = "with-include-monitoring-events", tail = true))
     private String withIncludeMonitoringEvents;
+
     @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "IME", "IAE"}, values =
-    @Value(tokenAlias = "RPP", tokenClass = StringToken.class, tokenValue = "with-repository-permissions", tail = true))
+    @Value(tokenAlias = "RPP", tokenClass = StringToken.class,
+           tokenValue = "with-repository-permissions", tail = true))
     private String withRepositoryPermissions;
+
     @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "RPP", "IME"}, values =
-    @Value(tokenAlias = "IAE", tokenClass = StringToken.class, tokenValue = "with-include-access-events", tail = true))
+    @Value(tokenAlias = "IAE", tokenClass = StringToken.class,
+           tokenValue = "with-include-access-events", tail = true))
     private String withIncludeAccessEvents;
 
     @Override

@@ -32,7 +32,6 @@ public class EvaluationStrategyFactory {
         } else {
             strategyType = ToolEvaluationStrategy.class;
         }
-
         //
         // Create strategy instance
         //
