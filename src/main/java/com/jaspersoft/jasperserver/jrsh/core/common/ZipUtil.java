@@ -1,5 +1,8 @@
 package com.jaspersoft.jasperserver.jrsh.core.common;
 
+import com.jaspersoft.jasperserver.jrsh.core.common.exception.CouldNotZipFileException;
+import com.jaspersoft.jasperserver.jrsh.core.common.exception.DirectoryDoesNotExistException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -27,8 +30,8 @@ public class ZipUtil {
             addFiles(zos, directory, directory);
             zos.close();
             return arch;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception unimportant) {
+            throw new CouldNotZipFileException();
         }
     }
 

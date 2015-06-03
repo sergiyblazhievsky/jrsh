@@ -5,6 +5,7 @@ import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exports
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exportservice.ExportTaskAdapter;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
+import com.jaspersoft.jasperserver.jrsh.core.i18n.Messages;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode;
@@ -23,15 +24,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Master(name = "export",
-        description = "This is an export operation")
+@Master(name = "export")
 public class ExportOperation implements Operation {
+
+    private Messages messages = new Messages("i18n/export");
 
     @Parameter(mandatory = true, dependsOn = "export", values = {
             @Value(tokenAlias = "RE", tokenClass = StringToken.class, tokenValue = "repository"),
-            @Value(tokenAlias = "RO", tokenClass = StringToken.class, tokenValue = "role"),
-            @Value(tokenAlias = "U", tokenClass = StringToken.class, tokenValue = "user"),
-            @Value(tokenAlias = "A", tokenClass = StringToken.class, tokenValue = "all")
+            // <all> doesn't work
+            @Value(tokenAlias = "OL", tokenClass = StringToken.class, tokenValue = "all", tail = true)
     })
     private String context;
 
@@ -50,58 +51,81 @@ public class ExportOperation implements Operation {
     @Parameter(dependsOn = {"F", "RP", "IUR", "IME", "RPP", "IAE"}, values =
     @Value(tokenAlias = "UR", tokenClass = StringToken.class, tokenValue = "with-user-roles", tail = true))
     private String withUserRoles;
-
     @Parameter(dependsOn = {"F", "RP", "UR", "IME", "RPP", "IAE"}, values =
     @Value(tokenAlias = "IUR", tokenClass = StringToken.class, tokenValue = "with-include-audit-events", tail = true))
     private String withIncludeAuditEvents;
-
     @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "RPP", "IAE"}, values =
     @Value(tokenAlias = "IME", tokenClass = StringToken.class, tokenValue = "with-include-monitoring-events", tail = true))
     private String withIncludeMonitoringEvents;
-
     @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "IME", "IAE"}, values =
     @Value(tokenAlias = "RPP", tokenClass = StringToken.class, tokenValue = "with-repository-permissions", tail = true))
     private String withRepositoryPermissions;
-
     @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "RPP", "IME"}, values =
     @Value(tokenAlias = "IAE", tokenClass = StringToken.class, tokenValue = "with-include-access-events", tail = true))
     private String withIncludeAccessEvents;
 
     @Override
     public OperationResult eval(Session session) {
+        //
+        // Get operation messages
+        //
+        String ok = messages.getMessage("messages.success");
+        String failed = messages.getMessage("messages.failed");
+        //
+        // Perform export logic
+        //
         OperationResult result;
         try {
             ExportService exportService = session.exportService();
             ExportTaskAdapter task = exportService.newTask();
-
+            //
+            // Export specific repository
+            //
             if ("repository".equals(context)) {
                 if (repositoryPath != null) {
                     task.uri(repositoryPath);
                 }
-            }
 
-            StateDto state = task
-                    .parameters(convertExportParameters())
-                    .create()
-                    .getEntity();
+                StateDto state = task
+                        .parameters(convertExportParameters())
+                        .create()
+                        .getEntity();
 
-            InputStream entity = session.exportService()
-                    .task(state.getId())
-                    .fetch()
-                    .getEntity();
+                InputStream entity = session.exportService()
+                        .task(state.getId())
+                        .fetch()
+                        .getEntity();
 
-            if (to != null) {
-                if (fileUri != null) {
-                    File target = new File(fileUri);
+                if (to != null) {
+                    if (fileUri != null) {
+                        File target = new File(fileUri);
+                        FileUtils.copyInputStreamToFile(entity, target);
+                    }
+                } else {
+                    File target = new File("export.zip");
                     FileUtils.copyInputStreamToFile(entity, target);
                 }
-            } else {
+            }
+            //
+            // Export everything
+            //
+            if ("all".equals(context)) {
+                StateDto state = task
+                        .parameter(ExportParameter.EVERYTHING)
+                        .create()
+                        .getEntity();
+
+                InputStream entity = session.exportService()
+                        .task(state.getId())
+                        .fetch()
+                        .getEntity();
+
                 File target = new File("export.zip");
                 FileUtils.copyInputStreamToFile(entity, target);
             }
-            result = new OperationResult("Export status: Success", ResultCode.SUCCESS, this, null);
+            result = new OperationResult(ok, ResultCode.SUCCESS, this, null);
         } catch (Exception err) {
-            result = new OperationResult("Export status: Failed", ResultCode.FAILED, this, null);
+            result = new OperationResult(failed, ResultCode.FAILED, this, null);
         }
 
         return result;

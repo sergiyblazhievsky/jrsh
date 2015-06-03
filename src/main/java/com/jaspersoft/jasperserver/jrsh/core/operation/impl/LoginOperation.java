@@ -2,6 +2,7 @@ package com.jaspersoft.jasperserver.jrsh.core.operation.impl;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
+import com.jaspersoft.jasperserver.jrsh.core.i18n.Messages;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
@@ -18,10 +19,11 @@ import static java.lang.String.format;
  * @author Alex Krasnyanskiy
  */
 @Data
-@Master(name = "login", description = "This is a login operation")
+@Master(name = "login")
 public class LoginOperation implements Operation {
 
     public static int counter = 0;
+    private Messages messages = new Messages("i18n/login");
 
     private String server;
     private String username;
@@ -34,11 +36,19 @@ public class LoginOperation implements Operation {
 
     @Override
     public OperationResult eval(Session ignored) {
+        //
+        // Get messages
+        //
+        String formattedOK = messages.getMessage("messages.formatted.success");
+        String formattedFAIL = messages.getMessage("messages.formatted.failed");
+        //
+        // Log in
+        //
         OperationResult result;
         try {
             SessionFactory.createSharedSession(server, username, password, organization);
             result = new OperationResult(
-                    format("You have logged in as [%s]", username),
+                    format(formattedOK, username),
                     ResultCode.SUCCESS, this, null);
             //
             // Counting only successful attempts
@@ -46,7 +56,7 @@ public class LoginOperation implements Operation {
             counter++;
         } catch (Exception err) {
             result = new OperationResult(
-                    format("Login failed [%s]", err.getMessage()),
+                    format(formattedFAIL, err.getMessage()),
                     ResultCode.FAILED, this, null);
         }
         return result;

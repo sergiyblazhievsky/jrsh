@@ -1,7 +1,7 @@
 package com.jaspersoft.jasperserver.jrsh.core.operation;
 
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
-import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.NoOperationFoundException;
+import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationNotFoundException;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
@@ -49,7 +49,7 @@ public class OperationFactory {
     public static Operation createOperationByName(String operationName) {
         Class<? extends Operation> operationType = AVAILABLE_OPERATIONS.get(operationName);
         if (operationType == null) {
-            throw new NoOperationFoundException();
+            throw new OperationNotFoundException();
         }
         return createInstance(operationType);
     }

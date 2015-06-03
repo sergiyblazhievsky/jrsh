@@ -3,6 +3,7 @@ package com.jaspersoft.jasperserver.jrsh.core.operation.impl;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
 import com.jaspersoft.jasperserver.jrsh.core.common.ZipUtil;
+import com.jaspersoft.jasperserver.jrsh.core.i18n.Messages;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
@@ -21,8 +22,10 @@ import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.Re
 
 @Data
 @Log4j
-@Master(name = "import", description = "This is an import")
+@Master(name = "import")
 public class ImportOperation implements Operation {
+
+    private Messages messages = new Messages("i18n/import");
 
     @Parameter(mandatory = true, dependsOn = "import", values = {
             @Value(tokenAlias = "ZP", tokenClass = StringToken.class, tokenValue = "zip"),
@@ -36,39 +39,66 @@ public class ImportOperation implements Operation {
 
     @Override
     public OperationResult eval(Session session) {
+        //
+        // Get operation messages
+        //
+        String ok = messages.getMessage("messages.success");
+        String failed = messages.getMessage("messages.fail");
+        String formattedOK = messages.getMessage("messages.format.fail");
+        String ioWarning = messages.getMessage("messages.io.warning");
+        //
+        // Import zip/directory
+        //
         OperationResult result;
         try {
             if ("zip".equals(context)) {
-                StateDto entity = session.importService().newTask().create(new File(path)).getEntity();
-                upload(entity, session);
-                result = new OperationResult("Import is done", SUCCESS, this, null);
+                //
+                // Upload resources
+                //
+                StateDto entity = session.importService()
+                        .newTask()
+                        .create(new File(path))
+                        .getEntity();
+                //
+                // Wait until execution is complete
+                //
+                wait(entity, session);
+                result = new OperationResult(ok, SUCCESS, this, null);
             } else if ("directory".equals(context)) {
                 File importFile = ZipUtil.pack(path);
                 StateDto entity = session.importService().newTask().create(importFile).getEntity();
-                String phase = upload(entity, session);
+                String phase = wait(entity, session);
                 //
                 // Clean up zip file
                 //
                 if (importFile.exists()) {
-                    importFile.delete();
+                    //
+                    // Delete temporary zip file
+                    //
+                    boolean isDeleted = importFile.delete();
+                    if (!isDeleted) {
+                        log.info(ioWarning);
+                    }
                 }
                 //
                 // Check task phase
                 //
                 switch (phase) {
                     case "finished":
-                        result = new OperationResult("Import is done", SUCCESS, this, null);
+                        result = new OperationResult(ok, SUCCESS, this, null);
                         break;
                     default:
-                        // failed
-                        result = new OperationResult("Import failed", FAILED, this, null);
+                        //
+                        // Failed
+                        //
+                        result = new OperationResult(failed, FAILED, this, null);
                         break;
                 }
             } else {
-                result = new OperationResult("Import error: wrong context", FAILED, this, null);
+                result = new OperationResult(String.format(formattedOK, context), FAILED, this, null);
             }
         } catch (Exception e) {
-            result = new OperationResult(String.format("Import failed (%s)", e.getMessage()), FAILED, this, null);
+            result = new OperationResult(String.format(formattedOK, e.getMessage()), FAILED, this, null);
         }
         return result;
     }
@@ -79,7 +109,7 @@ public class ImportOperation implements Operation {
      * @param state   task state
      * @param session session
      */
-    protected String upload(StateDto state, Session session) {
+    protected String wait(StateDto state, Session session) {
         String phase;
         while (true) {
             phase = getPhase(state, session);
@@ -87,6 +117,9 @@ public class ImportOperation implements Operation {
                 break;
             }
             try {
+                //
+                // Wait a quarter of second
+                //
                 TimeUnit.MILLISECONDS.sleep(250);
             } catch (InterruptedException ignored) {
                 break;
