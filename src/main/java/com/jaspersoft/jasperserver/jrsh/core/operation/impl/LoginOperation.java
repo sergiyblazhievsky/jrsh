@@ -2,6 +2,7 @@ package com.jaspersoft.jasperserver.jrsh.core.operation.impl;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
+import com.jaspersoft.jasperserver.jrsh.core.i18n.Messages;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
@@ -9,19 +10,21 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Parameter;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Value;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.TokenPreconditions;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.WrongConnectionStringFormatException;
-import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode;
 import lombok.Data;
 
+import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.FAILED;
+import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.SUCCESS;
 import static java.lang.String.format;
 
 /**
  * @author Alex Krasnyanskiy
  */
 @Data
-@Master(name = "login", description = "This is a login operation")
+@Master(name = "login")
 public class LoginOperation implements Operation {
 
     public static int counter = 0;
+    private Messages messages = new Messages("i18n/login");
 
     private String server;
     private String username;
@@ -34,20 +37,24 @@ public class LoginOperation implements Operation {
 
     @Override
     public OperationResult eval(Session ignored) {
+        //
+        // Get messages
+        //
+        String formattedOK = messages.getMessage("messages.format.success");
+        String formattedFAIL = messages.getMessage("messages.format.failed");
+        //
+        // Log in
+        //
         OperationResult result;
         try {
             SessionFactory.createSharedSession(server, username, password, organization);
-            result = new OperationResult(
-                    format("You have logged in as [%s]", username),
-                    ResultCode.SUCCESS, this, null);
+            result = new OperationResult(format(formattedOK, username), SUCCESS, this, null);
             //
             // Counting only successful attempts
             //
             counter++;
         } catch (Exception err) {
-            result = new OperationResult(
-                    format("Login failed [%s]", err.getMessage()),
-                    ResultCode.FAILED, this, null);
+            result = new OperationResult(format(formattedFAIL, err.getMessage()), FAILED, this, null);
         }
         return result;
     }

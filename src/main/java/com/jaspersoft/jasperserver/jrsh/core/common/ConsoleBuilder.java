@@ -1,5 +1,6 @@
 package com.jaspersoft.jasperserver.jrsh.core.common;
 
+import com.jaspersoft.jasperserver.jrsh.core.common.exception.CouldNotCreateJLineConsoleException;
 import jline.console.ConsoleReader;
 import jline.console.completer.Completer;
 import jline.console.completer.CompletionHandler;
@@ -14,7 +15,7 @@ public class ConsoleBuilder {
         try {
             this.console = new ConsoleReader();
         } catch (IOException e) {
-            throw new RuntimeException("Could not create JLine console");
+            throw new CouldNotCreateJLineConsoleException();
         }
     }
 

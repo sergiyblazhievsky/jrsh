@@ -3,7 +3,7 @@ package com.jaspersoft.jasperserver.jrsh.core.operation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Parameter;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Value;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Token;
-import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.CannotFindGetterException;
+import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.CannotFindSetterException;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationParseException;
 import lombok.extern.log4j.Log4j;
 
@@ -34,7 +34,7 @@ public class OperationReflector {
                         Method setter = findSetter(clazz.getMethods(), field.getName());
 
                         if (setter == null) {
-                            throw new CannotFindGetterException(field.getName());
+                            throw new CannotFindSetterException(field.getName());
                         }
 
                         try {

@@ -1,7 +1,7 @@
 package com.jaspersoft.jasperserver.jrsh.core.operation.parser;
 
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.NoGrammarRulesFoundException;
-import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.NoOperationFoundException;
+import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationNotFoundException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -13,7 +13,7 @@ public class ConditionsTest {
 
     @Test
     public void shouldThrowAnExceptionIfOperationIsNull() {
-        thrown.expect(NoOperationFoundException.class);
+        thrown.expect(OperationNotFoundException.class);
         Conditions.checkOperation(null);
     }
 
