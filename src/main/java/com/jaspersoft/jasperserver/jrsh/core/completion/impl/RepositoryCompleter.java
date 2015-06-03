@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Used to dynamic completion of JRS repository path.
+ * Used for dynamic completion of JRS repository path.
  * One press of TAB key triggers a single REST call.
  *
  * @author Alex Krasnyanskiy

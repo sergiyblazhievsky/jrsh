@@ -10,9 +10,10 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Parameter;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Value;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.TokenPreconditions;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.WrongConnectionStringFormatException;
-import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode;
 import lombok.Data;
 
+import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.FAILED;
+import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.SUCCESS;
 import static java.lang.String.format;
 
 /**
@@ -39,25 +40,21 @@ public class LoginOperation implements Operation {
         //
         // Get messages
         //
-        String formattedOK = messages.getMessage("messages.formatted.success");
-        String formattedFAIL = messages.getMessage("messages.formatted.failed");
+        String formattedOK = messages.getMessage("messages.format.success");
+        String formattedFAIL = messages.getMessage("messages.format.failed");
         //
         // Log in
         //
         OperationResult result;
         try {
             SessionFactory.createSharedSession(server, username, password, organization);
-            result = new OperationResult(
-                    format(formattedOK, username),
-                    ResultCode.SUCCESS, this, null);
+            result = new OperationResult(format(formattedOK, username), SUCCESS, this, null);
             //
             // Counting only successful attempts
             //
             counter++;
         } catch (Exception err) {
-            result = new OperationResult(
-                    format(formattedFAIL, err.getMessage()),
-                    ResultCode.FAILED, this, null);
+            result = new OperationResult(format(formattedFAIL, err.getMessage()), FAILED, this, null);
         }
         return result;
     }

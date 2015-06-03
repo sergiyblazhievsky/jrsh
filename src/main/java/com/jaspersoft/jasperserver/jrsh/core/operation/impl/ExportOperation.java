@@ -31,7 +31,9 @@ public class ExportOperation implements Operation {
 
     @Parameter(mandatory = true, dependsOn = "export", values = {
             @Value(tokenAlias = "RE", tokenClass = StringToken.class, tokenValue = "repository"),
-            // <all> doesn't work
+            //
+            // seems <all> doesn't have autocompletion
+            //
             @Value(tokenAlias = "OL", tokenClass = StringToken.class, tokenValue = "all", tail = true)
     })
     private String context;
@@ -134,7 +136,7 @@ public class ExportOperation implements Operation {
     protected List<ExportParameter> convertExportParameters() {
         List<ExportParameter> parameters = new ArrayList<>();
         if (withIncludeAccessEvents != null) {
-            parameters.add(ExportParameter.INCLUDE_AUDIT_EVENTS);
+            parameters.add(ExportParameter.INCLUDE_ACCESS_EVENTS);
         }
         if (withIncludeAuditEvents != null) {
             parameters.add(ExportParameter.INCLUDE_AUDIT_EVENTS);
