@@ -31,7 +31,8 @@ public class ExportOperation implements Operation {
 
     @Parameter(mandatory = true, dependsOn = "export", values = {
             @Value(tokenAlias = "RE", tokenClass = StringToken.class, tokenValue = "repository"),
-            @Value(tokenAlias = "ALL", tokenClass = StringToken.class, tokenValue = "all", tail = true)
+            // <all> doesn't work
+            @Value(tokenAlias = "OL", tokenClass = StringToken.class, tokenValue = "all", tail = true)
     })
     private String context;
 

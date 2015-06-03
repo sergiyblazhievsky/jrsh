@@ -1,6 +1,6 @@
 package com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl;
 
-import com.jaspersoft.jasperserver.jrsh.core.completion.impl.RepositoryStaticCompleter;
+import com.jaspersoft.jasperserver.jrsh.core.completion.impl.RepositoryCompleter;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.AbstractToken;
 import jline.console.completer.Completer;
 import lombok.EqualsAndHashCode;
@@ -14,7 +14,7 @@ public class RepositoryPathToken extends AbstractToken {
 
     @Override
     public Completer getCompleter() {
-        return new RepositoryStaticCompleter();
+        return new /*RepositoryStaticCompleter*/RepositoryCompleter();
     }
 
     @Override
