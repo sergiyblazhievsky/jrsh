@@ -22,7 +22,7 @@ public class HelpOperation implements Operation {
 
     @Override
     public OperationResult eval(Session session) {
-        StringBuilder builder = new StringBuilder("Available operations:\n");
+        StringBuilder builder = new StringBuilder("\nAvailable operations:\n");
 
         Set<Operation> operations = OperationFactory.createOperationsByAvailableTypes();
         for (Operation operation : operations) {

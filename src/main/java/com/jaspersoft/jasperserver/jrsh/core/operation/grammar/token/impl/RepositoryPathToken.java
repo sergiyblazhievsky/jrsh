@@ -14,7 +14,7 @@ public class RepositoryPathToken extends AbstractToken {
 
     @Override
     public Completer getCompleter() {
-        return new /*RepositoryStaticCompleter*/RepositoryCompleter();
+        return new RepositoryCompleter();
     }
 
     @Override
