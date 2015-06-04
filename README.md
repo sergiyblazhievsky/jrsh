@@ -54,19 +54,20 @@ $> ./run.sh superuser%superuser@localhost:8080/jasperserver-pro
 
 ## Frequently used operations
 
-`Import` operation is most frequently used operation. It imports resources to [JRS](http://community.jaspersoft.com/project/jasperreports-server). You can import a zip file with resources or specify the folder with the unzipped resources to import.
+#### Import
+This is most frequently used operation. It imports resources to [JRS](http://community.jaspersoft.com/project/jasperreports-server). You can import a zip file with resources or specify the folder with the unzipped resources to import.
 
-### Import examples
+Import examples:
 
-Resources import:
+Resources import
 ```bash
 $> import /Users/alex/folder
 ```
-Zip file import:
+Zip file import
 ```bash
 $> import /Users/alex/archive.zip
 ```
-Import resources with specifying import arguments:
+Import resources with specifying import arguments
 ```bash
 $> import /Users/alex/folder \ 
    with-update \ 
@@ -74,20 +75,21 @@ $> import /Users/alex/folder \
    with-include-access-events
 ```
 
-`Export` operation is used to export resources from the JRS. You can specify which resource you want to export, and it is also possible to specify where you want to save it. Similar to Import operation, you can specify the arguments of Export operation.
+#### Export 
+Export operation is used to export resources from the JRS. You can specify which resource you want to export, and it is also possible to specify where you want to save it. Similar to Import operation, you can specify the arguments of Export operation.
 
-### Export examples
+Here are some examples of `Export`:
 
-Export repository:
+Export repository
 ```bash
 $> export repository /public/Samples/Reports/RevenueDetailReport
 ```
-Export repository with specifying export arguments:
+Export repository with specifying export arguments
 ```bash
 $> export repository /public/Samples/Reports/RevenueDetailReport \ 
    with-include-access-events with-user-roles
 ```
-Export repository with specifying an export file:
+Export repository with specifying an export file
 ```bash
 $> export repository /public/Samples/Reports/RevenueDetailReport \
    to /Users/alex/jrs/downloads/export.zip
