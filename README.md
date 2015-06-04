@@ -1,5 +1,5 @@
-JasperReports Server Shell
-==========================
+JasperReports Server Shell (JRSH)
+=================================
 [![Build Status](https://travis-ci.org/Krasnyanskiy/jrsh.svg?branch=develop)](https://travis-ci.org/Krasnyanskiy/jrsh)
 [![Stories in Ready](https://badge.waffle.io/Krasnyanskiy/jrsh.png?label=ready&title=Ready)](https://waffle.io/Krasnyanskiy/jrsh)
 
