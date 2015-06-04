@@ -35,7 +35,7 @@ login superuser%superuser@localhost:8080/jasperserver-pro
 export /public/Samples
 ```
 
-In the Tool mode an application executes only one command. To switch that mode you must specify a connection string which has the following format: 
+In the Tool mode an application executes only one operation. To switch that mode you must specify a connection string which has the following format: 
 ```
 [username]|[organization]%[password]@[url] (organization is optional)
 ```
