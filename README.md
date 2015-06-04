@@ -30,7 +30,7 @@ $> ./run.sh --script /Users/alex/jrsh/scripts/my_script.jrs
 ```
 Here is a script file example:
 ```bash
-// my_script.jrs
+# my_script.jrs
 login superuser%superuser@localhost:8080/jasperserver-pro
 export /public/Samples
 ```
