@@ -23,7 +23,7 @@ Second, you need to execute a bash script `run.sh` with parameters. The paramete
 2. Tool Mode
 3. Shell Mode
 
-In Script mode you should specify a script file with `*.jrs` file extension. That file contains operation sequence. The sequenced operations are performed one by one. To run the script just execute in your terminal:
+In Script mode you should specify a script file with `*.jrs` file extension. That file contains an operation sequence. The sequenced operations are performed one by one. To run the script just execute in your terminal:
 
 ```bash
 $> ./run.sh --script /Users/alex/jrsh/scripts/my_script.jrs
