@@ -57,7 +57,7 @@ $> ./run.sh superuser%superuser@localhost:8080/jasperserver-pro
 #### Import
 This is most frequently used operation. It imports resources to [JRS](http://community.jaspersoft.com/project/jasperreports-server). You can import a zip file with resources or specify the folder with the unzipped resources to import.
 
-Import examples:
+`Import` examples:
 
 Resources import
 ```bash
