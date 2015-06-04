@@ -69,7 +69,7 @@ $> import /Users/alex/archive.zip
 Import resources with specifying import arguments:
 ```bash
 $> import /Users/alex/folder \ 
-   with-update" \ 
+   with-update \ 
    with-skip-user-update \ 
    with-include-access-events
 ```
