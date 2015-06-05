@@ -13,7 +13,6 @@ This short guide will walk you through getting a basic usage of JRSH in differen
 
 First, you need to download a zip file with actual snapshot and unpack it. The snapshot folder contains such content as:
 ```bash
-├── history/
 ├── jrsh-XX-jar-with-dependencies.jar
 └── run.sh
 ```
