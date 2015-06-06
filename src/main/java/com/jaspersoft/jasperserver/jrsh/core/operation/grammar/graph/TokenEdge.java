@@ -4,7 +4,7 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Token;
 import org.jgrapht.graph.DefaultEdge;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 public class TokenEdge<T extends Token> extends DefaultEdge {
 

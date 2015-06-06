@@ -5,7 +5,6 @@ import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.imports
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
 import com.jaspersoft.jasperserver.jrsh.core.common.ZipUtil;
-import com.jaspersoft.jasperserver.jrsh.core.i18n.Messages;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
@@ -23,52 +22,60 @@ import java.util.concurrent.TimeUnit;
 
 import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.FAILED;
 import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.SUCCESS;
+import static java.lang.String.format;
 
+/**
+ * @author Alexander Krasnyanskiy
+ */
 @Data
 @Log4j
-@Master(name = "import")
+@Master(name = "import",
+        usage = "import [file]",
+        description = "Operation <import> is used to import resources to JRS")
 public class ImportOperation implements Operation {
 
-    private Messages messages = new Messages("i18n/import");
+    public static final String OK_MSG = "Import status: Success";
+    public static final String FAILURE_MSG = "Import failed";
+    public static final String FORMATTED_FAILURE_MSG = "Import failed (%s)";
+    public static final String UNKNOWN_CONTENT = "Neither a file nor a directory";
+    public static final String IO_WARNING = "Could not delete a temporary file";
 
-    @Parameter(mandatory = true, dependsOn = {/*"ZP", "DIR"*/"import"}, values =
+    @Parameter(mandatory = true, dependsOn = {"import"}, values =
     @Value(tail = true, tokenClass = FileNameToken.class, tokenAlias = "IPTH"))
     private String path;
 
     @Parameter(dependsOn = {"IPTH", "IIME", "IIAE", "IISS", "ISUU", "IWA"}, values =
-    @Value(tokenAlias = "IIUR", tokenClass = StringToken.class, tokenValue = "with-include-audit-events", tail = true))
+    @Value(tokenAlias = "IIUR", tokenClass = StringToken.class,
+            tokenValue = "with-include-audit-events", tail = true))
     private String withIncludeAuditEvents;
 
     @Parameter(dependsOn = {"IPTH", "IIUR", "IIAE", "IISS", "ISUU", "IWA"}, values =
-    @Value(tokenAlias = "IIME", tokenClass = StringToken.class, tokenValue = "with-include-monitoring-events", tail = true))
+    @Value(tokenAlias = "IIME", tokenClass = StringToken.class,
+            tokenValue = "with-include-monitoring-events", tail = true))
     private String withIncludeMonitoringEvents;
 
     @Parameter(dependsOn = {"IPTH", "IIUR", "IIME", "IISS", "ISUU", "IWA"}, values =
-    @Value(tokenAlias = "IIAE", tokenClass = StringToken.class, tokenValue = "with-include-access-events", tail = true))
+    @Value(tokenAlias = "IIAE", tokenClass = StringToken.class,
+            tokenValue = "with-include-access-events", tail = true))
     private String withIncludeAccessEvents;
 
     @Parameter(dependsOn = {"IWA", "ISUU", "IIAE", "IIME", "IIUR", "IPTH"}, values =
-    @Value(tokenAlias = "IISS", tokenClass = StringToken.class, tokenValue = "with-include-server-settings", tail = true))
+    @Value(tokenAlias = "IISS", tokenClass = StringToken.class,
+            tokenValue = "with-include-server-settings", tail = true))
     private String withIncludeServerSettings;
 
     @Parameter(dependsOn = {"IWA", "IISS", "IIAE", "IIME", "IIUR", "IPTH"}, values =
-    @Value(tokenAlias = "ISUU", tokenClass = StringToken.class, tokenValue = "with-skip-user-update", tail = true))
+    @Value(tokenAlias = "ISUU", tokenClass = StringToken.class,
+            tokenValue = "with-skip-user-update", tail = true))
     private String withSkipUserUpdate;
 
     @Parameter(dependsOn = {"ISUU", "IISS", "IIAE", "IIME", "IIUR", "IPTH"}, values =
-    @Value(tokenAlias = "IWA", tokenClass = StringToken.class, tokenValue = "with-update", tail = true))
+    @Value(tokenAlias = "IWA", tokenClass = StringToken.class,
+            tokenValue = "with-update", tail = true))
     private String withUpdate;
 
     @Override
     public OperationResult eval(Session session) {
-        //
-        // Get operation messages
-        //
-        String ok = messages.getMessage("messages.success");
-        String failed = messages.getMessage("messages.failed");
-        String formattedFail = messages.getMessage("messages.format.failed");
-        String ioWarning = messages.getMessage("messages.io.warning");
-        String unknownContent = messages.getMessage("messages.unknown.content");
         //
         // Import zip/directory
         //
@@ -95,7 +102,7 @@ public class ImportOperation implements Operation {
                     //
                     boolean isDeleted = importFile.delete();
                     if (!isDeleted) {
-                        log.info(ioWarning);
+                        log.info(IO_WARNING);
                     }
                 }
                 //
@@ -103,13 +110,13 @@ public class ImportOperation implements Operation {
                 //
                 switch (phase) {
                     case "finished":
-                        result = new OperationResult(ok, SUCCESS, this, null);
+                        result = new OperationResult(OK_MSG, SUCCESS, this, null);
                         break;
                     default:
                         //
                         // Failed
                         //
-                        result = new OperationResult(failed, FAILED, this, null);
+                        result = new OperationResult(FAILURE_MSG, FAILED, this, null);
                         break;
                 }
             } else if (content.isFile()) {
@@ -128,22 +135,16 @@ public class ImportOperation implements Operation {
                 // Wait until execution is completed
                 //
                 wait(entity, session);
-                result = new OperationResult(ok, SUCCESS, this, null);
+                result = new OperationResult(OK_MSG, SUCCESS, this, null);
             } else {
-                result = new OperationResult(unknownContent, FAILED, this, null);
+                result = new OperationResult(UNKNOWN_CONTENT, FAILED, this, null);
             }
         } catch (Exception e) {
-            result = new OperationResult(String.format(formattedFail, e.getMessage()), FAILED, this, null);
+            result = new OperationResult(format(FORMATTED_FAILURE_MSG, e.getMessage()), FAILED, this, null);
         }
         return result;
     }
 
-    /**
-     * Waits till the task finish its work.
-     *
-     * @param state   task state
-     * @param session session
-     */
     protected String wait(StateDto state, Session session) {
         String phase;
         while (true) {
@@ -163,13 +164,6 @@ public class ImportOperation implements Operation {
         return phase;
     }
 
-    /**
-     * Returns the phase of the current running task.
-     *
-     * @param state   task state
-     * @param session session
-     * @return phase
-     */
     protected String getPhase(StateDto state, Session session) {
         return session.exportService()
                 .task(state.getId())

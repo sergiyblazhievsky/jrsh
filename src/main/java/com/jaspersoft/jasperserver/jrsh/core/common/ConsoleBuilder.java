@@ -4,10 +4,12 @@ import com.jaspersoft.jasperserver.jrsh.core.common.exception.CouldNotCreateJLin
 import jline.console.ConsoleReader;
 import jline.console.completer.Completer;
 import jline.console.completer.CompletionHandler;
-import jline.console.history.PersistentHistory;
 
 import java.io.IOException;
 
+/**
+ * @author Alexander Krasnyanskiy
+ */
 public class ConsoleBuilder {
     private ConsoleReader console;
 
@@ -39,10 +41,12 @@ public class ConsoleBuilder {
         return this;
     }
 
+    /*
     public ConsoleBuilder withHistory(PersistentHistory history) {
         console.setHistory(history);
         return this;
     }
+    */
 
     public ConsoleReader build() {
         return console;

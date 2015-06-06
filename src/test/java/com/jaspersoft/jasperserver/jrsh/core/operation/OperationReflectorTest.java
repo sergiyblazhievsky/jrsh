@@ -1,8 +1,8 @@
 package com.jaspersoft.jasperserver.jrsh.core.operation;
 
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Token;
-import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.InputToken;
-import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.RepositoryPathToken;
+import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.SkipInputToken;
+import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.RepositoryToken;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.StringToken;
 import com.jaspersoft.jasperserver.jrsh.core.operation.impl.ExportOperation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.impl.LoginOperation;
@@ -20,7 +20,7 @@ public class OperationReflectorTest {
         LoginOperation loginOperation = new LoginOperation();
         List<Token> ruleTokens = Arrays.<Token>asList(
                 new StringToken("login", "login", true, false),
-                new InputToken("CS", "", true, true)
+                new SkipInputToken("CS", "", true, true)
         );
         List<String> inputTokens = Arrays.asList("login", "superuser%superuser@localhost:8080/jasperserver-pro");
 
@@ -38,7 +38,7 @@ public class OperationReflectorTest {
         List<Token> ruleTokens = Arrays.<Token>asList(
                 new StringToken("export", "export", true, false),
                 new StringToken("RE", "repository", true, false),
-                new RepositoryPathToken("RP", "", true, true)
+                new RepositoryToken("RP", "", true, true)
         );
         List<String> inputTokens = Arrays.asList("export", "repository", "/public");
 

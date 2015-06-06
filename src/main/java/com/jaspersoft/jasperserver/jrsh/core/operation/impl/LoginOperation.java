@@ -2,7 +2,6 @@ package com.jaspersoft.jasperserver.jrsh.core.operation.impl;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
-import com.jaspersoft.jasperserver.jrsh.core.i18n.Messages;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
@@ -17,14 +16,22 @@ import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.Re
 import static java.lang.String.format;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 @Data
-@Master(name = "login")
+@Master(name = "login",
+        usage = "login [username]|[organization]%[password]@[url]",
+        description = "Operation <login> is used to login into JRS")
 public class LoginOperation implements Operation {
 
     public static int counter = 0;
-    private Messages messages = new Messages("i18n/login");
+    //
+    // All messages will be moved to i18n in the next release
+    //
+    public static final String OK_MSG = "You have logged in";
+    public static final String FORMATTED_OK_MSG = "You have logged in as %s";
+    public static final String FAILURE_MSG = "Login failed";
+    public static final String FORMATTED_FAILURE_MSG = "Login failed (%s)";
 
     private String server;
     private String username;
@@ -38,32 +45,22 @@ public class LoginOperation implements Operation {
     @Override
     public OperationResult eval(Session ignored) {
         //
-        // Get messages
-        //
-        String formattedOK = messages.getMessage("messages.format.success");
-        String formattedFAIL = messages.getMessage("messages.format.failed");
-        //
         // Log in
         //
         OperationResult result;
         try {
             SessionFactory.createSharedSession(server, username, password, organization);
-            result = new OperationResult(format(formattedOK, username), SUCCESS, this, null);
+            result = new OperationResult(format(FORMATTED_OK_MSG, username), SUCCESS, this, null);
             //
             // Counting only successful attempts
             //
             counter++;
         } catch (Exception err) {
-            result = new OperationResult(format(formattedFAIL, err.getMessage()), FAILED, this, null);
+            result = new OperationResult(format(FORMATTED_FAILURE_MSG, err.getMessage()), FAILED, this, null);
         }
         return result;
     }
 
-    /**
-     * Parses connection string and sets the fields
-     *
-     * @param connectionString connection string
-     */
     public void setConnectionString(String connectionString) {
         if (!TokenPreconditions.isConnectionString(connectionString)) {
             throw new WrongConnectionStringFormatException();

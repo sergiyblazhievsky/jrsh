@@ -15,7 +15,7 @@ import lombok.extern.log4j.Log4j;
 import java.util.List;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 @Log4j
 public class LL1OperationParser implements OperationParser {
@@ -27,14 +27,6 @@ public class LL1OperationParser implements OperationParser {
         lexer = new DefaultLexer();
     }
 
-    /**
-     * Parses string representation of operation into
-     * the operation.
-     *
-     * @param line string representation of operation
-     * @return operation instance
-     * @throws OperationParseException
-     */
     public Operation parse(String line) throws OperationParseException {
         List<String> inputTokens = lexer.getTokens(line);
         String operationName = inputTokens.get(0);
@@ -59,19 +51,12 @@ public class LL1OperationParser implements OperationParser {
             }
         }
         //
-        // if unmatched then throw exception
+        // If unmatched then throw exception
         //
         Conditions.checkMatchedRulesFlag(matchedRuleExist);
         return operation;
     }
 
-    /**
-     * Match rule tokens to input tokens.
-     *
-     * @param ruleTokens  rule tokens
-     * @param inputTokens input tokens
-     * @return true if matched
-     */
     protected boolean match(List<Token> ruleTokens, List<String> inputTokens) {
         //
         // Check tokens length
@@ -80,7 +65,7 @@ public class LL1OperationParser implements OperationParser {
             return false;
         }
         //
-        // if at least one token in rule is unmatched,
+        // If at least one token in rule is unmatched,
         // return `false` immediately
         //
         for (int i = 0; i < ruleTokens.size(); i++) {

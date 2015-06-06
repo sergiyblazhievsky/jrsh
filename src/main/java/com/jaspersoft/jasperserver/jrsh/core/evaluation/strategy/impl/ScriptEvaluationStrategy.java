@@ -2,7 +2,7 @@ package com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.impl;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jrsh.core.common.ConsoleBuilder;
-import com.jaspersoft.jasperserver.jrsh.core.common.Script;
+import com.jaspersoft.jasperserver.jrsh.core.common.Data;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
 import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.AbstractEvaluationStrategy;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
@@ -15,7 +15,11 @@ import java.util.List;
 
 import static java.lang.String.format;
 
+/**
+ * @author Alexander Krasnyanskiy
+ */
 public class ScriptEvaluationStrategy extends AbstractEvaluationStrategy {
+
     public static final String ERROR_MSG = "error in line: %s (%s)";
     private int lineCounter = 1;
     private ConsoleReader console;
@@ -25,11 +29,10 @@ public class ScriptEvaluationStrategy extends AbstractEvaluationStrategy {
     }
 
     @Override
-    public OperationResult eval(Script script) {
-        List<String> source = script.getSource();
+    public OperationResult eval(Data data) {
+        List<String> source = data.getSource();
         OperationResult result = null;
         Operation operation = null;
-
         try {
             for (String line : source) {
                 if (!line.startsWith("#") && !line.isEmpty()) {

@@ -7,6 +7,9 @@ import jline.internal.Configuration;
 import java.io.File;
 import java.util.List;
 
+/**
+ * @author Alexander Krasnyanskiy
+ */
 public class FileCompleter implements Completer {
     public int complete(String buffer, final int cursor, final List<CharSequence> candidates) {
 

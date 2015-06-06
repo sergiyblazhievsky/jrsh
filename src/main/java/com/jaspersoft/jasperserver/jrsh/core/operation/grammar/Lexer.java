@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 public interface Lexer {
 

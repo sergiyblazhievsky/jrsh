@@ -13,7 +13,7 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.graph.TokenEdgeFa
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Token;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationParseException;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.CannotCreateTokenException;
-import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.NoGrammarRulesFoundException;
+import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.WrongOperationFormatException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.log4j.Log4j;
@@ -37,23 +37,15 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 @Log4j
 public class OperationGrammarParser {
-
     private static Graph<Token, TokenEdge<Token>> graph;
     private static Map<String, Pair<Token, String[]>> dependencies;
     private static Map<String, RuleGroup> groups;
     private static Token root;
 
-    /**
-     * Parses operation into a grammar.
-     *
-     * @param operation operation instance
-     * @return grammar
-     * @throws OperationParseException
-     */
     public static Grammar parse(final Operation operation) throws OperationParseException {
         graph = new DefaultDirectedGraph<>(new TokenEdgeFactory());
         dependencies = new HashMap<>();
@@ -83,57 +75,41 @@ public class OperationGrammarParser {
                 Prefix prefix = field.getAnnotation(Prefix.class);
                 Parameter param = field.getAnnotation(Parameter.class);
 
-
                 if (param != null) {
                     OperationParameter p1 = new OperationParameter();
                     p1.getTokens().add(root);
 
-
                     for (String key : groups.keySet()) {
                         groups.get(key).getParameters().add(p1);
                     }
-
-
                     boolean isMandatory = param.mandatory();
                     Value[] values = param.values();
                     OperationParameter p2 = new OperationParameter();
 
-
                     for (Value v : values) {
-                        Token token = createToken(v.tokenClass(), v.tokenAlias(), v.tokenValue(), isMandatory, v.tail());
+                        Token token = createToken(v.tokenClass(), v.tokenAlias(),
+                                                  v.tokenValue(), isMandatory, v.tail());
                         graph.addVertex(token);
-
-
                         if (prefix != null) {
-
-
                             Token prefixTkn = createToken(prefix.tokenClass(), prefix.value(),
                                     prefix.value(), isMandatory, false);
-
 
                             dependencies.put(prefixTkn.getName(), new ImmutablePair<>(prefixTkn, param.dependsOn()));
                             dependencies.put(token.getName(), new ImmutablePair<>(token, new String[]{
                                     prefix.value()
                             }));
 
-
                             p2.getTokens().add(prefixTkn);
                             graph.addVertex(prefixTkn);
-
-
                         } else {
                             dependencies.put(token.getName(), new ImmutablePair<>(token, param.dependsOn()));
                         }
 
-
                         p2.getTokens().add(token);
                         String[] ruleGroups = param.ruleGroups();
 
-
                         for (String group : ruleGroups) {
                             RuleGroup ruleGroup = groups.get(group);
-
-
                             if (ruleGroup != null) {
                                 ruleGroup.getParameters().add(p2);
                             } else {
@@ -163,7 +139,7 @@ public class OperationGrammarParser {
         if (!rules.isEmpty()) {
             grammar.addRules(rules);
         } else {
-            throw new NoGrammarRulesFoundException();
+            throw new WrongOperationFormatException();
         }
 
         return grammar;
@@ -248,10 +224,16 @@ public class OperationGrammarParser {
         }
     }
 
-    protected static Token createToken(Class<? extends Token> tokenType, String tokenName, String tokenValue, boolean mandatory, boolean tail) throws CannotCreateTokenException {
+    protected static Token createToken(Class<? extends Token> tokenType, String tokenName,
+                                       String tokenValue, boolean mandatory, boolean tail)
+            throws CannotCreateTokenException {
         try {
-            return tokenType.getConstructor(String.class, String.class, boolean.class, boolean.class).newInstance(tokenName, tokenValue, mandatory, tail);
-        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            return tokenType.getConstructor(String.class, String.class, boolean.class, boolean.class)
+                    .newInstance(tokenName, tokenValue, mandatory, tail);
+        } catch (InstantiationException
+                | IllegalAccessException
+                | NoSuchMethodException
+                | InvocationTargetException e) {
             throw new CannotCreateTokenException(tokenType);
         }
     }

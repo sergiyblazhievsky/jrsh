@@ -12,6 +12,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+/**
+ * @author Alexander Krasnyanskiy
+ */
 @Log4j
 public class OperationReflector {
 
@@ -54,7 +57,6 @@ public class OperationReflector {
                 }
             }
         }
-        //log.info(operation);
     }
 
     protected static int getIndex(List<Token> tokens, String tokenName) {

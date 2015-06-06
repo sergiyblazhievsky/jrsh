@@ -19,21 +19,21 @@ import static org.apache.commons.io.FileUtils.readLines;
  */
 public class ArgumentConverter {
 
-    public static Script convertToScript(String[] args) {
-        Script script;
-        // Parse arguments and convert data into the
-        // script, which consists of ordered data.
+    public static Data convertToData(String[] args) {
+        Data data;
+        // Parse arguments and convert them into
+        // ordered operations.
         switch (args.length) {
             case 0: {
-                script = new Script(singletonList("help"));
+                data = new Data(singletonList("help"));
                 break;
             }
             case 1: {
                 String line = args[0];
                 if (isConnectionString(line)) {
-                    script = new Script(singletonList("login " + line));
+                    data = new Data(singletonList("login " + line));
                 } else {
-                    script = new Script(singletonList(line));
+                    data = new Data(singletonList(line));
                 }
                 break;
             }
@@ -41,20 +41,20 @@ public class ArgumentConverter {
                 if ("--script".equals(args[0]) && isScriptFileName(args[1])) {
                     try {
                         List<String> lines = readLines(new File(args[1]));
-                        script = new Script(lines);
+                        data = new Data(lines);
                     } catch (IOException ignored) {
                         throw new CouldNotOpenScriptFileException(args[1]);
                     }
                 } else if (isConnectionString(args[0])) {
                     String loginLine = "login " + args[0];
                     String nextLine = Joiner.on(" ").join(copyOfRange(args, 1, args.length));
-                    script = new Script(asList(loginLine, nextLine));
+                    data = new Data(asList(loginLine, nextLine));
                 } else {
                     String line = Joiner.on(" ").join(args);
-                    script = new Script(singletonList(line));
+                    data = new Data(singletonList(line));
                 }
             }
         }
-        return script;
+        return data;
     }
 }

@@ -7,6 +7,9 @@ import jline.console.completer.CompletionHandler;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * @author Alexander Krasnyanskiy
+ */
 public class JrshCompletionHandler implements CompletionHandler {
 
     public boolean complete(final ConsoleReader reader, final List<CharSequence> candidates, final int pos) throws IOException {

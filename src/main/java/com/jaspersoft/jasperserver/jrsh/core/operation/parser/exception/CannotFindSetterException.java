@@ -1,14 +1,12 @@
 package com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception;
 
-import com.jaspersoft.jasperserver.jrsh.core.i18n.Messages;
-
 import static java.lang.String.format;
 
+/**
+ * @author Alexander Krasnyanskiy
+ */
 public class CannotFindSetterException extends OperationParseException {
-
-    private static final Messages messages = new Messages("i18n/error");
-
-    public CannotFindSetterException(String msg) {
-        super(format(messages.getMessage("message.setter.does.not.exist"), msg));
+    public CannotFindSetterException(String fieldName) {
+        super(format("Could not find a setter for %s field", fieldName));
     }
 }
