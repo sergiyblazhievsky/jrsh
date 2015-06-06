@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 public class JrshCompletionHandler implements CompletionHandler {
 

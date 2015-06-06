@@ -12,26 +12,26 @@ package com.jaspersoft.jasperserver.jrsh.core.script;//package com.jaspersoft.ja
 //        Script script = new ScriptBuilder(new String[]{
 //                "any", "wrong", "operation", "should", "be",
 //                "processed", "in", "the", "Tool", "mode"
-//        }).convertToScript();
+//        }).convertToData();
 //        Assertions.assertThat(script).isInstanceOf(ToolOperationScript.class);
 //    }
 //
 //    @Test
 //    public void shouldReturnFileScript() {
-//        Script script = new ScriptBuilder(new String[]{"--script", "test_script.jrs"}).convertToScript();
+//        Script script = new ScriptBuilder(new String[]{"--script", "test_script.jrs"}).convertToData();
 //        Assertions.assertThat(script).isInstanceOf(FileScript.class);
 //    }
 //
 //    @Test
 //    public void shouldReturnShellScript() {
-//        Script script = new ScriptBuilder(new String[]{"joe%pass@localhost"}).convertToScript();
+//        Script script = new ScriptBuilder(new String[]{"joe%pass@localhost"}).convertToData();
 //        Assertions.assertThat(script).isInstanceOf(ShellOperationScript.class);
 //    }
 //
 //    @Test
 //    @SuppressWarnings("unchecked")
 //    public void shouldContainJoinedOperationString() {
-//        Script script = new ScriptBuilder(new String[]{"help", "login"}).convertToScript();
+//        Script script = new ScriptBuilder(new String[]{"help", "login"}).convertToData();
 //        Object source = script.getSource();
 //        Assertions.assertThat(source).isInstanceOf(List.class);
 //        List<String> lines = (List<String>) source;

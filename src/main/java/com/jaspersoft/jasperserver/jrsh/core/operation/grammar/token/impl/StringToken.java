@@ -6,7 +6,7 @@ import jline.console.completer.StringsCompleter;
 import lombok.EqualsAndHashCode;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 @EqualsAndHashCode(callSuper = true)
 public class StringToken extends AbstractToken {

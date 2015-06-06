@@ -14,7 +14,7 @@ import static java.io.File.separatorChar;
 import static org.apache.commons.lang3.StringUtils.chomp;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 public class ZipUtil {
 

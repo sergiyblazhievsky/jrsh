@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import java.io.File;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 @EqualsAndHashCode(callSuper = true)
 public class FileNameToken extends AbstractToken {

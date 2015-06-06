@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 public interface Rule {
 
@@ -14,9 +14,6 @@ public interface Rule {
 
     void addToken(Token token);
 
-    /**
-     * Default implementation of {@link Rule} interface.
-     */
     class DefaultRule implements Rule {
         private List<Token> tokens;
 

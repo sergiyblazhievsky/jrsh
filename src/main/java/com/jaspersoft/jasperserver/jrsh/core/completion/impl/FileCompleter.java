@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 public class FileCompleter implements Completer {
     public int complete(String buffer, final int cursor, final List<CharSequence> candidates) {
