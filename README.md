@@ -1,5 +1,7 @@
 JasperReports Server Shell (JRSH)
 =================================
+[![Join the chat at https://gitter.im/Krasnyanskiy/jrsh](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Krasnyanskiy/jrsh?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/Krasnyanskiy/jrsh.svg?branch=develop)](https://travis-ci.org/Krasnyanskiy/jrsh)
 [![Stories in Ready](https://badge.waffle.io/Krasnyanskiy/jrsh.png?label=ready&title=Ready)](https://waffle.io/Krasnyanskiy/jrsh)
 
