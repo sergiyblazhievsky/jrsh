@@ -30,7 +30,7 @@ import static java.lang.String.format;
  */
 @Data
 @Master(name = "export",
-        usage = "export [context][parameters]",
+        usage = "export [context] [parameters]",
         description = "Operation <export> is used to download JRS resources")
 public class ExportOperation implements Operation {
 

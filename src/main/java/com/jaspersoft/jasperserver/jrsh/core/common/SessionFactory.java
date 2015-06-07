@@ -67,6 +67,10 @@ public class SessionFactory {
         return SHARED_SESSION;
     }
 
+    public static void updateSharedSession(Session session) {
+        SHARED_SESSION = session;
+    }
+
     @SuppressWarnings("unchecked")
     protected static Map<String, Integer> getClientTimeout() {
         Yaml yaml = new Yaml();
