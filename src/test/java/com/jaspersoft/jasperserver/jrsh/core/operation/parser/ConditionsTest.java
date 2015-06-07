@@ -1,6 +1,6 @@
 package com.jaspersoft.jasperserver.jrsh.core.operation.parser;
 
-import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.NoGrammarRulesFoundException;
+import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.WrongOperationFormatException;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationNotFoundException;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,7 +19,7 @@ public class ConditionsTest {
 
     @Test
     public void shouldThrowAnExceptionIfMatchedRuleDoesNotExist() {
-        thrown.expect(NoGrammarRulesFoundException.class);
+        thrown.expect(WrongOperationFormatException.class);
         Conditions.checkMatchedRulesFlag(false);
     }
 

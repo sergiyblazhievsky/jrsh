@@ -1,0 +1,6 @@
+# REST client configuration
+---
+client:
+  timeout:
+    connection: 5000
+    read: 5000

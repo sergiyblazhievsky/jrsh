@@ -3,7 +3,7 @@ package com.jaspersoft.jasperserver.jrsh.core.operation.parser;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Grammar;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Rule;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Token;
-import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.InputToken;
+import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.SkipInputToken;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.StringToken;
 import com.jaspersoft.jasperserver.jrsh.core.operation.impl.LoginOperation;
 import org.junit.Assert;
@@ -28,6 +28,6 @@ public class GrammarMetadataParserTest {
         Rule rule = grammar.getRules().get(0);
         List<Token> tokens = rule.getTokens();
         Assert.assertTrue(tokens.contains(new StringToken("login", "login", true, true)));
-        Assert.assertTrue(tokens.contains(new InputToken("CS", "", true, true)));
+        Assert.assertTrue(tokens.contains(new SkipInputToken("CS", "", true, true)));
     }
 }

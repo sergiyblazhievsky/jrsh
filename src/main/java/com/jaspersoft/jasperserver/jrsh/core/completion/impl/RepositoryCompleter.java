@@ -1,7 +1,6 @@
 package com.jaspersoft.jasperserver.jrsh.core.completion.impl;
 
 import com.jaspersoft.jasperserver.dto.resources.ClientResourceLookup;
-import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter;
 import com.jaspersoft.jasperserver.jaxrs.client.core.exceptions.ResourceNotFoundException;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
 import jline.console.completer.Completer;
@@ -15,11 +14,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter.FOLDER_URI;
+import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter.RECURSIVE;
+
 /**
- * Used for dynamic completion of JRS repository path.
- * One press of TAB key triggers a single REST call.
- *
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 @Log4j
 public class RepositoryCompleter implements Completer {
@@ -195,8 +194,8 @@ public class RepositoryCompleter implements Completer {
                 lookups = SessionFactory.getSharedSession()
                         .resourcesService()
                         .resources()
-                        .parameter(ResourceSearchParameter.FOLDER_URI, path)
-                        .parameter(ResourceSearchParameter.RECURSIVE, "false")
+                        .parameter(FOLDER_URI, path)
+                        .parameter(RECURSIVE, "false")
                         .search()
                         .getEntity()
                         .getResourceLookups();

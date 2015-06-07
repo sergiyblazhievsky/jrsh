@@ -5,10 +5,8 @@ import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exports
 import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exportservice.ExportTaskAdapter;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
-import com.jaspersoft.jasperserver.jrsh.core.i18n.Messages;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult;
-import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Parameter;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Value;
@@ -23,21 +21,31 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.FAILED;
+import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.SUCCESS;
+import static java.lang.String.format;
+
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 @Data
-@Master(name = "export")
+@Master(name = "export",
+        usage = "export [context][parameters]",
+        description = "Operation <export> is used to download JRS resources")
 public class ExportOperation implements Operation {
 
-    private Messages messages = new Messages("i18n/export");
+    public static final String FORMATTED_OK_MSG = "Export status: Success (File has been created: %s)";
+    public static final String FAILURE_MSG = "Export failed";
+    public static final String FORMATTED_FAILURE_MSG = "Export failed (%s)";
 
     @Parameter(mandatory = true, dependsOn = "export", values = {
-            @Value(tokenAlias = "RE", tokenClass = StringToken.class, tokenValue = "repository"),
-            // seems <all> doesn't have autocompletion
-            @Value(tokenAlias = "OL", tokenClass = StringToken.class, tokenValue = "all", tail = true)
+            @Value(tokenAlias = "RE", tokenClass = StringToken.class, tokenValue = "repository")
     })
     private String context;
+
+    @Parameter(mandatory = true, dependsOn = "export", ruleGroups = "BRANCH", values =
+    @Value(tokenAlias = "OL", tokenClass = StringToken.class, tokenValue = "all", tail = true))
+    private String all;
 
     @Parameter(mandatory = true, dependsOn = "RE", values =
     @Value(tokenAlias = "RP", tokenClass = RepositoryToken.class, tail = true))
@@ -53,36 +61,31 @@ public class ExportOperation implements Operation {
 
     @Parameter(dependsOn = {"F", "RP", "IUR", "IME", "RPP", "IAE"}, values =
     @Value(tokenAlias = "UR", tokenClass = StringToken.class,
-           tokenValue = "with-user-roles", tail = true))
+            tokenValue = "with-user-roles", tail = true))
     private String withUserRoles;
 
     @Parameter(dependsOn = {"F", "RP", "UR", "IME", "RPP", "IAE"}, values =
     @Value(tokenAlias = "IUR", tokenClass = StringToken.class,
-           tokenValue = "with-include-audit-events", tail = true))
+            tokenValue = "with-include-audit-events", tail = true))
     private String withIncludeAuditEvents;
 
     @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "RPP", "IAE"}, values =
     @Value(tokenAlias = "IME", tokenClass = StringToken.class,
-           tokenValue = "with-include-monitoring-events", tail = true))
+            tokenValue = "with-include-monitoring-events", tail = true))
     private String withIncludeMonitoringEvents;
 
     @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "IME", "IAE"}, values =
     @Value(tokenAlias = "RPP", tokenClass = StringToken.class,
-           tokenValue = "with-repository-permissions", tail = true))
+            tokenValue = "with-repository-permissions", tail = true))
     private String withRepositoryPermissions;
 
     @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "RPP", "IME"}, values =
     @Value(tokenAlias = "IAE", tokenClass = StringToken.class,
-           tokenValue = "with-include-access-events", tail = true))
+            tokenValue = "with-include-access-events", tail = true))
     private String withIncludeAccessEvents;
 
     @Override
     public OperationResult eval(Session session) {
-        //
-        // Get operation messages
-        //
-        String ok = messages.getMessage("messages.success");
-        String failed = messages.getMessage("messages.failed");
         //
         // Perform export logic
         //
@@ -116,12 +119,17 @@ public class ExportOperation implements Operation {
                 } else {
                     File target = new File("export.zip");
                     FileUtils.copyInputStreamToFile(entity, target);
+                    //
+                    // Save path for operation result message
+                    //
+                    fileUri = target.getAbsolutePath();
                 }
             }
             //
             // Export everything
             //
-            if ("all".equals(context)) {
+            // todo: fix me!
+            if (all != null && !all.isEmpty()) {
                 StateDto state = task
                         .parameter(ExportParameter.EVERYTHING)
                         .create()
@@ -134,10 +142,11 @@ public class ExportOperation implements Operation {
 
                 File target = new File("export.zip");
                 FileUtils.copyInputStreamToFile(entity, target);
+                fileUri = target.getAbsolutePath();
             }
-            result = new OperationResult(ok, ResultCode.SUCCESS, this, null);
+            result = new OperationResult(format(FORMATTED_OK_MSG, fileUri), SUCCESS, this, null);
         } catch (Exception err) {
-            result = new OperationResult(failed, ResultCode.FAILED, this, null);
+            result = new OperationResult(FAILURE_MSG, FAILED, this, null);
         }
 
         return result;

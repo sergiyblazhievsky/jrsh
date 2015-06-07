@@ -10,16 +10,14 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface Prefix {
 
-    String value()
-    default "";
+    String value() default "";
 
-    Class<? extends Token> tokenClass()
-    default StringToken.class;
+    Class<? extends Token> tokenClass() default StringToken.class;
 
 }

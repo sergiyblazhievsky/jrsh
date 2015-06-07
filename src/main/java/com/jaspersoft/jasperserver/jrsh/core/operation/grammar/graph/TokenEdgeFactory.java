@@ -4,7 +4,7 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Token;
 import org.jgrapht.EdgeFactory;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 public class TokenEdgeFactory implements EdgeFactory<Token, TokenEdge<Token>> {
 

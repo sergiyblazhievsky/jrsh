@@ -3,7 +3,7 @@ package com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token;
 import jline.console.completer.Completer;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 public interface Token {
 

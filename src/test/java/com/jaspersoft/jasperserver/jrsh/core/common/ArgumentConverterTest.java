@@ -12,8 +12,8 @@ public class ArgumentConverterTest {
         /* Given */
         String[] args = new String[]{};
         /* When */
-        Script script = ArgumentConverter.convertToScript(args);
-        List<String> source = script.getSource();
+        Data data = ArgumentConverter.convertToData(args);
+        List<String> source = data.getSource();
         /* Then */
         Assert.assertTrue(source.size() == 1);
         Assert.assertTrue(source.contains("help"));
@@ -24,8 +24,8 @@ public class ArgumentConverterTest {
         /* Given */
         String[] args = new String[]{"help", "login"};
         /* When */
-        Script script = ArgumentConverter.convertToScript(args);
-        List<String> source = script.getSource();
+        Data data = ArgumentConverter.convertToData(args);
+        List<String> source = data.getSource();
         /* Then */
         Assert.assertEquals("help login", source.get(0));
     }
@@ -35,8 +35,8 @@ public class ArgumentConverterTest {
         /* Given */
         String[] args = new String[]{"user|org%password@localhost", "export", "all"};
         /* When */
-        Script script = ArgumentConverter.convertToScript(args);
-        List<String> source = script.getSource();
+        Data data = ArgumentConverter.convertToData(args);
+        List<String> source = data.getSource();
         /* Then */
         Assert.assertEquals("login user|org%password@localhost", source.get(0));
         Assert.assertEquals("export all", source.get(1));
@@ -48,8 +48,8 @@ public class ArgumentConverterTest {
         /* Given */
         String[] args = new String[]{"user|org%password@localhost"};
         /* When */
-        Script script = ArgumentConverter.convertToScript(args);
-        List<String> source = script.getSource();
+        Data data = ArgumentConverter.convertToData(args);
+        List<String> source = data.getSource();
         /* Then */
         Assert.assertEquals("login user|org%password@localhost", source.get(0));
         Assert.assertEquals(1, source.size());
@@ -60,8 +60,8 @@ public class ArgumentConverterTest {
         /* Given */
         String[] args = new String[]{"dummy_operation", "-p1", "-4", "-p2", "xy"};
         /* When */
-        Script script = ArgumentConverter.convertToScript(args);
-        List<String> source = script.getSource();
+        Data data = ArgumentConverter.convertToData(args);
+        List<String> source = data.getSource();
         /* Then */
         Assert.assertEquals("dummy_operation -p1 -4 -p2 xy", source.get(0));
         Assert.assertEquals(1, source.size());

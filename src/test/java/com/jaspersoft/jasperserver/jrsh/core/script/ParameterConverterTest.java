@@ -14,7 +14,7 @@ package com.jaspersoft.jasperserver.jrsh.core.script;//package com.jaspersoft.ja
 //        /* Given */
 //        String[] parameters = new String[]{};
 //        /* When */
-//        Script script = ArgumentConverter.convertToScript(parameters);
+//        Script script = ArgumentConverter.convertToData(parameters);
 //        List<String> source = script.getSource();
 //        /* Then */
 //        Assert.assertTrue(source.size() == 1);
@@ -26,7 +26,7 @@ package com.jaspersoft.jasperserver.jrsh.core.script;//package com.jaspersoft.ja
 //        /* Given */
 //        String[] parameters = new String[]{"help", "login"};
 //        /* When */
-//        Script script = ArgumentConverter.convertToScript(parameters);
+//        Script script = ArgumentConverter.convertToData(parameters);
 //        List<String> source = script.getSource();
 //        /* Then */
 //        Assert.assertEquals("help login", source.get(0));
@@ -37,7 +37,7 @@ package com.jaspersoft.jasperserver.jrsh.core.script;//package com.jaspersoft.ja
 //        /* Given */
 //        String[] parameters = new String[]{"user|org%password@localhost", "export", "all"};
 //        /* When */
-//        Script script = ArgumentConverter.convertToScript(parameters);
+//        Script script = ArgumentConverter.convertToData(parameters);
 //        List<String> source = script.getSource();
 //        /* Then */
 //        Assert.assertEquals("login user|org%password@localhost", source.get(0));
@@ -50,7 +50,7 @@ package com.jaspersoft.jasperserver.jrsh.core.script;//package com.jaspersoft.ja
 //        /* Given */
 //        String[] parameters = new String[]{"user|org%password@localhost"};
 //        /* When */
-//        Script script = ArgumentConverter.convertToScript(parameters);
+//        Script script = ArgumentConverter.convertToData(parameters);
 //        List<String> source = script.getSource();
 //        /* Then */
 //        Assert.assertEquals("login user|org%password@localhost", source.get(0));
@@ -62,7 +62,7 @@ package com.jaspersoft.jasperserver.jrsh.core.script;//package com.jaspersoft.ja
 //        /* Given */
 //        String[] parameters = new String[]{"dummy_operation", "-p1", "-4", "-p2", "xy"};
 //        /* When */
-//        Script script = ArgumentConverter.convertToScript(parameters);
+//        Script script = ArgumentConverter.convertToData(parameters);
 //        List<String> source = script.getSource();
 //        /* Then */
 //        Assert.assertEquals("dummy_operation -p1 -4 -p2 xy", source.get(0));

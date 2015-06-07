@@ -2,7 +2,7 @@ package com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.impl;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jrsh.core.common.ConsoleBuilder;
-import com.jaspersoft.jasperserver.jrsh.core.common.Script;
+import com.jaspersoft.jasperserver.jrsh.core.common.Data;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
 import com.jaspersoft.jasperserver.jrsh.core.completion.CompleterBuilder;
 import com.jaspersoft.jasperserver.jrsh.core.completion.JrshCompletionHandler;
@@ -10,6 +10,7 @@ import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.AbstractEvaluat
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationFactory;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult;
+import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Grammar;
 import com.jaspersoft.jasperserver.jrsh.core.operation.impl.LoginOperation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.OperationGrammarParser;
@@ -17,73 +18,33 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.Operatio
 import jline.console.ConsoleReader;
 import jline.console.UserInterruptException;
 import jline.console.completer.Completer;
-import jline.console.history.FileHistory;
-import jline.console.history.History;
 
-import java.io.File;
 import java.io.IOException;
 
 import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.FAILED;
 import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.INTERRUPTED;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
-
-    // todo: add i18n
-
     private ConsoleReader console;
 
     public ShellEvaluationStrategy() {
-        try {
-            FileHistory history = new FileHistory(new File("history/.jrshhistory"));
-            this.console = new ConsoleBuilder()
-                    .withPrompt("$> ")
-                    .withHandler(new JrshCompletionHandler())
-                    .withInterruptHandling()
-                    .withCompleter(getCompleter())
-                    .withHistory(history)
-                    .build();
-        } catch (IOException e) {
-            System.err.println("WARNING: Failed to write operation history file: " + e.getMessage());
-        }
+        this.console = new ConsoleBuilder()
+                .withPrompt("$> ")
+                .withHandler(new JrshCompletionHandler())
+                .withInterruptHandling()
+                .withCompleter(getCompleter())
+                .build();
     }
 
     @Override
-    public OperationResult eval(Script script) {
-        String line = script.getSource().get(0);
+    public OperationResult eval(Data data) {
+        String line = data.getSource().get(0);
         Operation operation = null;
-
-        /*
-        Signal interruptSignal = new Signal("INT");
-        Signal.handle(interruptSignal, new SignalHandler() {
-            @Override
-            public void handle(Signal signal) {
-                logout();
-                System.exit(1);
-            }
-        });
-        */
-
-
-        // Hook
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            @Override
-            public void run() {
-                History h = console.getHistory();
-                if (h instanceof FileHistory) {
-                    try {
-                        ((FileHistory) h).flush();
-                    } catch (IOException e) {
-                        System.err.println("WARNING: Failed to write command history file: " + e.getMessage());
-                    }
-                }
-            }
-        }));
-
-
         OperationResult result = null;
+
         while (true) {
             try {
                 //
@@ -105,6 +66,14 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
                     result.setPrevious(temp);
                     print(result.getResultMessage());
                     //
+                    // Print usage message for failed operation
+                    //
+                    if (result.getResultCode() == FAILED) {
+                        Master master = operation.getClass().getAnnotation(Master.class);
+                        String usage = master.usage();
+                        print("usage: " + usage);
+                    }
+                    //
                     // Check initial login
                     //
                     if (operation instanceof LoginOperation && LoginOperation.counter < 1) {
@@ -115,7 +84,6 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
             } catch (OperationParseException | IOException err) {
                 try {
                     print(err.getMessage());
-                } catch (IOException ignored) {
                 } finally {
                     line = null;
                 }
@@ -128,9 +96,13 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
         }
     }
 
-    protected void print(String message) throws IOException {
-        console.println(message);
-        console.flush();
+    protected void print(String mesasge) {
+        try {
+            console.println(mesasge);
+            console.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     protected Completer getCompleter() {
