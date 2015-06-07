@@ -81,7 +81,7 @@ $> import /Users/alex/folder \
 #### Export 
 Export operation is used to export resources from the JRS. You can specify which resource you want to export, and it is also possible to specify where you want to save it. Similar to Import operation, you can specify the arguments of Export operation.
 
-![](https://dl-web.dropbox.com/get/jrsh/jrsh_export_demo.gif?_subject_uid=177399428&w=AACCMYBD8OaXAGc-DoLcFQgMGVnVE5yR9nAnbPg76mIMIQ&size=1024x768&size_mode=2)
+![](http://i.imgur.com/AKfm7x9.gifv)
 
 `Export` examples:
 
