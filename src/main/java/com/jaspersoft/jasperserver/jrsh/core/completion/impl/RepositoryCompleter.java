@@ -1,6 +1,8 @@
 package com.jaspersoft.jasperserver.jrsh.core.completion.impl;
 
 import com.jaspersoft.jasperserver.dto.resources.ClientResourceLookup;
+import com.jaspersoft.jasperserver.jaxrs.client.core.*;
+import com.jaspersoft.jasperserver.jaxrs.client.core.exceptions.AuthenticationFailedException;
 import com.jaspersoft.jasperserver.jaxrs.client.core.exceptions.ResourceNotFoundException;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
 import jline.console.completer.Completer;
@@ -67,6 +69,13 @@ public class RepositoryCompleter implements Completer {
                     } catch (ResourceNotFoundException e2) {
                         // NOP
                     }
+                } catch (AuthenticationFailedException e3) {
+                    //
+                    // If session has been expired then
+                    // re-establish it
+                    //
+                    reestablishSession();
+                    complete(buffer, cursor, candidates);
                 }
                 if (candidates.size() == 1) {
                     return buffer.lastIndexOf("/") + 1;
@@ -135,6 +144,16 @@ public class RepositoryCompleter implements Completer {
                 } catch (ResourceNotFoundException e2) {
                     // NOP
                 }
+            } catch (AuthenticationFailedException e3) {
+                //
+                // If session has been expired
+                // then reestablish it
+                //
+                reestablishSession();
+                //
+                // re-invoke complete method
+                //
+                complete(buffer, cursor, candidates);
             }
             if (candidates.size() == 1) {
                 return buffer.lastIndexOf("/") + 1;
@@ -146,6 +165,18 @@ public class RepositoryCompleter implements Completer {
                 }
             }
             return buffer.length();
+        }
+    }
+
+    private void reestablishSession() {
+        Session session = SessionFactory.getSharedSession();
+        if (session != null) {
+            SessionStorage storage = session.getStorage();
+            AuthenticationCredentials credentials = storage.getCredentials();
+            RestClientConfiguration cfg = storage.getConfiguration();
+            JasperserverRestClient client = new JasperserverRestClient(cfg);
+            session = client.authenticate(credentials.getUsername(), credentials.getPassword());
+            SessionFactory.updateSharedSession(session);
         }
     }
 
