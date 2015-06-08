@@ -15,9 +15,9 @@ This short guide will walk you through getting a basic usage of JRSH in differen
 First, you need to download a zip file with actual snapshot and unpack it. The snapshot folder contains such content as:
 ```bash
 ├── jrsh-XX-jar-with-dependencies.jar
-└── run.sh
+└── jrsh
 ```
-Second, you need to execute a bash script `run.sh` with parameters. The parameters determine in which mode the application will work. There are three different modes:
+Second, you need to execute a bash script `jrsh` with parameters. The parameters determine in which mode the application will work. There are three different modes:
 
 1. Script Mode
 2. Tool Mode
@@ -35,21 +35,21 @@ login superuser%superuser@localhost:8080/jasperserver-pro
 export /public/Samples
 ```
 
-In the Tool mode an application executes only one operation. To switch that mode you must specify a connection string which has the following format: 
+In the Tool mode an application executes only one operation. To switch it you must specify a connection string which follows the format:
 ```
 [username]|[organization]%[password]@[url] (organization is optional)
 ```
-And after that you must add your operation. See example below.
+See usage example example below.
 
 ```bash
-$> ./run.sh superuser%superuser@localhost:8080/jasperserver-pro \ 
-  import /Users/file.zip
+$> jrsh superuser%superuser@localhost:8080/jasperserver-pro \ 
+   import /Users/file.zip
 ```
 
-And finally the last mode, `Shell`. This is an interactive mode in which operations are executed as you enter them until you interrupt the application. To switch that mode you must specify only connection string.
+And the last mode is `Shell`. This is an interactive mode. It executes your operation until you interrupt the app using Ctrl+C key. To switch to Shell mode all you need is tospecify a connection string.
 
 ```bash
-$> ./run.sh superuser%superuser@localhost:8080/jasperserver-pro
+$> ./jrsh superuser%superuser@localhost:8080/jasperserver-pro
 ```
 
 ## Frequently used operations
