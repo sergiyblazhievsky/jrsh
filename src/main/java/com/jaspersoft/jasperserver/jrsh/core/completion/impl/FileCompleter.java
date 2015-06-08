@@ -11,12 +11,24 @@ import java.util.List;
  * @author Alexander Krasnyanskiy
  */
 public class FileCompleter implements Completer {
+
+    private static final boolean OS_IS_WINDOWS;
+
+    static {
+        String os = Configuration.getOsName();
+        OS_IS_WINDOWS = os.contains("windows");
+    }
+
     public int complete(String buffer, final int cursor, final List<CharSequence> candidates) {
 
         Preconditions.checkNotNull(candidates);
 
         if (buffer == null) {
             buffer = "";
+        }
+
+        if (OS_IS_WINDOWS) {
+            buffer = buffer.replace('/', '\\');
         }
 
         String translated = buffer;

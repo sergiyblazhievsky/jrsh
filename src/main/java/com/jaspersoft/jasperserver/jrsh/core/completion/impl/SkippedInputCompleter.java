@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author Alexander Krasnyanskiy
  */
-public class SkipInputCompleter implements Completer {
+public class SkippedInputCompleter implements Completer {
     @Override
     public int complete(String s, int i, List<CharSequence> list) {
         return 0;

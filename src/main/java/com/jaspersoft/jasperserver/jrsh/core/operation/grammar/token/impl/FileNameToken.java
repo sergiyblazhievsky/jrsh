@@ -20,7 +20,7 @@ public class FileNameToken extends AbstractToken {
 
     @Override
     public Completer getCompleter() {
-        return new FileCompleter();
+        return new FileCompleter()/*FileNameCompleter()*/;
     }
 
     @Override
