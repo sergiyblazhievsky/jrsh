@@ -57,7 +57,7 @@ $> jrsh superuser%superuser@localhost:8080/jasperserver-pro
 #### Import
 This is most frequently used operation. It imports resources to [JRS](http://community.jaspersoft.com/project/jasperreports-server). You can import a zip file with resources or specify the folder with the unzipped resources to import.
 
-![](https://camo.githubusercontent.com/6933862a05840b2fde8cc1336f93709d21e70c32/687474703a2f2f692e696d6775722e636f6d2f774d6a725162462e676966)
+![](http://i.imgur.com/Z4Fz4X1.gif)
 
 `Import` examples:
 
@@ -80,7 +80,7 @@ $> import /Users/alex/folder \
 #### Export 
 Export operation is used to export resources from the JRS. You can specify which resource you want to export, and it is also possible to specify where you want to save it. Similar to Import operation, you can specify the arguments of Export operation.
 
-![](https://camo.githubusercontent.com/d4b76330c5392748a664fdff0cee0803f705e41e/687474703a2f2f692e696d6775722e636f6d2f414b666d3778392e676966)
+![](http://i.imgur.com/kpBraKF.gif)
 
 `Export` examples:
 
