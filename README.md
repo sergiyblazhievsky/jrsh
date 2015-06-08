@@ -26,7 +26,7 @@ Second, you need to execute a bash script `jrsh` with parameters. The parameters
 In Script mode you should specify a script file with `*.jrs` file extension. That file contains an operation sequence. The sequenced operations are performed one by one. To run the script just execute in your terminal:
 
 ```bash
-$> ./run.sh --script /Users/alex/jrsh/scripts/my_script.jrs
+$> jrsh --script /Users/alex/jrsh/scripts/my_script.jrs
 ```
 Here is a script file example:
 ```bash
@@ -49,7 +49,7 @@ $> jrsh superuser%superuser@localhost:8080/jasperserver-pro \
 And the last mode is `Shell`. This is an interactive mode. It executes your operation until you interrupt the app using Ctrl+C key. To switch to Shell mode all you need is tospecify a connection string.
 
 ```bash
-$> ./jrsh superuser%superuser@localhost:8080/jasperserver-pro
+$> jrsh superuser%superuser@localhost:8080/jasperserver-pro
 ```
 
 ## Frequently used operations
