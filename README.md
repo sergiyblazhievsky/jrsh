@@ -6,6 +6,12 @@ JasperReports Server Shell (JRSH)
 
 JRSH is a comprehensive Command Line Interface for JasperReports Server. It's designed for fast and easy interaction with JasperReports Server.
 
+Table of Contents
+------------------
+1. [Requirements](#requirements)
+2. [Getting started](#getting-started)
+3. [Frequently used operations](#frequently-used-operations)
+
 ## Requirements
 Java >= 1.7 (OpenJDK or Oracle JDK)
 
