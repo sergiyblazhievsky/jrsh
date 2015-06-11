@@ -19,10 +19,11 @@ Java >= 1.7 (OpenJDK or Oracle JDK)
 ## Getting started
 This short guide will walk you through getting a basic usage of JRSH in different modes, and demonstrate some simple operations.
 
-First, you need to download a zip file with actual snapshot and unpack it. The snapshot folder contains such content as:
+First, you need to download a zip file with actual snapshot and unpack it. The snapshot folder contains the next content:
 ```bash
-├── jrsh-XX-jar-with-dependencies.jar
-└── jrsh
+├── jrsh-[XXX]-jar-with-dependencies.jar
+├── jrsh.sh
+└── jrsh.bat
 ```
 Second, you need to execute a bash script `jrsh` with parameters. The parameters determine in which mode the application will work. There are three different modes:
 
@@ -33,11 +34,13 @@ Second, you need to execute a bash script `jrsh` with parameters. The parameters
 In Script mode you should specify a script file with `*.jrs` file extension. That file contains an operation sequence. The sequenced operations are performed one by one. To run the script just execute in your terminal:
 
 ```bash
-$> jrsh --script /Users/alex/jrsh/scripts/my_script.jrs
+$> jrsh.sh --script /Users/alex/jrsh/scripts/my_script.jrs
 ```
 Here is a script file example:
 ```bash
-# my_script.jrs
+#################
+# my_script.jrs #
+#################
 login superuser%superuser@localhost:8080/jasperserver-pro
 export /public/Samples
 ```
@@ -49,14 +52,15 @@ In the Tool mode an application executes only one operation. To switch it you mu
 See usage example example below.
 
 ```bash
-$> jrsh superuser%superuser@localhost:8080/jasperserver-pro \ 
-   import /Users/file.zip
+$> jrsh.sh superuser%superuser@localhost:8080/jasperserver-pro \ 
+   import \
+   /Users/alex/file.zip
 ```
 
 And the last mode is `Shell`. This is an interactive mode. It executes your operation until you interrupt the app using Ctrl+C key. To switch to Shell mode all you need is tospecify a connection string.
 
 ```bash
-$> jrsh superuser%superuser@localhost:8080/jasperserver-pro
+$> jrsh.sh superuser%superuser@localhost:8080/jasperserver-pro
 ```
 
 ## Frequently used operations
@@ -103,7 +107,8 @@ $> export repository /public/Samples/Reports/RevenueDetailReport \
 Export repository with specifying an export file
 ```bash
 $> export repository /public/Samples/Reports/RevenueDetailReport \
-   to /Users/alex/jrs/downloads/export.zip
+   to \
+   /Users/alex/jrs/downloads/export.zip
 ```
 
 ## Specifying the file path on Windows
