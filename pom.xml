@@ -16,13 +16,14 @@
         <runSuite>**/UnitTestSuite.class</runSuite>
     </properties>
 
+
     <repositories>
         <!-- binary
              repository -->
         <repository>
             <id>jrs-ce-releases</id>
             <name>JasperReports Server CE releases repository</name>
-            <url>http://jaspersoft.artifactoryonline.com/jaspersoft/jrs-ce-releases/</url>
+            <url>http://jaspersoft.artifactoryonline.com/jaspersoft/jaspersoft-clients-releases/</url>
         </repository>
     </repositories>
 
