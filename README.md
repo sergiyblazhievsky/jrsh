@@ -11,6 +11,7 @@ Table of Contents
 1. [Requirements](#requirements)
 2. [Getting started](#getting-started)
 3. [Frequently used operations](#frequently-used-operations)
+4. [Specifying the file path on Windows](#specifying-the-file-path-on-windows)
 
 ## Requirements
 Java >= 1.7 (OpenJDK or Oracle JDK)
@@ -103,4 +104,12 @@ Export repository with specifying an export file
 ```bash
 $> export repository /public/Samples/Reports/RevenueDetailReport \
    to /Users/alex/jrs/downloads/export.zip
+```
+
+## Specifying the file path on Windows
+
+Originally JRSH was created for Unix-like operation systems. Windows support was added later. So if your OS is Windows you should use a double backslash to separate subfolder and files. See example below
+
+```bash
+$> import "D:\\Temp\\Jrsh\\import_archive.zip"
 ```
