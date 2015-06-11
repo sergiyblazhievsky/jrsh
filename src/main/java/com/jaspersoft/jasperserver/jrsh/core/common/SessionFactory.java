@@ -19,33 +19,29 @@ import static java.lang.String.format;
  */
 @Log4j
 public class SessionFactory {
-
     private static Session SHARED_SESSION;
-
 
     public static Session getSharedSession() {
         return SHARED_SESSION;
     }
 
-
     public static Session createUnsharedSession(String url, String username, String password, String organization) {
         return createSession(url, username, password, organization);
     }
-
 
     public static Session createSharedSession(String url, String username, String password, String organization) {
         return SHARED_SESSION = createSession(url, username, password, organization);
     }
 
-
-    private static Session createSession(String url, String username, String password, String organization) {
+    protected static Session createSession(String url, String username, String password, String organization) {
         username = organization == null ? username : username.concat("|").concat(organization);
         url = url.startsWith("http") ? url : "http://".concat(url);
         Map<String, Integer> map = getClientTimeout();
         //
         // Create a new session
         //
-        SHARED_SESSION = new Session(new SessionStorage(new RestClientConfiguration(url), new AuthenticationCredentials(username, password)));
+        SHARED_SESSION = new Session(new SessionStorage(new RestClientConfiguration(url),
+                new AuthenticationCredentials(username, password)));
         //
         // Set connection timeout
         //
@@ -85,5 +81,4 @@ public class SessionFactory {
         return (Map<String, Integer>)
                 ((Map) config.get("client")).get("timeout");
     }
-
 }

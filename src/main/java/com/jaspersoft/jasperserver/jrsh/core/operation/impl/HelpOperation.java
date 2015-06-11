@@ -21,7 +21,6 @@ import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.Re
         usage = "help [operation]",
         description = "Operation <help> demonstrates how you can use JRSH")
 public class HelpOperation implements Operation {
-
     public static final String PREFIX = "   ";
 
     @Override

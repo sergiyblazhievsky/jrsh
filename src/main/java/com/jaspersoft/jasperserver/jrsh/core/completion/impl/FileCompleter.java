@@ -14,13 +14,17 @@ import java.util.List;
  * @author Alexander Krasnyanskiy
  */
 public class FileCompleter implements Completer {
-
     private String root;
 
     public int complete(String buffer, final int cursor, final List<CharSequence> candidates) {
-        return SystemUtils.IS_OS_WINDOWS
-                ? completeFileForWindows(buffer, candidates)
-                : completeFileForUnix(buffer, candidates);
+        if (SystemUtils.IS_OS_WINDOWS) {
+            return completeFileForWindows(buffer, candidates);
+        } else {
+            //
+            // Linux/MacOS/etc
+            //
+            return completeFileForUnix(buffer, candidates);
+        }
     }
 
     private int completeFileForWindows(String buffer, List<CharSequence> candidates) {
@@ -31,23 +35,15 @@ public class FileCompleter implements Completer {
         }
 
         String translated = buffer;
-
         File file = new File(translated);
-        final File dir;
 
-        if (translated.endsWith(separator())) {
-            dir = file;
-        } else {
-            dir = file.getParentFile();
-        }
+        File dir = translated.endsWith(separator())
+                ? file
+                : file.getParentFile();
 
-        File[] entries;
-
-        if (dir == null) {
-            entries = new File[0];
-        } else {
-            entries = dir.listFiles();
-        }
+        File[] entries = (dir == null)
+                ? new File[0]
+                : dir.listFiles();
 
         return matchFiles(buffer, translated, entries, candidates);
     }
@@ -72,15 +68,14 @@ public class FileCompleter implements Completer {
         }
 
         File file = new File(translated);
-        final File dir;
 
-        if (translated.endsWith(separator())) {
-            dir = file;
-        } else {
-            dir = file.getParentFile();
-        }
+        File dir = translated.endsWith(separator())
+                ? file
+                : file.getParentFile();
 
-        File[] entries = dir == null ? new File[0] : dir.listFiles();
+        File[] entries = (dir == null)
+                ? new File[0]
+                : dir.listFiles();
 
         return matchFiles(buffer, translated, entries, candidates);
     }
@@ -97,10 +92,7 @@ public class FileCompleter implements Completer {
         return new File(".");
     }
 
-    protected int matchFiles(final String buffer,
-                             final String translated,
-                             final File[] files,
-                             final List<CharSequence> candidates) {
+    protected int matchFiles(String buffer, String translated, File[] files, List<CharSequence> candidates) {
         if (files == null) {
             return -1;
         }

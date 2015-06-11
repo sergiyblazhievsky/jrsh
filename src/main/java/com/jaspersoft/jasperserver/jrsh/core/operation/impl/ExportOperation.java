@@ -33,7 +33,6 @@ import static java.lang.String.format;
         usage = "export [context] [parameters]",
         description = "Operation <export> is used to download JRS resources")
 public class ExportOperation implements Operation {
-
     public static final String FORMATTED_OK_MSG = "Export status: Success (File has been created: %s)";
     public static final String FAILURE_MSG = "Export failed";
     public static final String FORMATTED_FAILURE_MSG = "Export failed (%s)";

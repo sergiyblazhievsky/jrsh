@@ -12,5 +12,4 @@ public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
     public AbstractEvaluationStrategy() {
         this.parser = new LL1OperationParser();
     }
-
 }

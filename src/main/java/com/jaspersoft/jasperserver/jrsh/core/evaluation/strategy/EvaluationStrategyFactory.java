@@ -18,12 +18,10 @@ public class EvaluationStrategyFactory {
 
         if (args.length == 1 && isConnectionString(args[0])) {
             strategyType = ShellEvaluationStrategy.class;
-        }
-        else if (args.length == 2 && "--script".equals(args[0])
+        } else if (args.length == 2 && "--script".equals(args[0])
                 && isScriptFileName(args[1])) {
             strategyType = ScriptEvaluationStrategy.class;
-        }
-        else {
+        } else {
             strategyType = ToolEvaluationStrategy.class;
         }
         try {

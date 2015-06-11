@@ -1,7 +1,7 @@
 package com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.impl;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
-import com.jaspersoft.jasperserver.jrsh.core.common.Data;
+import com.jaspersoft.jasperserver.jrsh.core.common.Script;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
 import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.AbstractEvaluationStrategy;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
@@ -18,8 +18,8 @@ import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.Re
 public class ToolEvaluationStrategy extends AbstractEvaluationStrategy {
 
     @Override
-    public OperationResult eval(Data data) {
-        Collection<String> operations = data.getSource();
+    public OperationResult eval(Script script) {
+        Collection<String> operations = script.getSource();
         Operation operationInstance = null;
         OperationResult result = null;
         try {

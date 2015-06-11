@@ -2,7 +2,7 @@ package com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.impl;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jrsh.core.common.ConsoleBuilder;
-import com.jaspersoft.jasperserver.jrsh.core.common.Data;
+import com.jaspersoft.jasperserver.jrsh.core.common.Script;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
 import com.jaspersoft.jasperserver.jrsh.core.completion.CompleterBuilder;
 import com.jaspersoft.jasperserver.jrsh.core.completion.JrshCompletionHandler;
@@ -40,8 +40,8 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
     }
 
     @Override
-    public OperationResult eval(Data data) {
-        String line = data.getSource().get(0);
+    public OperationResult eval(Script script) {
+        String line = script.getSource().get(0);
         Operation operation = null;
         OperationResult result = null;
 

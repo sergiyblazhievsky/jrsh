@@ -9,7 +9,6 @@ import java.util.List;
  * @author Alexander Krasnyanskiy
  */
 @AllArgsConstructor
-public class Data {
-    @Getter
-    private List<String> source;
+public class Script {
+    @Getter private List<String> source;
 }

@@ -33,7 +33,6 @@ import static java.lang.String.format;
         usage = "import [file]",
         description = "Operation <import> is used to import resources to JRS")
 public class ImportOperation implements Operation {
-
     public static final String OK_MSG = "Import status: Success";
     public static final String FAILURE_MSG = "Import failed";
     public static final String FORMATTED_FAILURE_MSG = "Import failed (%s)";

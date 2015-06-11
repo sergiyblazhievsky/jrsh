@@ -23,7 +23,6 @@ import static java.lang.String.format;
         usage = "login [username]|[organization]%[password]@[url]",
         description = "Operation <login> is used to login into JRS")
 public class LoginOperation implements Operation {
-
     public static int counter = 0;
     //
     // All messages will be moved to i18n in the next release

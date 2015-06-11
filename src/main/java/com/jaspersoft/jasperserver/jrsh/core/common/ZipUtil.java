@@ -38,7 +38,7 @@ public class ZipUtil {
         }
     }
 
-    private static void addFiles(ZipOutputStream zos, String folder, String baseFolder) throws Exception {
+    protected static void addFiles(ZipOutputStream zos, String folder, String baseFolder) throws Exception {
         File file = new File(folder);
         if (file.exists()) {
             if (file.isDirectory()) {
