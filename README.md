@@ -113,3 +113,5 @@ Originally JRSH was created for Unix-like operation systems. Windows support was
 ```bash
 $> import "D:\\Temp\\Jrsh\\import_archive.zip"
 ```
+
+Here is the [link](https://www.student.cs.uwaterloo.ca/~cs132/Weekly/W03/FilePaths.html) with explanation why we should you double backslashes.
