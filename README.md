@@ -108,10 +108,10 @@ $> export repository /public/Samples/Reports/RevenueDetailReport \
 
 ## Specifying the file path on Windows
 
-Originally JRSH was created for Unix-like operation systems. Windows support was added later. So if your OS is Windows you should use a double backslash to separate subfolder and files. See example below
+Originally JRSH was created for Unix-like operation systems. Windows support was added later. So if your OS is Windows you should use a double backslash to separate subfolder and files. See example below:
 
 ```bash
 $> import "D:\\Temp\\Jrsh\\import_archive.zip"
 ```
 
-Here is the [link](https://www.student.cs.uwaterloo.ca/~cs132/Weekly/W03/FilePaths.html) with explanation why we should you double backslashes.
+Here is the [link](https://www.student.cs.uwaterloo.ca/~cs132/Weekly/W03/FilePaths.html) with explanation why we should use double backslashes.
