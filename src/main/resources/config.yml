@@ -2,7 +2,7 @@
 # that contain your business operations
 ---
 packages-to-scan:
-  - com.test.*
+  - com.test.pack.operation.*
   - org.test.operation.*
 classes:
-  - com.jaspersoft.jasperserver.jrsh.core.operation.impl.DummyOperation
+  - some.pack.operation.impl.DummyOperation

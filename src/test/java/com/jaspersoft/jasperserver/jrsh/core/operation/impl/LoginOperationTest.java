@@ -75,6 +75,9 @@ public class LoginOperationTest {
         OperationResult result = login.eval(null);
 
         // Then
+        PowerMockito.verifyStatic();
+        SessionFactory.createSharedSession(login.getServer(), login.getUsername(), login.getPassword(), null);
+
         Assert.assertEquals("Login failed (Unauthorized)", result.getResultMessage());
         Assert.assertEquals(ResultCode.FAILED, result.getResultCode());
         Assert.assertEquals(login, result.getContext());
@@ -96,6 +99,9 @@ public class LoginOperationTest {
         OperationResult result = login.eval(null);
 
         // Then
+        PowerMockito.verifyStatic();
+        SessionFactory.createSharedSession(login.getServer(), login.getUsername(), login.getPassword(), null);
+
         Assert.assertEquals("Login failed (java.net.UnknownHostException: epicfail)", result.getResultMessage());
         Assert.assertEquals(ResultCode.FAILED, result.getResultCode());
         Assert.assertEquals(login, result.getContext());

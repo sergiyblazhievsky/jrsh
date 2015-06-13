@@ -1,2 +1,3 @@
 #!/bin/bash
-java -jar ../../target/jrsh-poc-0.0.1-SNAPSHOT-jar-with-dependencies.jar --script ../jrs/my_script.jrs
+cd ../..
+java -jar target/jrsh-2.0.1-jar-with-dependencies.jar --script ../jrs/my_script.jrs
