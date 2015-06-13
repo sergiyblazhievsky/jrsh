@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar ../../target/jrsh-poc-0.0.1-SNAPSHOT-jar-with-dependencies.jar $*
+java -jar ../../target/jrsh-2.0.1-jar-with-dependencies.jar $*

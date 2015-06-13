@@ -30,7 +30,8 @@ public class SessionFactory {
     }
 
     public static Session createSharedSession(String url, String username, String password, String organization) {
-        return SHARED_SESSION = createSession(url, username, password, organization);
+        SHARED_SESSION = createSession(url, username, password, organization);
+        return SHARED_SESSION;
     }
 
     protected static Session createSession(String url, String username, String password, String organization) {
