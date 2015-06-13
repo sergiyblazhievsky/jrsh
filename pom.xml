@@ -15,7 +15,7 @@
              suite -->
         <runSuite>**/UnitTestSuite.class</runSuite>
     </properties>
-    
+
     <repositories>
         <!-- binary
              repository -->
