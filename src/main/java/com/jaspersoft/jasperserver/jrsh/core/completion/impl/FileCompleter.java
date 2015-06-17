@@ -3,11 +3,10 @@ package com.jaspersoft.jasperserver.jrsh.core.completion.impl;
 import com.google.common.base.Preconditions;
 import jline.console.completer.Completer;
 import jline.internal.Configuration;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -135,8 +134,10 @@ public class FileCompleter implements Completer {
     }
 
     public String getRoot() {
-        Path root = Paths.get(System.getProperty("user.dir")).getRoot();
-        String vol = root.normalize().toString();
+        // Path root = Paths.get(System.getProperty("user.dir")).getRoot();
+        // String vol = root.normalize().toString();
+        // TODO check on Win
+        String vol = new File(FileUtils.getUserDirectoryPath()).getParent();
         return vol.endsWith(separator())
                 ? vol + separator()
                 : vol + separator() + separator();

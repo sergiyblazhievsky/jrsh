@@ -2,6 +2,7 @@ package com.jaspersoft.jasperserver.jrsh.core.common;
 
 import com.jaspersoft.jasperserver.jrsh.core.common.exception.CouldNotZipFileException;
 import com.jaspersoft.jasperserver.jrsh.core.common.exception.DirectoryDoesNotExistException;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +12,6 @@ import java.util.zip.ZipOutputStream;
 
 import static java.io.File.separator;
 import static java.io.File.separatorChar;
-import static org.apache.commons.lang3.StringUtils.chomp;
 
 /**
  * @author Alexander Krasnyanskiy
@@ -23,7 +23,7 @@ public class ZipUtil {
         if (!dir.isDirectory()) {
             throw new DirectoryDoesNotExistException(directory);
         }
-        directory = chomp(directory, separator);
+        directory = StringUtils.chomp(directory, separator);
         String outputFileName = directory.concat(".zip");
         try {
             File arch = new File(outputFileName);
@@ -58,13 +58,16 @@ public class ZipUtil {
                 String entryName = folder.substring(baseFolder.length() + 1, folder.length());
                 ZipEntry zipEntry = new ZipEntry(entryName);
                 zos.putNextEntry(zipEntry);
-                try (FileInputStream in = new FileInputStream(folder)) {
+                FileInputStream in = new FileInputStream(folder);
+                try {
                     int len;
                     byte buf[] = new byte[1024];
                     while ((len = in.read(buf)) > 0) {
                         zos.write(buf, 0, len);
                     }
                     zos.closeEntry();
+                } finally {
+                    in.close();
                 }
             }
         }

@@ -35,8 +35,23 @@ public class SessionFactory {
     }
 
     protected static Session createSession(String url, String username, String password, String organization) {
-        username = organization == null ? username : username.concat("|").concat(organization);
-        url = url.startsWith("http") ? url : "http://".concat(url);
+        //
+        // Define full user name
+        //
+        if (organization == null) {
+            username = username;
+        } else {
+            username = username.concat("|").concat(organization);
+        }
+        //
+        // Prepare URL
+        //
+        if (url.startsWith("http")) {
+            url = url;
+        } else {
+            url = "http://".concat(url);
+        }
+
         Map<String, Integer> map = getClientTimeout();
         //
         // Create a new session
@@ -71,15 +86,17 @@ public class SessionFactory {
     @SuppressWarnings("unchecked")
     protected static Map<String, Integer> getClientTimeout() {
         Yaml yaml = new Yaml();
-        Map<String, Object> config = new HashMap<>();
+        Map<String, Object> config = new HashMap<String, Object>();
         try {
-            try (InputStream file = SessionFactory.class.getClassLoader().getResourceAsStream("client.yml")) {
+            InputStream file = SessionFactory.class.getClassLoader().getResourceAsStream("client.yml");
+            try {
                 config.putAll((Map<String, Object>) yaml.load(file));
+            } finally {
+                file.close();
             }
         } catch (IOException ignored) {
             // NOP
         }
-        return (Map<String, Integer>)
-                ((Map) config.get("client")).get("timeout");
+        return (Map<String, Integer>) ((Map) config.get("client")).get("timeout");
     }
 }

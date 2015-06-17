@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.nio.file.Paths;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,9 +24,8 @@ import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.Res
  */
 @Log4j
 public class RepositoryCompleter implements Completer {
-
     public static int UNIQUE_ID = 0; // hash
-    public static List<CharSequence> BUFFERED_CANDIDATES = new ArrayList<>();
+    public static List<CharSequence> BUFFERED_CANDIDATES = new ArrayList<CharSequence>();
 
     @Override
     public int complete(String buffer, int cursor, List<CharSequence> candidates) {
@@ -52,13 +51,14 @@ public class RepositoryCompleter implements Completer {
                     String root = getPreviousPath(buffer);
                     try {
                         resources = Downloader.download(root);
-                        List<Pair<String, Boolean>> temp = new ArrayList<>();
+                        List<Pair<String, Boolean>> temp = new ArrayList<Pair<String, Boolean>>();
+
                         for (Pair<String, Boolean> pair : resources) {
                             String resource = pair.getKey();
                             Boolean isFolder = pair.getRight();
                             if (StringUtils.startsWith(resource, buffer)) {
                                 ImmutablePair<String, Boolean> newPair =
-                                        new ImmutablePair<>(resource, isFolder);
+                                        new ImmutablePair<String, Boolean>(resource, isFolder);
                                 temp.add(newPair);
                             }
                         }
@@ -127,13 +127,13 @@ public class RepositoryCompleter implements Completer {
                 String root = getPreviousPath(buffer);
                 try {
                     resources = Downloader.download(root);
-                    List<Pair<String, Boolean>> temp = new ArrayList<>();
+                    List<Pair<String, Boolean>> temp = new ArrayList<Pair<String, Boolean>>();
                     for (Pair<String, Boolean> pair : resources) {
                         String resource = pair.getKey();
                         Boolean isFolder = pair.getRight();
                         if (StringUtils.startsWith(resource, buffer)) {
                             ImmutablePair<String, Boolean> newPair
-                                    = new ImmutablePair<>(resource, isFolder);
+                                    = new ImmutablePair<String, Boolean>(resource, isFolder);
                             temp.add(newPair);
                         }
                     }
@@ -198,11 +198,11 @@ public class RepositoryCompleter implements Completer {
     }
 
     private List<String> filter(List<Pair<String, Boolean>> resources) {
-        List<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<String>();
         for (Pair<String, Boolean> pair : resources) {
             String resource = pair.getLeft();
             Boolean isFolder = pair.getRight();
-            String last = isFolder ? last(resource) + "/" : last(resource);
+            String last = isFolder ? lastName(resource) + "/" : lastName(resource);
             list.add(last);
         }
         return list;
@@ -213,13 +213,14 @@ public class RepositoryCompleter implements Completer {
         return idx > 0 ? path.substring(0, idx) : path.substring(0, idx + 1);
     }
 
-    private String last(String path) {
-        return Paths.get(path).getFileName().toString();
+    private String lastName(String path) {
+        //return Paths.get(path).getFileName().toString(); // Java 1.7
+        return new File(path).getName();
     }
 
     private static class Downloader {
         public static List<Pair<String, Boolean>> download(String path) {
-            List<Pair<String, Boolean>> list = new ArrayList<>();
+            List<Pair<String, Boolean>> list = new ArrayList<Pair<String, Boolean>>();
             List<ClientResourceLookup> lookups;
             try {
                 lookups = SessionFactory.getSharedSession()

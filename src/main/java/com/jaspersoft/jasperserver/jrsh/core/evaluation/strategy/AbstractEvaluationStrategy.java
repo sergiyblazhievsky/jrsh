@@ -7,6 +7,7 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.parser.OperationParser;
  * @author Alexander Krasnyanskiy
  */
 public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
+
     protected OperationParser parser;
 
     public AbstractEvaluationStrategy() {

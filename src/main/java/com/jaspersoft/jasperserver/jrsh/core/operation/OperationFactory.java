@@ -28,7 +28,7 @@ public class OperationFactory {
     private static final Map<String, Class<? extends Operation>> AVAILABLE_OPERATIONS;
 
     static {
-        AVAILABLE_OPERATIONS = new HashMap<>();
+        AVAILABLE_OPERATIONS = new HashMap<String, Class<? extends Operation>>();
         Set<Class<? extends Operation>> types = getOperationTypes();
         for (Class<? extends Operation> operationType : types) {
             Master annotation = operationType.getAnnotation(Master.class);
@@ -48,7 +48,7 @@ public class OperationFactory {
     }
 
     public static Set<Operation> createOperationsByAvailableTypes() {
-        Set<Operation> set = new HashSet<>();
+        Set<Operation> set = new HashSet<Operation>();
         for (Class<? extends Operation> type : AVAILABLE_OPERATIONS.values()) {
             set.add(createInstance(type));
         }
@@ -59,14 +59,16 @@ public class OperationFactory {
         Operation instance;
         try {
             instance = operationType.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException e) {
+            throw new CouldNotCreateOperationInstance();
+        } catch (IllegalAccessException e) {
             throw new CouldNotCreateOperationInstance();
         }
         return instance;
     }
 
     protected static Set<Class<? extends Operation>> getOperationTypes() {
-        Set<Class<? extends Operation>> operationTypes = new HashSet<>();
+        Set<Class<? extends Operation>> operationTypes = new HashSet<Class<? extends Operation>>();
         //
         // Read YAML config and get package info
         //
@@ -118,11 +120,13 @@ public class OperationFactory {
         //
         // To avoid NPE we may return an empty config
         //
-        Map<String, Object> config = new HashMap<>();
+        Map<String, Object> config = new HashMap<String, Object>();
         try {
-            try (InputStream file = OperationFactory.class.getClassLoader()
-                    .getResourceAsStream("config.yml")) {
+            InputStream file = OperationFactory.class.getClassLoader().getResourceAsStream("config.yml");
+            try {
                 config.putAll((Map<String, Object>) yaml.load(file));
+            } finally {
+                file.close();
             }
         } catch (IOException ignored) {
             // NOP

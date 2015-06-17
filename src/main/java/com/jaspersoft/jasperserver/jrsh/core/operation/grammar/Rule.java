@@ -18,7 +18,7 @@ public interface Rule {
         private List<Token> tokens;
 
         public DefaultRule() {
-            tokens = new ArrayList<>();
+            tokens = new ArrayList<Token>();
         }
 
         @Override

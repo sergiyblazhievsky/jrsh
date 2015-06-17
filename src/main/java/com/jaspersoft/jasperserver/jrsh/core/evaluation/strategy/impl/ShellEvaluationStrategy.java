@@ -58,16 +58,23 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
                     print("");
                 } else {
                     //
-                    // Evaluate operation
+                    // Save previous result to build chained result
                     //
-                    operation = parser.parse(line);
                     OperationResult temp = result;
+
+                    operation = parser.parse(line);
                     result = operation.eval(session);
+                    //
+                    // Save previous operation result to
+                    // a new one
+                    //
                     result.setPrevious(temp);
+                    //
+                    // In fact, this is optional action. We don't
+                    // have to do that here.
+                    //
                     print(result.getResultMessage());
-                    //
-                    // Print usage message for failed operation
-                    //
+
                     if (result.getResultCode() == FAILED) {
                         Master master = operation.getClass().getAnnotation(Master.class);
                         String usage = master.usage();
@@ -81,15 +88,17 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
                     }
                 }
                 line = null;
-            } catch (OperationParseException | IOException err) {
+            } catch (UserInterruptException unimportant) {
+                logout();
+                return new OperationResult("Interrupted by user", INTERRUPTED, operation, null);
+            } catch (OperationParseException err) {
                 try {
                     print(err.getMessage());
                 } finally {
                     line = null;
                 }
-            } catch (UserInterruptException unimportant) {
-                logout();
-                return new OperationResult("Interrupted by user", INTERRUPTED, operation, null);
+            } catch (IOException ignored) {
+                // JLine required stuff (unimpotrant)
             } finally {
                 operation = null;
             }

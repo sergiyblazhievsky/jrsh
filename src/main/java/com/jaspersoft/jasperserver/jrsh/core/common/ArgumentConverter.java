@@ -21,8 +21,9 @@ public class ArgumentConverter {
 
     public static Script convertToScript(String[] args) {
         Script script;
-        // Parse arguments and convert them into
-        // ordered operations.
+        //
+        // Parse arguments and convert them into ordered operations.
+        //
         switch (args.length) {
             case 0: {
                 script = new Script(singletonList("help"));
@@ -46,8 +47,18 @@ public class ArgumentConverter {
                         throw new CouldNotOpenScriptFileException(args[1]);
                     }
                 } else if (isConnectionString(args[0])) {
+                    //
+                    // Add operation name to make it consistent with
+                    // the correct Login format
+                    //
                     String loginLine = "login " + args[0];
+                    //
+                    // Separate the next operation from Login
+                    //
                     String nextLine = Joiner.on(" ").join(copyOfRange(args, 1, args.length));
+                    //
+                    // Build script consisting of two operations
+                    //
                     script = new Script(asList(loginLine, nextLine));
                 } else {
                     String line = Joiner.on(" ").join(args);

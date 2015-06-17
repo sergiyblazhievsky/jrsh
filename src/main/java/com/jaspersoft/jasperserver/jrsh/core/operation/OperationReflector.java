@@ -24,10 +24,8 @@ public class OperationReflector {
 
         for (Field field : fields) {
             Parameter param = field.getAnnotation(Parameter.class);
-
             if (param != null) {
                 Value[] values = param.values();
-
                 for (Value value : values) {
                     String alias = value.tokenAlias();
                     int index = getIndex(ruleTokens, alias);
@@ -35,27 +33,31 @@ public class OperationReflector {
                     if (index >= 0) {
                         field.setAccessible(true);
                         Method setter = findSetter(clazz.getMethods(), field.getName());
-
                         if (setter == null) {
                             throw new CannotFindSetterException(field.getName());
                         }
-
                         try {
                             setter.invoke(operation, inputTokens.get(index));
-                        } catch (IllegalAccessException | InvocationTargetException err) {
+                        } catch (IllegalAccessException err) {
                             //
-                            // Reflection wraps our custom exceptions, but we can get them
-                            // through the cause.
+                            // Reflection wraps any custom exceptions,
+                            // however we can get them through the cause.
                             //
-                            Throwable cause = err.getCause();
-                            if (OperationParseException.class.isAssignableFrom(cause.getClass())){
-                                throw (RuntimeException) cause;
-                            }
+                            checkErrorType(err);
+                        } catch (InvocationTargetException err) {
+                            checkErrorType(err);
                         }
                         field.setAccessible(false);
                     }
                 }
             }
+        }
+    }
+
+    protected static void checkErrorType(Exception err) {
+        Throwable cause = err.getCause();
+        if (OperationParseException.class.isAssignableFrom(cause.getClass())) {
+            throw (RuntimeException) cause;
         }
     }
 

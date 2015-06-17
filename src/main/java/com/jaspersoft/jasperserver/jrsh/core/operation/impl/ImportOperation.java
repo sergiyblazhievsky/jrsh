@@ -107,16 +107,10 @@ public class ImportOperation implements Operation {
                 //
                 // Check task phase
                 //
-                switch (phase) {
-                    case "finished":
-                        result = new OperationResult(OK_MSG, SUCCESS, this, null);
-                        break;
-                    default:
-                        //
-                        // Failed
-                        //
-                        result = new OperationResult(FAILURE_MSG, FAILED, this, null);
-                        break;
+                if (phase.equals("finished")) {
+                    result = new OperationResult(OK_MSG, SUCCESS, this, null);
+                } else {
+                    result = new OperationResult(FAILURE_MSG, FAILED, this, null);
                 }
             } else if (content.isFile()) {
                 //
@@ -172,7 +166,7 @@ public class ImportOperation implements Operation {
     }
 
     protected List<ImportParameter> convertImportParameters() {
-        List<ImportParameter> parameters = new ArrayList<>();
+        List<ImportParameter> parameters = new ArrayList<ImportParameter>();
         if (withIncludeAccessEvents != null) {
             parameters.add(ImportParameter.INCLUDE_ACCESS_EVENTS);
         }

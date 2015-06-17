@@ -43,9 +43,6 @@ public class LoginOperation implements Operation {
 
     @Override
     public OperationResult eval(Session ignored) {
-        //
-        // Log in
-        //
         OperationResult result;
         try {
             SessionFactory.createSharedSession(server, username, password, organization);

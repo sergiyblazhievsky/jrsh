@@ -15,18 +15,24 @@ public class EvaluationStrategyFactory {
 
     public static EvaluationStrategy getStrategy(String[] args) {
         Class<? extends EvaluationStrategy> strategyType;
-
+        //
+        // Define strategy type
+        //
         if (args.length == 1 && isConnectionString(args[0])) {
             strategyType = ShellEvaluationStrategy.class;
-        } else if (args.length == 2 && "--script".equals(args[0])
-                && isScriptFileName(args[1])) {
+        }
+        else if (args.length == 2 && "--script".equals(args[0]) && isScriptFileName(args[1])) {
             strategyType = ScriptEvaluationStrategy.class;
-        } else {
+        }
+        else {
             strategyType = ToolEvaluationStrategy.class;
         }
+
         try {
             return strategyType.newInstance();
-        } catch (InstantiationException | IllegalAccessException unimportant) {
+        } catch (InstantiationException e) {
+            throw new WrongStrategyTypeException();
+        } catch (IllegalAccessException e) {
             throw new WrongStrategyTypeException();
         }
     }
