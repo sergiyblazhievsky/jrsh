@@ -6,7 +6,6 @@ import com.jaspersoft.jasperserver.jaxrs.client.core.exceptions.AuthenticationFa
 import com.jaspersoft.jasperserver.jaxrs.client.core.exceptions.ResourceNotFoundException;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
 import jline.console.completer.Completer;
-import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -20,9 +19,10 @@ import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.Res
 import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter.RECURSIVE;
 
 /**
+ * Used to complete JRS repository path.
+ *
  * @author Alexander Krasnyanskiy
  */
-@Log4j
 public class RepositoryCompleter implements Completer {
 
     public static int UNIQUE_ID = 0; // hash
@@ -44,7 +44,7 @@ public class RepositoryCompleter implements Completer {
                         candidates.add("/");
                         return buffer.length() + 1;
                     }
-                    filteredResources = filter(resources);
+                    filteredResources = reformatResources(resources);
                     candidates.addAll(filteredResources);
                     BUFFERED_CANDIDATES.clear();
                     BUFFERED_CANDIDATES.addAll(filteredResources);
@@ -63,7 +63,7 @@ public class RepositoryCompleter implements Completer {
                                 temp.add(newPair);
                             }
                         }
-                        filteredResources = filter(temp);
+                        filteredResources = reformatResources(temp);
                         candidates.addAll(filteredResources);
                         BUFFERED_CANDIDATES.clear();
                         BUFFERED_CANDIDATES.addAll(filteredResources);
@@ -75,7 +75,7 @@ public class RepositoryCompleter implements Completer {
                     // If session has been expired then
                     // re-establish it
                     //
-                    reestablishSession();
+                    reopenSession();
                     complete(buffer, cursor, candidates);
                 }
                 if (candidates.size() == 1) {
@@ -123,7 +123,7 @@ public class RepositoryCompleter implements Completer {
                     return buffer.length() + 1;
                 }
 
-                filteredResources = filter(resources);
+                filteredResources = reformatResources(resources);
                 candidates.addAll(filteredResources);
                 BUFFERED_CANDIDATES.clear();
                 BUFFERED_CANDIDATES.addAll(filteredResources);
@@ -144,7 +144,7 @@ public class RepositoryCompleter implements Completer {
                         }
                     }
 
-                    filteredResources = filter(temp);
+                    filteredResources = reformatResources(temp);
                     candidates.addAll(filteredResources);
                     BUFFERED_CANDIDATES.clear();
                     BUFFERED_CANDIDATES.addAll(filteredResources);
@@ -156,7 +156,7 @@ public class RepositoryCompleter implements Completer {
                 // If session has been expired
                 // then reestablish it
                 //
-                reestablishSession();
+                reopenSession();
                 //
                 // Re-invoke complete method
                 //
@@ -175,7 +175,7 @@ public class RepositoryCompleter implements Completer {
         }
     }
 
-    private void reestablishSession() {
+    private void reopenSession() {
         Session session = SessionFactory.getSharedSession();
         if (session != null) {
             SessionStorage storage = session.getStorage();
@@ -204,7 +204,14 @@ public class RepositoryCompleter implements Completer {
         return true;
     }
 
-    private List<String> filter(List<Pair<String, Boolean>> resources) {
+    /**
+     * Reformats resources: add slash to folder or
+     * leave as is if resource isn't a folder.
+     *
+     * @param resources resources
+     * @return list
+     */
+    private List<String> reformatResources(List<Pair<String, Boolean>> resources) {
         List<String> list = new ArrayList<String>();
         for (Pair<String, Boolean> pair : resources) {
             String resource = pair.getLeft();
