@@ -19,9 +19,7 @@ public class FileCompleter implements Completer {
         if (SystemUtils.IS_OS_WINDOWS) {
             return completeFileForWindows(buffer, candidates);
         } else {
-            //
-            // Linux/MacOS/etc
-            //
+            // Linux/OSX/etc
             return completeFileForUnix(buffer, candidates);
         }
     }

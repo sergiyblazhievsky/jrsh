@@ -25,9 +25,14 @@ import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.Re
 import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.INTERRUPTED;
 
 /**
+ * This class represents an algorithm of the operation, representing
+ * the interactive mode. User can execute only one command per line,
+ * or exit by pressing Ctrl+C.
+ *
  * @author Alexander Krasnyanskiy
  */
 public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
+
     private ConsoleReader console;
 
     public ShellEvaluationStrategy() {
@@ -47,9 +52,6 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
 
         while (true) {
             try {
-                //
-                // Use shared session for all operations
-                //
                 Session session = SessionFactory.getSharedSession();
                 if (line == null) {
                     line = console.readLine();
@@ -57,16 +59,11 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
                 if (line.isEmpty()) {
                     print("");
                 } else {
-                    //
-                    // Save previous result to build chained result
-                    //
                     OperationResult temp = result;
-
                     operation = parser.parse(line);
                     result = operation.eval(session);
                     //
-                    // Save previous operation result to
-                    // a new one
+                    // Let's create a chained result
                     //
                     result.setPrevious(temp);
                     //
@@ -98,7 +95,7 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
                     line = null;
                 }
             } catch (IOException ignored) {
-                // JLine required stuff (unimpotrant)
+                // JLine required stuff (unimportant)
             } finally {
                 operation = null;
             }

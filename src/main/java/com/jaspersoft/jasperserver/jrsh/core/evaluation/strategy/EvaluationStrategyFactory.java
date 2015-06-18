@@ -1,9 +1,9 @@
 package com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy;
 
-import com.jaspersoft.jasperserver.jrsh.core.evaluation.WrongStrategyTypeException;
 import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.impl.ScriptEvaluationStrategy;
 import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.impl.ShellEvaluationStrategy;
 import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.impl.ToolEvaluationStrategy;
+import lombok.extern.log4j.Log4j;
 
 import static com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.TokenPreconditions.isConnectionString;
 import static com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.TokenPreconditions.isScriptFileName;
@@ -11,9 +11,11 @@ import static com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Toke
 /**
  * @author Alexander Krasnyanskiy
  */
+@Log4j
 public class EvaluationStrategyFactory {
 
     public static EvaluationStrategy getStrategy(String[] args) {
+        EvaluationStrategy strategy = null;
         Class<? extends EvaluationStrategy> strategyType;
         //
         // Define strategy type
@@ -29,11 +31,13 @@ public class EvaluationStrategyFactory {
         }
 
         try {
-            return strategyType.newInstance();
-        } catch (InstantiationException e) {
-            throw new WrongStrategyTypeException();
-        } catch (IllegalAccessException e) {
-            throw new WrongStrategyTypeException();
+            strategy = strategyType.newInstance();
+        } catch (InstantiationException ignored) {
+            log.info(String.format("Cannot create strategy instance of [%s] type", strategyType));
+        } catch (IllegalAccessException ignored) {
+            log.info(String.format("Cannot create strategy instance of [%s] type", strategyType));
         }
+
+        return strategy;
     }
 }

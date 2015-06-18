@@ -24,6 +24,7 @@ import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.Res
  */
 @Log4j
 public class RepositoryCompleter implements Completer {
+
     public static int UNIQUE_ID = 0; // hash
     public static List<CharSequence> BUFFERED_CANDIDATES = new ArrayList<CharSequence>();
 
@@ -82,7 +83,7 @@ public class RepositoryCompleter implements Completer {
                 }
                 if (candidates.size() > 1) {
                     String lastInput = getLastInput(buffer);
-                    if (compareCandidatesWithLast(lastInput, candidates)) {
+                    if (compareCandidatesWithLastInput(lastInput, candidates)) {
                         return buffer.length() - lastInput.length();
                     }
                 }
@@ -94,18 +95,20 @@ public class RepositoryCompleter implements Completer {
                     candidates.addAll(BUFFERED_CANDIDATES);
                     if (candidates.size() > 1) {
                         String lastInput = getLastInput(buffer);
-                        if (compareCandidatesWithLast(lastInput, candidates)) {
+                        if (compareCandidatesWithLastInput(lastInput, candidates)) {
                             return buffer.length() - lastInput.length();
                         }
                     }
                     String lastInput = getLastInput(buffer);
-                    if (compareCandidatesWithLast(lastInput, candidates)) {
+                    if (compareCandidatesWithLastInput(lastInput, candidates)) {
                         return buffer.length() - lastInput.length();
                     }
                     return buffer.length();
                 }
             }
-        } else {
+        }
+        // TODO: refactoring is needed
+        else {
             UNIQUE_ID = hashCode();
             if (buffer == null || buffer.isEmpty()) {
                 candidates.add("/");
@@ -119,6 +122,7 @@ public class RepositoryCompleter implements Completer {
                     candidates.add("/");
                     return buffer.length() + 1;
                 }
+
                 filteredResources = filter(resources);
                 candidates.addAll(filteredResources);
                 BUFFERED_CANDIDATES.clear();
@@ -128,15 +132,18 @@ public class RepositoryCompleter implements Completer {
                 try {
                     resources = Downloader.download(root);
                     List<Pair<String, Boolean>> temp = new ArrayList<Pair<String, Boolean>>();
+
                     for (Pair<String, Boolean> pair : resources) {
                         String resource = pair.getKey();
                         Boolean isFolder = pair.getRight();
+
                         if (StringUtils.startsWith(resource, buffer)) {
-                            ImmutablePair<String, Boolean> newPair
-                                    = new ImmutablePair<String, Boolean>(resource, isFolder);
+                            ImmutablePair<String, Boolean> newPair =
+                                    new ImmutablePair<String, Boolean>(resource, isFolder);
                             temp.add(newPair);
                         }
                     }
+
                     filteredResources = filter(temp);
                     candidates.addAll(filteredResources);
                     BUFFERED_CANDIDATES.clear();
@@ -151,7 +158,7 @@ public class RepositoryCompleter implements Completer {
                 //
                 reestablishSession();
                 //
-                // re-invoke complete method
+                // Re-invoke complete method
                 //
                 complete(buffer, cursor, candidates);
             }
@@ -160,7 +167,7 @@ public class RepositoryCompleter implements Completer {
             }
             if (candidates.size() > 1) {
                 String lastInput = getLastInput(buffer);
-                if (compareCandidatesWithLast(lastInput, candidates)) {
+                if (compareCandidatesWithLastInput(lastInput, candidates)) {
                     return buffer.length() - lastInput.length();
                 }
             }
@@ -188,7 +195,7 @@ public class RepositoryCompleter implements Completer {
         return s;
     }
 
-    private boolean compareCandidatesWithLast(String last, List<CharSequence> candidates) {
+    private boolean compareCandidatesWithLastInput(String last, List<CharSequence> candidates) {
         for (CharSequence candidate : candidates) {
             if (!candidate.toString().startsWith(last)) {
                 return false;
@@ -202,7 +209,13 @@ public class RepositoryCompleter implements Completer {
         for (Pair<String, Boolean> pair : resources) {
             String resource = pair.getLeft();
             Boolean isFolder = pair.getRight();
-            String last = isFolder ? lastName(resource) + "/" : lastName(resource);
+            String last;
+
+            if (isFolder) {
+                last = lastName(resource) + "/";
+            } else {
+                last = lastName(resource);
+            }
             list.add(last);
         }
         return list;
@@ -218,6 +231,9 @@ public class RepositoryCompleter implements Completer {
         return new File(path).getName();
     }
 
+    /**
+     * @author Alexander Krasnyanskiy
+     */
     private static class Downloader {
         public static List<Pair<String, Boolean>> download(String path) {
             List<Pair<String, Boolean>> list = new ArrayList<Pair<String, Boolean>>();
@@ -237,6 +253,7 @@ public class RepositoryCompleter implements Completer {
             for (ClientResourceLookup lookup : lookups) {
                 String uri = lookup.getUri();
                 String type = lookup.getResourceType();
+
                 if ("folder".equals(type)) {
                     list.add(new ImmutablePair<String, Boolean>(uri, true));
                 } else {

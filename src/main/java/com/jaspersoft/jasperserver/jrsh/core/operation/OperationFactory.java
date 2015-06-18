@@ -24,7 +24,6 @@ import java.util.Set;
 @Log4j
 @SuppressWarnings("unchecked")
 public class OperationFactory {
-
     private static final Map<String, Class<? extends Operation>> AVAILABLE_OPERATIONS;
 
     static {
@@ -70,14 +69,14 @@ public class OperationFactory {
     protected static Set<Class<? extends Operation>> getOperationTypes() {
         Set<Class<? extends Operation>> operationTypes = new HashSet<Class<? extends Operation>>();
         //
-        // Read YAML config and get package info
+        // Read YAML config to get package info
         //
         Map<String, Object> config = getConfig();
         List<String> packages = (List<String>) config.get("packages-to-scan");
         List<String> classes = (List<String>) config.get("classes");
         //
-        // Use default package to limit the search area and thus
-        // to speed up scanning ClassPath via Reflection
+        // Use default package to limit the search area and to speed up
+        // scanning ClassPath
         //
         FilterBuilder filter = new FilterBuilder().includePackage("com.jaspersoft.jasperserver.jrsh.core.operation.impl");
         //
@@ -104,7 +103,7 @@ public class OperationFactory {
             }
         }
         //
-        // Scan CP and retrieve operation classes
+        // Scan CP and retrieve operation types
         //
         Reflections ref = new Reflections(new SubTypesScanner(), filter);
         for (Class<? extends Operation> subType : ref.getSubTypesOf(Operation.class)) {
@@ -117,9 +116,6 @@ public class OperationFactory {
 
     protected static Map<String, Object> getConfig() {
         Yaml yaml = new Yaml();
-        //
-        // To avoid NPE we may return an empty config
-        //
         Map<String, Object> config = new HashMap<String, Object>();
         try {
             InputStream file = OperationFactory.class.getClassLoader().getResourceAsStream("config.yml");
