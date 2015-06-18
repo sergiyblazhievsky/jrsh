@@ -30,7 +30,6 @@ public class LL1OperationParser implements OperationParser {
     public Operation parse(String line) throws OperationParseException {
         List<String> inputTokens = lexer.getTokens(line);
         String operationName = inputTokens.get(0);
-
         Operation operation = OperationFactory.createOperationByName(operationName);
         Conditions.checkOperation(operation);
         //

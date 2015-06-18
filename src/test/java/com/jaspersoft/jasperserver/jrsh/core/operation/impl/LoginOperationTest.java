@@ -46,7 +46,7 @@ public class LoginOperationTest {
                 .thenReturn(sessionMock);
 
         // When
-        OperationResult result = login.eval(null);
+        OperationResult result = login.execute(null);
 
 
         // Then
@@ -72,7 +72,7 @@ public class LoginOperationTest {
                 .thenThrow(new AuthenticationFailedException("Unauthorized"));
 
         // When
-        OperationResult result = login.eval(null);
+        OperationResult result = login.execute(null);
 
         // Then
         PowerMockito.verifyStatic();
@@ -96,7 +96,7 @@ public class LoginOperationTest {
                 .thenThrow(new ProcessingException("java.net.UnknownHostException: epicfail"));
 
         // When
-        OperationResult result = login.eval(null);
+        OperationResult result = login.execute(null);
 
         // Then
         PowerMockito.verifyStatic();

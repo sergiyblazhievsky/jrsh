@@ -44,7 +44,7 @@ public class ScriptEvaluationStrategy extends AbstractEvaluationStrategy {
                     Session session = SessionFactory.getSharedSession();
                     operation = parser.parse(line);
                     OperationResult temp = result;
-                    result = operation.eval(session);
+                    result = operation.execute(session);
                     console.println(" → " + result.getResultMessage());
                     console.flush();
                     result.setPrevious(temp);

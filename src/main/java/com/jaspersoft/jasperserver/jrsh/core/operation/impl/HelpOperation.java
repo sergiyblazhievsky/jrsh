@@ -21,10 +21,11 @@ import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.Re
         usage = "help [operation]",
         description = "Operation <help> demonstrates how you can use JRSH")
 public class HelpOperation implements Operation {
+
     public static final String PREFIX = "   ";
 
     @Override
-    public OperationResult eval(Session session) {
+    public OperationResult execute(Session session) {
         StringBuilder builder = new StringBuilder("\nHow to use\n");
         Set<Operation> operations = OperationFactory.createOperationsByAvailableTypes();
         for (Operation operation : operations) {
@@ -38,9 +39,6 @@ public class HelpOperation implements Operation {
             if (master != null) {
                 description = master.description();
                 usage = master.usage();
-                //
-                // Build message
-                //
                 builder
                         .append(PREFIX)
                         .append(description)

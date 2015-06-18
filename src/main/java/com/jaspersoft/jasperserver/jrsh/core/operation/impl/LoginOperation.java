@@ -23,10 +23,8 @@ import static java.lang.String.format;
         usage = "login [username]|[organization]%[password]@[url]",
         description = "Operation <login> is used to login into JRS")
 public class LoginOperation implements Operation {
+
     public static int counter = 0;
-    //
-    // All messages will be moved to i18n in the next release
-    //
     public static final String OK_MSG = "You have logged in";
     public static final String FORMATTED_OK_MSG = "You have logged in as %s";
     public static final String FAILURE_MSG = "Login failed";
@@ -42,7 +40,7 @@ public class LoginOperation implements Operation {
     private String connectionString;
 
     @Override
-    public OperationResult eval(Session ignored) {
+    public OperationResult execute(Session ignored) {
         OperationResult result;
         try {
             SessionFactory.createSharedSession(server, username, password, organization);

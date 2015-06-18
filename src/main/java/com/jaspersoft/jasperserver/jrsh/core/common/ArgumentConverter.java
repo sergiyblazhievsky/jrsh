@@ -22,7 +22,7 @@ public class ArgumentConverter {
     public static Script convertToScript(String[] args) {
         Script script;
         //
-        // Parse arguments and convert them into ordered operations.
+        // Parse arguments and convert them into ordered operations
         //
         switch (args.length) {
             case 0: {
@@ -53,14 +53,17 @@ public class ArgumentConverter {
                     //
                     String loginLine = "login " + args[0];
                     //
-                    // Separate the next operation from Login
+                    // Separate next operation from Login
                     //
                     String nextLine = Joiner.on(" ").join(copyOfRange(args, 1, args.length));
                     //
-                    // Build script consisting of two operations
+                    // Build script of two lines (operations)
                     //
                     script = new Script(asList(loginLine, nextLine));
                 } else {
+                    //
+                    // Add single operation to the script
+                    //
                     String line = Joiner.on(" ").join(args);
                     script = new Script(singletonList(line));
                 }

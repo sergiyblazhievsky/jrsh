@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * A parser grammar.
+ *
  * @author Alexander Krasnyanskiy
  */
 public interface Grammar {

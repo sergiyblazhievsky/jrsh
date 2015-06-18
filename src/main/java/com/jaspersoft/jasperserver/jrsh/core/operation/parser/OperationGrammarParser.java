@@ -224,13 +224,16 @@ public class OperationGrammarParser {
         }
     }
 
-    protected static Token createToken(Class<? extends Token> tokenType, String tokenName,
-                                       String tokenValue, boolean mandatory, boolean tail)
-            throws CannotCreateTokenException {
+    protected static Token createToken(Class<? extends Token> tokenType, String tokenName, String tokenValue,
+                                       boolean mandatory, boolean tail) throws CannotCreateTokenException {
         try {
             return tokenType.getConstructor(String.class, String.class, boolean.class, boolean.class)
                     .newInstance(tokenName, tokenValue, mandatory, tail);
-        } catch (InstantiationException e) {
+        }
+        //
+        // Catch mess due to JDK downgrade (in JDK 1.6 there is no multi-catch)
+        //
+        catch (InstantiationException e) {
             throw new CannotCreateTokenException(tokenType);
         } catch (IllegalAccessException e) {
             throw new CannotCreateTokenException(tokenType);

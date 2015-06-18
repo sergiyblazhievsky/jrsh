@@ -19,7 +19,7 @@ import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.Res
 import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter.RECURSIVE;
 
 /**
- * Used to complete JRS repository path.
+ * This class is used to complete JRS repository path.
  *
  * @author Alexander Krasnyanskiy
  */
@@ -246,6 +246,9 @@ public class RepositoryCompleter implements Completer {
             List<Pair<String, Boolean>> list = new ArrayList<Pair<String, Boolean>>();
             List<ClientResourceLookup> lookups;
             try {
+                //
+                // Try to retrieve the content of a current JRS folder
+                //
                 lookups = SessionFactory.getSharedSession()
                         .resourcesService()
                         .resources()

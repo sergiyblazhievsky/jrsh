@@ -7,6 +7,6 @@ import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
  */
 public interface Operation {
 
-    OperationResult eval(Session session);
+    OperationResult execute(Session session);
 
 }

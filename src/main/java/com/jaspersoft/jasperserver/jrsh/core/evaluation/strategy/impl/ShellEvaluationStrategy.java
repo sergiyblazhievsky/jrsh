@@ -49,7 +49,6 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
         String line = script.getSource().get(0);
         Operation operation = null;
         OperationResult result = null;
-
         while (true) {
             try {
                 Session session = SessionFactory.getSharedSession();
@@ -61,14 +60,15 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
                 } else {
                     OperationResult temp = result;
                     operation = parser.parse(line);
-                    result = operation.eval(session);
+                    result = operation.execute(session);
                     //
                     // Let's create a chained result
                     //
                     result.setPrevious(temp);
                     //
                     // In fact, this is optional action. We don't
-                    // have to do that here.
+                    // have to do that here. Instead of printing it
+                    // here we could pass the result up to invoker
                     //
                     print(result.getResultMessage());
 
@@ -95,16 +95,16 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
                     line = null;
                 }
             } catch (IOException ignored) {
-                // JLine required stuff (unimportant)
+                // NOP
             } finally {
                 operation = null;
             }
         }
     }
 
-    protected void print(String mesasge) {
+    protected void print(String message) {
         try {
-            console.println(mesasge);
+            console.println(message);
             console.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -112,20 +112,12 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
     }
 
     protected Completer getCompleter() {
-        CompleterBuilder completerConverter = new CompleterBuilder();
-        //
-        // Collect grammar from the operations
-        //
+        CompleterBuilder completerBuilder = new CompleterBuilder();
         for (Operation operation : OperationFactory.createOperationsByAvailableTypes()) {
             Grammar grammar = OperationGrammarParser.parse(operation);
-            //
-            // And use it in builder to get general aggregated
-            // completer
-            //
-            completerConverter.withOperationGrammar(grammar);
+            completerBuilder.withOperationGrammar(grammar);
         }
-
-        return completerConverter.build();
+        return completerBuilder.build();
     }
 
     protected void logout() {

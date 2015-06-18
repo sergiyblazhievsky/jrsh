@@ -27,7 +27,7 @@ public class ToolEvaluationStrategy extends AbstractEvaluationStrategy {
                 Session session = SessionFactory.getSharedSession();
                 operationInstance = parser.parse(operation);
                 OperationResult temp = result;
-                result = operationInstance.eval(session);
+                result = operationInstance.execute(session);
 
                 System.out.println(result.getResultMessage());
                 result.setPrevious(temp);
@@ -38,7 +38,7 @@ public class ToolEvaluationStrategy extends AbstractEvaluationStrategy {
             // Print help
             //
             Operation help = createOperationByName("help");
-            System.out.println(help.eval(null).getResultMessage());
+            System.out.println(help.execute(null).getResultMessage());
             //
             // Prepare operation result
             //
