@@ -5,6 +5,7 @@ import org.jgrapht.EdgeFactory;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public class TokenEdgeFactory implements EdgeFactory<Token, TokenEdge<Token>> {
 

@@ -10,6 +10,7 @@ import java.io.File;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 @EqualsAndHashCode(callSuper = true)
 public class FileNameToken extends AbstractToken {
@@ -20,7 +21,7 @@ public class FileNameToken extends AbstractToken {
 
     @Override
     public Completer getCompleter() {
-        return new FileCompleter()/*FileNameCompleter()*/;
+        return new FileCompleter();
     }
 
     @Override

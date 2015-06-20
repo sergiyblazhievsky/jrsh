@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Production rule is used to parse user input into
+ * a fully configured operation.
+ *
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public interface Rule {
 
@@ -14,6 +18,9 @@ public interface Rule {
 
     void addToken(Token token);
 
+    /**
+     * Naive implementation.
+     */
     class DefaultRule implements Rule {
         private List<Token> tokens;
 

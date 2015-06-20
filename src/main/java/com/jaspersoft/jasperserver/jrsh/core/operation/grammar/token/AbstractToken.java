@@ -7,6 +7,7 @@ import lombok.Getter;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 @Getter
 @EqualsAndHashCode

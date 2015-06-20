@@ -5,7 +5,12 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
+ * The result of multiple operations. It has a chained structure,
+ * because each operation result points to the previous one, thus
+ * creating a chain of results.
+ *
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 @Data
 @AllArgsConstructor

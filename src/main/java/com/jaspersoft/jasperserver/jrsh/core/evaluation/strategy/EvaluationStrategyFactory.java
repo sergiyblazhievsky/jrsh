@@ -9,11 +9,21 @@ import static com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Toke
 import static com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.TokenPreconditions.isScriptFileName;
 
 /**
+ * {@link EvaluationStrategyFactory} used by application to provide
+ * the proper {@link EvaluationStrategy}.
+ *
  * @author Alexander Krasnyanskiy
  */
 @Log4j
 public class EvaluationStrategyFactory {
 
+    /**
+     * Factory method which define the proper operation strategy
+     * regarding to the application arguments.
+     *
+     * @param args app args
+     * @return strategy
+     */
     public static EvaluationStrategy getStrategy(String[] args) {
         EvaluationStrategy strategy = null;
         Class<? extends EvaluationStrategy> strategyType;
@@ -29,13 +39,13 @@ public class EvaluationStrategyFactory {
         else {
             strategyType = ToolEvaluationStrategy.class;
         }
-
+        //
+        // Instantiate strategy by type
+        //
         try {
             strategy = strategyType.newInstance();
-        } catch (InstantiationException ignored) {
-            log.info(String.format("Cannot create strategy instance of [%s] type", strategyType));
-        } catch (IllegalAccessException ignored) {
-            log.info(String.format("Cannot create strategy instance of [%s] type", strategyType));
+        } catch (Exception ignored) {
+            log.info(String.format("Cannot create strategy instance of [%s]", strategyType));
         }
 
         return strategy;

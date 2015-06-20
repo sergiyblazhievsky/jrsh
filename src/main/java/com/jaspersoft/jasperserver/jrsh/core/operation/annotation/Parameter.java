@@ -8,6 +8,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 @Target(FIELD)
 @Retention(RUNTIME)

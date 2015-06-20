@@ -6,7 +6,10 @@ import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.EvaluationStrat
 import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.EvaluationStrategyFactory;
 
 /**
+ * JRSH's entry point.
+ *
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public class App {
     public static void main(String[] args) {

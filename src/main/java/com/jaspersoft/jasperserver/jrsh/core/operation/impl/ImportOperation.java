@@ -37,7 +37,7 @@ public class ImportOperation implements Operation {
     public static final String OK_MSG = "Import status: Success";
     public static final String FAILURE_MSG = "Import failed";
     public static final String FORMATTED_FAILURE_MSG = "Import failed (%s)";
-    public static final String UNKNOWN_CONTENT = "Neither a file nor a directory";
+    public static final String UNKNOWN_CONTENT = "Neither a zip file nor a directory";
     public static final String IO_WARNING = "Could not delete a temporary file";
 
     @Parameter(mandatory = true, dependsOn = {"import"}, values =

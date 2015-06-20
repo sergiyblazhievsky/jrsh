@@ -24,7 +24,7 @@ import static java.lang.String.format;
         description = "Operation <login> is used to login into JRS")
 public class LoginOperation implements Operation {
 
-    public static int counter = 0;
+    //public static int counter = 0;
     public static final String OK_MSG = "You have logged in";
     public static final String FORMATTED_OK_MSG = "You have logged in as %s";
     public static final String FAILURE_MSG = "Login failed";
@@ -48,7 +48,7 @@ public class LoginOperation implements Operation {
             //
             // Counting only successful attempts
             //
-            counter++;
+            //counter++;
         } catch (Exception err) {
             result = new OperationResult(format(FORMATTED_FAILURE_MSG, err.getMessage()), FAILED, this, null);
         }

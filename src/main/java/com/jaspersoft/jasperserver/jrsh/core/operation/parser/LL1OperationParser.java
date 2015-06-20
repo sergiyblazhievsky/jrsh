@@ -2,7 +2,7 @@ package com.jaspersoft.jasperserver.jrsh.core.operation.parser;
 
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationFactory;
-import com.jaspersoft.jasperserver.jrsh.core.operation.OperationReflector;
+import com.jaspersoft.jasperserver.jrsh.core.operation.OperationStateConfigurer;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Grammar;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Lexer;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Lexer.DefaultLexer;
@@ -15,7 +15,12 @@ import lombok.extern.log4j.Log4j;
 import java.util.List;
 
 /**
+ * It's a context-free language parser. which is used to parse an
+ * input to the operation. For more details about LL(k) parser please
+ * follow the link: https://en.wikipedia.org/?title=LL_parser
+ *
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 @Log4j
 public class LL1OperationParser implements OperationParser {
@@ -27,15 +32,20 @@ public class LL1OperationParser implements OperationParser {
         lexer = new DefaultLexer();
     }
 
+    /**
+     * Parsers the line into fully configured operation
+     * with options.
+     *
+     * @param line input
+     * @return operation
+     * @throws OperationParseException
+     */
     public Operation parse(String line) throws OperationParseException {
-        List<String> inputTokens = lexer.getTokens(line);
+        List<String> inputTokens = lexer.convert(line);
         String operationName = inputTokens.get(0);
         Operation operation = OperationFactory.createOperationByName(operationName);
         Conditions.checkOperation(operation);
-        //
-        // Retrieve grammar from operation metadata
-        // via annotations
-        //
+
         Grammar grammar = OperationGrammarParser.parse(operation);
         List<Rule> grammarRules = grammar.getRules();
         boolean matchedRuleExist = false;
@@ -45,28 +55,18 @@ public class LL1OperationParser implements OperationParser {
         for (Rule rule : grammarRules) {
             List<Token> ruleTokens = rule.getTokens();
             if (match(ruleTokens, inputTokens)) {
-                OperationReflector.set(operation, ruleTokens, inputTokens);
+                OperationStateConfigurer.configure(operation, ruleTokens, inputTokens);
                 matchedRuleExist = true;
             }
         }
-        //
-        // If unmatched then throw exception
-        //
         Conditions.checkMatchedRulesFlag(matchedRuleExist);
         return operation;
     }
 
     protected boolean match(List<Token> ruleTokens, List<String> inputTokens) {
-        //
-        // Check tokens length
-        //
         if (ruleTokens.size() != inputTokens.size()) {
             return false;
         }
-        //
-        // If at least one token in rule is unmatched,
-        // return `false` immediately
-        //
         for (int i = 0; i < ruleTokens.size(); i++) {
             if (!ruleTokens.get(i).match(inputTokens.get(i))) {
                 return false;

@@ -57,7 +57,6 @@ public class LoginOperationTest {
         Assert.assertEquals("You have logged in as superuser", result.getResultMessage());
         Assert.assertEquals(ResultCode.SUCCESS, result.getResultCode());
         Assert.assertEquals(login, result.getContext());
-        Assert.assertSame(1, LoginOperation.counter);
     }
 
     @Test
@@ -81,7 +80,6 @@ public class LoginOperationTest {
         Assert.assertEquals("Login failed (Unauthorized)", result.getResultMessage());
         Assert.assertEquals(ResultCode.FAILED, result.getResultCode());
         Assert.assertEquals(login, result.getContext());
-        Assert.assertSame(1, LoginOperation.counter);
     }
 
     @Test
@@ -105,8 +103,6 @@ public class LoginOperationTest {
         Assert.assertEquals("Login failed (java.net.UnknownHostException: epicfail)", result.getResultMessage());
         Assert.assertEquals(ResultCode.FAILED, result.getResultCode());
         Assert.assertEquals(login, result.getContext());
-        Assert.assertSame(1, LoginOperation.counter);
-        Assert.assertNotSame(100500, LoginOperation.counter);
     }
 
     @After

@@ -4,21 +4,18 @@ import com.jaspersoft.jasperserver.jaxrs.client.core.AuthenticationCredentials;
 import com.jaspersoft.jasperserver.jaxrs.client.core.RestClientConfiguration;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.core.SessionStorage;
-import lombok.extern.log4j.Log4j;
+import com.jaspersoft.jasperserver.jrsh.core.common.config.ClientConnectionConfig;
+import com.jaspersoft.jasperserver.jrsh.core.common.config.Timeout;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-
-import static java.lang.String.format;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
-@Log4j
 public class SessionFactory {
+
     private static Session SHARED_SESSION;
 
     public static Session getSharedSession() {
@@ -35,68 +32,36 @@ public class SessionFactory {
     }
 
     protected static Session createSession(String url, String username, String password, String organization) {
-        //
-        // Define full user name
-        //
-        if (organization == null) {
-            username = username;
-        } else {
-            username = username.concat("|").concat(organization);
-        }
-        //
-        // Prepare URL
-        //
-        if (url.startsWith("http")) {
-            url = url;
-        } else {
-            url = "http://".concat(url);
-        }
+        username = (organization == null)
+                ? username
+                : username.concat("|").concat(organization);
 
-        Map<String, Integer> map = getClientTimeout();
-        //
-        // Create a new session
-        //
+        url = (url.startsWith("http"))
+                ? url
+                : "http://".concat(url);
+
+        Yaml yml = new Yaml();
+        InputStream file = SessionFactory.class.getClassLoader().getResourceAsStream("client.yml");
+        ClientConnectionConfig config = yml.loadAs(file, ClientConnectionConfig.class);
+        Timeout timeout = config.getTimeout();
+
         SHARED_SESSION = new Session(new SessionStorage(new RestClientConfiguration(url),
                 new AuthenticationCredentials(username, password)));
-        //
-        // Set connection timeout
-        //
-        Integer connectionTimeout = map.get("connection");
-        SHARED_SESSION
-                .getStorage()
-                .getConfiguration()
-                .setConnectionTimeout(connectionTimeout);
-        //
-        // Set read timeout
-        //
-        Integer readTimeout = map.get("connection");
-        SHARED_SESSION
-                .getStorage()
-                .getConfiguration()
-                .setReadTimeout(readTimeout);
 
-        log.info(format("timeout: {read: %s}, {connection: %s}", connectionTimeout, readTimeout));
+        SHARED_SESSION
+                .getStorage()
+                .getConfiguration()
+                .setConnectionTimeout(timeout.getConnectionTimeout());
+
+        SHARED_SESSION
+                .getStorage()
+                .getConfiguration()
+                .setReadTimeout(timeout.getReadTimeout());
+
         return SHARED_SESSION;
     }
 
     public static void updateSharedSession(Session session) {
         SHARED_SESSION = session;
-    }
-
-    @SuppressWarnings("unchecked")
-    protected static Map<String, Integer> getClientTimeout() {
-        Yaml yaml = new Yaml();
-        Map<String, Object> config = new HashMap<String, Object>();
-        try {
-            InputStream file = SessionFactory.class.getClassLoader().getResourceAsStream("client.yml");
-            try {
-                config.putAll((Map<String, Object>) yaml.load(file));
-            } finally {
-                file.close();
-            }
-        } catch (IOException ignored) {
-            // NOP
-        }
-        return (Map<String, Integer>) ((Map) config.get("client")).get("timeout");
     }
 }

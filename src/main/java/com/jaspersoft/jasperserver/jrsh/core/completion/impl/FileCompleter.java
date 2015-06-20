@@ -10,7 +10,10 @@ import java.io.File;
 import java.util.List;
 
 /**
+ * This class is used for file name completion.
+ *
  * @author Alexander Krasnyanskiy
+ * @since 2.0.1
  */
 public class FileCompleter implements Completer {
     private String root;

@@ -18,6 +18,8 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.Operatio
 import jline.console.ConsoleReader;
 import jline.console.UserInterruptException;
 import jline.console.completer.Completer;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.IOException;
 
@@ -31,6 +33,8 @@ import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.Re
  *
  * @author Alexander Krasnyanskiy
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
 public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
 
     private ConsoleReader console;
@@ -61,27 +65,25 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
                     OperationResult temp = result;
                     operation = parser.parse(line);
                     result = operation.execute(session);
-                    //
+
                     // Let's create a chained result
-                    //
                     result.setPrevious(temp);
-                    //
+
                     // In fact, this is optional action. We don't
-                    // have to do that here. Instead of printing it
-                    // here we could pass the result up to invoker
-                    //
+                    // have to do that here. Instead of printing result
+                    // we could pass it up to the invoker
                     print(result.getResultMessage());
 
                     if (result.getResultCode() == FAILED) {
-                        Master master = operation.getClass().getAnnotation(Master.class);
-                        String usage = master.usage();
-                        print("usage: " + usage);
-                    }
-                    //
-                    // Check initial login
-                    //
-                    if (operation instanceof LoginOperation && LoginOperation.counter < 1) {
-                        return new OperationResult(result.getResultMessage(), FAILED, operation, null);
+
+                        // Check initial login
+                        if (operation instanceof LoginOperation){
+                            return new OperationResult(result.getResultMessage(), FAILED, operation, null);
+                        } else {
+                            Master master = operation.getClass().getAnnotation(Master.class);
+                            String usage = master.usage();
+                            print("usage: " + usage);
+                        }
                     }
                 }
                 line = null;
@@ -95,7 +97,6 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
                     line = null;
                 }
             } catch (IOException ignored) {
-                // NOP
             } finally {
                 operation = null;
             }

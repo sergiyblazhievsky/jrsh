@@ -11,8 +11,8 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Rule.DefaultRule;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.graph.TokenEdge;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.graph.TokenEdgeFactory;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Token;
-import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationParseException;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.CannotCreateTokenException;
+import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationParseException;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.WrongOperationFormatException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,27 +25,35 @@ import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
+ * This class is used for parsing the grammar of operation
+ * based on the metadata of that operation.
+ * <p/>
+ * To parse the operation grammar we build a graph of tokens,
+ * from which we obtain all possible paths. Each path forms
+ * the rules of grammar. Basically, the grammar is just a
+ * set of rules.
+ *
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 @Log4j
 public class OperationGrammarParser {
+
     private static Graph<Token, TokenEdge<Token>> graph;
     private static Map<String, Pair<Token, String[]>> dependencies;
     private static Map<String, RuleGroup> groups;
     private static Token root;
 
+    /**
+     * Parser operation grammar.
+     *
+     * @param operation operation instance
+     * @return grammar
+     * @throws OperationParseException
+     */
     public static Grammar parse(final Operation operation) throws OperationParseException {
         graph = new DefaultDirectedGraph<Token, TokenEdge<Token>>(new TokenEdgeFactory());
         dependencies = new HashMap<String, Pair<Token, String[]>>();
@@ -229,17 +237,7 @@ public class OperationGrammarParser {
         try {
             return tokenType.getConstructor(String.class, String.class, boolean.class, boolean.class)
                     .newInstance(tokenName, tokenValue, mandatory, tail);
-        }
-        //
-        // Catch mess due to JDK downgrade (in JDK 1.6 there is no multi-catch)
-        //
-        catch (InstantiationException e) {
-            throw new CannotCreateTokenException(tokenType);
-        } catch (IllegalAccessException e) {
-            throw new CannotCreateTokenException(tokenType);
-        } catch (InvocationTargetException e) {
-            throw new CannotCreateTokenException(tokenType);
-        } catch (NoSuchMethodException e) {
+        } catch (Exception e) {
             throw new CannotCreateTokenException(tokenType);
         }
     }

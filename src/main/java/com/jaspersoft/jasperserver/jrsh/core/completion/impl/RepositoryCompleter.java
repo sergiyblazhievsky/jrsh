@@ -22,6 +22,7 @@ import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.Res
  * This class is used to complete JRS repository path.
  *
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public class RepositoryCompleter implements Completer {
 
@@ -240,6 +241,7 @@ public class RepositoryCompleter implements Completer {
 
     /**
      * @author Alexander Krasnyanskiy
+     * @since 2.0
      */
     private static class Downloader {
         public static List<Pair<String, Boolean>> download(String path) {

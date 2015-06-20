@@ -9,6 +9,7 @@ import java.util.*;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public class JrshCompletionHandler implements CompletionHandler {
 
@@ -68,12 +69,10 @@ public class JrshCompletionHandler implements CompletionHandler {
             candidates = copy;
         }
 
-
-        // skip new line
+        // Let's skip a new line
         if (candidates.size() > 1) {
             reader.println();
             reader.printColumns(candidates);
-            //reader.println();
         } else {
             reader.print("\r");
         }
