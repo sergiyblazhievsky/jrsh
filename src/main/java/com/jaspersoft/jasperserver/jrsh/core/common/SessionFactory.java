@@ -4,86 +4,64 @@ import com.jaspersoft.jasperserver.jaxrs.client.core.AuthenticationCredentials;
 import com.jaspersoft.jasperserver.jaxrs.client.core.RestClientConfiguration;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.core.SessionStorage;
-import lombok.extern.log4j.Log4j;
+import com.jaspersoft.jasperserver.jrsh.core.common.config.ClientConnectionConfig;
+import com.jaspersoft.jasperserver.jrsh.core.common.config.Timeout;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-
-import static java.lang.String.format;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
-@Log4j
 public class SessionFactory {
 
     private static Session SHARED_SESSION;
-
 
     public static Session getSharedSession() {
         return SHARED_SESSION;
     }
 
-
     public static Session createUnsharedSession(String url, String username, String password, String organization) {
         return createSession(url, username, password, organization);
     }
 
-
     public static Session createSharedSession(String url, String username, String password, String organization) {
-        return SHARED_SESSION = createSession(url, username, password, organization);
+        SHARED_SESSION = createSession(url, username, password, organization);
+        return SHARED_SESSION;
     }
 
+    protected static Session createSession(String url, String username, String password, String organization) {
+        username = (organization == null)
+                ? username
+                : username.concat("|").concat(organization);
 
-    private static Session createSession(String url, String username, String password, String organization) {
-        username = organization == null ? username : username.concat("|").concat(organization);
-        url = url.startsWith("http") ? url : "http://".concat(url);
-        Map<String, Integer> map = getClientTimeout();
-        //
-        // Create a new session
-        //
-        SHARED_SESSION = new Session(new SessionStorage(new RestClientConfiguration(url), new AuthenticationCredentials(username, password)));
-        //
-        // Set connection timeout
-        //
-        Integer connectionTimeout = map.get("connection");
+        url = (url.startsWith("http"))
+                ? url
+                : "http://".concat(url);
+
+        Yaml yml = new Yaml();
+        InputStream file = SessionFactory.class.getClassLoader().getResourceAsStream("client.yml");
+        ClientConnectionConfig config = yml.loadAs(file, ClientConnectionConfig.class);
+        Timeout timeout = config.getTimeout();
+
+        SHARED_SESSION = new Session(new SessionStorage(new RestClientConfiguration(url),
+                new AuthenticationCredentials(username, password)));
+
         SHARED_SESSION
                 .getStorage()
                 .getConfiguration()
-                .setConnectionTimeout(connectionTimeout);
-        //
-        // Set read timeout
-        //
-        Integer readTimeout = map.get("connection");
+                .setConnectionTimeout(timeout.getConnectionTimeout());
+
         SHARED_SESSION
                 .getStorage()
                 .getConfiguration()
-                .setReadTimeout(readTimeout);
+                .setReadTimeout(timeout.getReadTimeout());
 
-        log.info(format("timeout: {read: %s}, {connection: %s}", connectionTimeout, readTimeout));
         return SHARED_SESSION;
     }
 
     public static void updateSharedSession(Session session) {
         SHARED_SESSION = session;
     }
-
-    @SuppressWarnings("unchecked")
-    protected static Map<String, Integer> getClientTimeout() {
-        Yaml yaml = new Yaml();
-        Map<String, Object> config = new HashMap<>();
-        try {
-            try (InputStream file = SessionFactory.class.getClassLoader().getResourceAsStream("client.yml")) {
-                config.putAll((Map<String, Object>) yaml.load(file));
-            }
-        } catch (IOException ignored) {
-            // NOP
-        }
-        return (Map<String, Integer>)
-                ((Map) config.get("client")).get("timeout");
-    }
-
 }

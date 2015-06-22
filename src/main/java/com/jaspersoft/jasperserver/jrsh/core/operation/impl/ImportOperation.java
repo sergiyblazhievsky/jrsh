@@ -37,7 +37,7 @@ public class ImportOperation implements Operation {
     public static final String OK_MSG = "Import status: Success";
     public static final String FAILURE_MSG = "Import failed";
     public static final String FORMATTED_FAILURE_MSG = "Import failed (%s)";
-    public static final String UNKNOWN_CONTENT = "Neither a file nor a directory";
+    public static final String UNKNOWN_CONTENT = "Neither a zip file nor a directory";
     public static final String IO_WARNING = "Could not delete a temporary file";
 
     @Parameter(mandatory = true, dependsOn = {"import"}, values =
@@ -75,7 +75,7 @@ public class ImportOperation implements Operation {
     private String withUpdate;
 
     @Override
-    public OperationResult eval(Session session) {
+    public OperationResult execute(Session session) {
         //
         // Import zip/directory
         //
@@ -108,16 +108,10 @@ public class ImportOperation implements Operation {
                 //
                 // Check task phase
                 //
-                switch (phase) {
-                    case "finished":
-                        result = new OperationResult(OK_MSG, SUCCESS, this, null);
-                        break;
-                    default:
-                        //
-                        // Failed
-                        //
-                        result = new OperationResult(FAILURE_MSG, FAILED, this, null);
-                        break;
+                if (phase.equals("finished")) {
+                    result = new OperationResult(OK_MSG, SUCCESS, this, null);
+                } else {
+                    result = new OperationResult(FAILURE_MSG, FAILED, this, null);
                 }
             } else if (content.isFile()) {
                 //
@@ -173,7 +167,7 @@ public class ImportOperation implements Operation {
     }
 
     protected List<ImportParameter> convertImportParameters() {
-        List<ImportParameter> parameters = new ArrayList<>();
+        List<ImportParameter> parameters = new ArrayList<ImportParameter>();
         if (withIncludeAccessEvents != null) {
             parameters.add(ImportParameter.INCLUDE_ACCESS_EVENTS);
         }

@@ -11,8 +11,8 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Rule.DefaultRule;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.graph.TokenEdge;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.graph.TokenEdgeFactory;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Token;
-import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationParseException;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.CannotCreateTokenException;
+import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationParseException;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.WrongOperationFormatException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,34 +25,42 @@ import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
+ * This class is used for parsing the grammar of operation
+ * based on the metadata of that operation.
+ * <p/>
+ * To parse the operation grammar we build a graph of tokens,
+ * from which we obtain all possible paths. Each path forms
+ * the rules of grammar. Basically, the grammar is just a
+ * set of rules.
+ *
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 @Log4j
 public class OperationGrammarParser {
+
     private static Graph<Token, TokenEdge<Token>> graph;
     private static Map<String, Pair<Token, String[]>> dependencies;
     private static Map<String, RuleGroup> groups;
     private static Token root;
 
+    /**
+     * Parser operation grammar.
+     *
+     * @param operation operation instance
+     * @return grammar
+     * @throws OperationParseException
+     */
     public static Grammar parse(final Operation operation) throws OperationParseException {
-        graph = new DefaultDirectedGraph<>(new TokenEdgeFactory());
-        dependencies = new HashMap<>();
-        groups = new HashMap<>();
+        graph = new DefaultDirectedGraph<Token, TokenEdge<Token>>(new TokenEdgeFactory());
+        dependencies = new HashMap<String, Pair<Token, String[]>>();
+        groups = new HashMap<String, RuleGroup>();
 
         Grammar grammar = new DefaultGrammar();
-        Set<Rule> rules = new HashSet<>();
+        Set<Rule> rules = new HashSet<Rule>();
         Class<?> clazz = operation.getClass();
         Master master = clazz.getAnnotation(Master.class);
         //
@@ -66,7 +74,7 @@ public class OperationGrammarParser {
                 rules.add(rule);
             }
 
-            dependencies.put(root.getName(), new ImmutablePair<>(root, new String[]{}));
+            dependencies.put(root.getName(), new ImmutablePair<Token, String[]>(root, new String[]{}));
             graph.addVertex(root);
 
             Field[] fields = clazz.getDeclaredFields();
@@ -87,22 +95,19 @@ public class OperationGrammarParser {
                     OperationParameter p2 = new OperationParameter();
 
                     for (Value v : values) {
-                        Token token = createToken(v.tokenClass(), v.tokenAlias(),
-                                                  v.tokenValue(), isMandatory, v.tail());
+                        Token token = createToken(v.tokenClass(), v.tokenAlias(), v.tokenValue(), isMandatory, v.tail());
                         graph.addVertex(token);
-                        if (prefix != null) {
-                            Token prefixTkn = createToken(prefix.tokenClass(), prefix.value(),
-                                    prefix.value(), isMandatory, false);
 
-                            dependencies.put(prefixTkn.getName(), new ImmutablePair<>(prefixTkn, param.dependsOn()));
-                            dependencies.put(token.getName(), new ImmutablePair<>(token, new String[]{
+                        if (prefix != null) {
+                            Token prefixTkn = createToken(prefix.tokenClass(), prefix.value(), prefix.value(), isMandatory, false);
+                            dependencies.put(prefixTkn.getName(), new ImmutablePair<Token, String[]>(prefixTkn, param.dependsOn()));
+                            dependencies.put(token.getName(), new ImmutablePair<Token, String[]>(token, new String[]{
                                     prefix.value()
                             }));
-
                             p2.getTokens().add(prefixTkn);
                             graph.addVertex(prefixTkn);
                         } else {
-                            dependencies.put(token.getName(), new ImmutablePair<>(token, param.dependsOn()));
+                            dependencies.put(token.getName(), new ImmutablePair<Token, String[]>(token, param.dependsOn()));
                         }
 
                         p2.getTokens().add(token);
@@ -146,9 +151,12 @@ public class OperationGrammarParser {
     }
 
     protected static Set<Rule> buildRules() {
-        KShortestPaths<Token, TokenEdge<Token>> paths = new KShortestPaths<>(graph, root, 2500);
+        //
+        // 2500 is a magic number
+        //
+        KShortestPaths<Token, TokenEdge<Token>> paths = new KShortestPaths<Token, TokenEdge<Token>>(graph, root, 2500);
         Set<Token> vertexes = graph.vertexSet();
-        Set<Rule> rules = new LinkedHashSet<>();
+        Set<Rule> rules = new LinkedHashSet<Rule>();
         //
         // Use graph token vertexes to get all available
         // paths and convert each path into a rule
@@ -202,7 +210,7 @@ public class OperationGrammarParser {
     protected static Rule convertPathToRule(GraphPath<Token, TokenEdge<Token>> path) {
         List<TokenEdge<Token>> list = path.getEdgeList();
         Rule rule = new DefaultRule();
-        Set<Token> set = new LinkedHashSet<>();
+        Set<Token> set = new LinkedHashSet<Token>();
         for (TokenEdge<Token> edge : list) {
             set.add(edge.getSource());
             set.add(edge.getTarget());
@@ -224,22 +232,18 @@ public class OperationGrammarParser {
         }
     }
 
-    protected static Token createToken(Class<? extends Token> tokenType, String tokenName,
-                                       String tokenValue, boolean mandatory, boolean tail)
-            throws CannotCreateTokenException {
+    protected static Token createToken(Class<? extends Token> tokenType, String tokenName, String tokenValue,
+                                       boolean mandatory, boolean tail) throws CannotCreateTokenException {
         try {
             return tokenType.getConstructor(String.class, String.class, boolean.class, boolean.class)
                     .newInstance(tokenName, tokenValue, mandatory, tail);
-        } catch (InstantiationException
-                | IllegalAccessException
-                | NoSuchMethodException
-                | InvocationTargetException e) {
+        } catch (Exception e) {
             throw new CannotCreateTokenException(tokenType);
         }
     }
 
     protected static class DefaultGrammar implements Grammar {
-        private List<Rule> rules = new ArrayList<>();
+        private List<Rule> rules = new ArrayList<Rule>();
 
         public DefaultGrammar(Rule... rules) {
             Collections.addAll(this.rules, rules);
@@ -264,10 +268,10 @@ public class OperationGrammarParser {
     @Data
     @EqualsAndHashCode
     protected static class RuleGroup {
-        Set<OperationParameter> parameters = new HashSet<>();
+        Set<OperationParameter> parameters = new HashSet<OperationParameter>();
 
         Set<Token> getGroupTokens() {
-            Set<Token> set = new HashSet<>();
+            Set<Token> set = new HashSet<Token>();
             for (OperationParameter parameter : parameters) {
                 set.addAll(parameter.getTokens());
             }
@@ -278,10 +282,10 @@ public class OperationGrammarParser {
     @Data
     @EqualsAndHashCode
     protected static class OperationParameter {
-        Set<Token> tokens = new HashSet<>();
+        Set<Token> tokens = new HashSet<Token>();
 
         Set<Token> getOnlyMandatoryTokens() {
-            Set<Token> mandatoryTokens = new HashSet<>();
+            Set<Token> mandatoryTokens = new HashSet<Token>();
             for (Token token : tokens) {
                 if (token.isMandatory()) {
                     mandatoryTokens.add(token);

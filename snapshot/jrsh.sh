@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar jrsh-2.0-SNAPSHOT-jar-with-dependencies.jar $*
+java -jar jrsh-2.0.2-jar-with-dependencies.jar $*

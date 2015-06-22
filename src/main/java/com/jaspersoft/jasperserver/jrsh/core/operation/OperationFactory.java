@@ -1,5 +1,6 @@
 package com.jaspersoft.jasperserver.jrsh.core.operation;
 
+import com.jaspersoft.jasperserver.jrsh.core.common.config.MetadataScannerConfig;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationNotFoundException;
 import lombok.extern.log4j.Log4j;
@@ -9,28 +10,23 @@ import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.FilterBuilder;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 @Log4j
-@SuppressWarnings("unchecked")
 public class OperationFactory {
 
     private static final Map<String, Class<? extends Operation>> AVAILABLE_OPERATIONS;
+    public static final String BASE_PACKAGE = "com.jaspersoft.jasperserver.jrsh.core.operation.impl";
 
     static {
-        AVAILABLE_OPERATIONS = new HashMap<>();
-        Set<Class<? extends Operation>> types = getOperationTypes();
-        for (Class<? extends Operation> operationType : types) {
+        AVAILABLE_OPERATIONS = new HashMap<String, Class<? extends Operation>>();
+        for (Class<? extends Operation> operationType : getOperationTypes()) {
             Master annotation = operationType.getAnnotation(Master.class);
             if (annotation != null) {
                 String operationName = annotation.name();
@@ -48,7 +44,7 @@ public class OperationFactory {
     }
 
     public static Set<Operation> createOperationsByAvailableTypes() {
-        Set<Operation> set = new HashSet<>();
+        Set<Operation> set = new HashSet<Operation>();
         for (Class<? extends Operation> type : AVAILABLE_OPERATIONS.values()) {
             set.add(createInstance(type));
         }
@@ -59,30 +55,25 @@ public class OperationFactory {
         Operation instance;
         try {
             instance = operationType.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (Exception e) {
             throw new CouldNotCreateOperationInstance();
         }
         return instance;
     }
 
     protected static Set<Class<? extends Operation>> getOperationTypes() {
-        Set<Class<? extends Operation>> operationTypes = new HashSet<>();
-        //
-        // Read YAML config and get package info
-        //
-        Map<String, Object> config = getConfig();
-        List<String> packages = (List<String>) config.get("packages-to-scan");
-        List<String> classes = (List<String>) config.get("classes");
-        //
-        // Use default package to limit the search area and thus
-        // to speed up scanning ClassPath via Reflection
-        //
-        FilterBuilder filter = new FilterBuilder().includePackage("com.jaspersoft.jasperserver.jrsh.core.operation.impl");
-        //
-        // Add specific package names to filter
-        //
-        if (packages != null) {
-            for (String aPackage : packages) {
+        Set<Class<? extends Operation>> operationTypes = new HashSet<Class<? extends Operation>>();
+
+        Yaml yml = new Yaml();
+        InputStream file = OperationFactory.class.getClassLoader().getResourceAsStream("scanner.yml");
+        MetadataScannerConfig config = yml.loadAs(file, MetadataScannerConfig.class);
+
+        List<String> packagesToScan = config.getPackagesToScan();
+        List<String> classes = config.getClasses();
+        FilterBuilder filter = new FilterBuilder().includePackage(BASE_PACKAGE);
+
+        if (packagesToScan != null) {
+            for (String aPackage : packagesToScan) {
                 aPackage = StringUtils.chomp(aPackage, ".*");
                 filter.includePackage(aPackage);
             }
@@ -92,8 +83,7 @@ public class OperationFactory {
             for (String aClass : classes) {
                 try {
                     Class clz = Class.forName(aClass);
-                    if (!Modifier.isAbstract(clz.getModifiers())
-                            && Operation.class.isAssignableFrom(clz)) {
+                    if (!Modifier.isAbstract(clz.getModifiers()) && Operation.class.isAssignableFrom(clz)) {
                         operationTypes.add(clz);
                     }
                 } catch (ClassNotFoundException ignored) {
@@ -102,7 +92,7 @@ public class OperationFactory {
             }
         }
         //
-        // Scan CP and retrieve operation classes
+        // Scan ClassPath to get operation types
         //
         Reflections ref = new Reflections(new SubTypesScanner(), filter);
         for (Class<? extends Operation> subType : ref.getSubTypesOf(Operation.class)) {
@@ -112,22 +102,4 @@ public class OperationFactory {
         }
         return operationTypes;
     }
-
-    protected static Map<String, Object> getConfig() {
-        Yaml yaml = new Yaml();
-        //
-        // To avoid NPE we may return an empty config
-        //
-        Map<String, Object> config = new HashMap<>();
-        try {
-            try (InputStream file = OperationFactory.class.getClassLoader()
-                    .getResourceAsStream("config.yml")) {
-                config.putAll((Map<String, Object>) yaml.load(file));
-            }
-        } catch (IOException ignored) {
-            // NOP
-        }
-        return config;
-    }
-
 }

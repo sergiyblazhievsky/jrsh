@@ -85,7 +85,7 @@ public class ExportOperation implements Operation {
     private String withIncludeAccessEvents;
 
     @Override
-    public OperationResult eval(Session session) {
+    public OperationResult execute(Session session) {
         //
         // Perform export logic
         //
@@ -128,7 +128,6 @@ public class ExportOperation implements Operation {
             //
             // Export everything
             //
-            // todo: fix me!
             if (all != null && !all.isEmpty()) {
                 StateDto state = task
                         .parameter(ExportParameter.EVERYTHING)
@@ -153,7 +152,7 @@ public class ExportOperation implements Operation {
     }
 
     protected List<ExportParameter> convertExportParameters() {
-        List<ExportParameter> parameters = new ArrayList<>();
+        List<ExportParameter> parameters = new ArrayList<ExportParameter>();
         if (withIncludeAccessEvents != null) {
             parameters.add(ExportParameter.INCLUDE_ACCESS_EVENTS);
         }

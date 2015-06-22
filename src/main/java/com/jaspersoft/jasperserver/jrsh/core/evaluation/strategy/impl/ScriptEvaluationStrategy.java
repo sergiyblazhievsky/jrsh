@@ -2,7 +2,7 @@ package com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.impl;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jrsh.core.common.ConsoleBuilder;
-import com.jaspersoft.jasperserver.jrsh.core.common.Data;
+import com.jaspersoft.jasperserver.jrsh.core.common.Script;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
 import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.AbstractEvaluationStrategy;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
@@ -16,6 +16,11 @@ import java.util.List;
 import static java.lang.String.format;
 
 /**
+ * Represents an algorithm of script evaluation. These kind of script
+ * is usually obtained from file with extension '*.jrs'. The file
+ * contains one non explicit operation per line or two operations,
+ * one of which is explicit.
+ *
  * @author Alexander Krasnyanskiy
  */
 public class ScriptEvaluationStrategy extends AbstractEvaluationStrategy {
@@ -29,8 +34,8 @@ public class ScriptEvaluationStrategy extends AbstractEvaluationStrategy {
     }
 
     @Override
-    public OperationResult eval(Data data) {
-        List<String> source = data.getSource();
+    public OperationResult eval(Script script) {
+        List<String> source = script.getSource();
         OperationResult result = null;
         Operation operation = null;
         try {
@@ -39,7 +44,7 @@ public class ScriptEvaluationStrategy extends AbstractEvaluationStrategy {
                     Session session = SessionFactory.getSharedSession();
                     operation = parser.parse(line);
                     OperationResult temp = result;
-                    result = operation.eval(session);
+                    result = operation.execute(session);
                     console.println(" → " + result.getResultMessage());
                     console.flush();
                     result.setPrevious(temp);

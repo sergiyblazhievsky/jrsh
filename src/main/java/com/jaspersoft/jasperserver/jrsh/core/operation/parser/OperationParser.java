@@ -5,9 +5,17 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.Operatio
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public interface OperationParser {
 
+    /**
+     * Parses the input into the operation.
+     *
+     * @param line input
+     * @return operation
+     * @throws OperationParseException
+     */
     Operation parse(String line) throws OperationParseException;
 
 }

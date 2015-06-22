@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public class TokenPreconditions {
     public static boolean isConnectionString(String token) {
@@ -14,7 +15,7 @@ public class TokenPreconditions {
     }
 
     public static boolean isScriptFileName(String token) {
-        Pattern scriptPattern = Pattern.compile("(.)+(.jrs)$");
+        Pattern scriptPattern = Pattern.compile("\\S+(.jrs)$");
         Matcher scriptMatcher = scriptPattern.matcher(token);
         return scriptMatcher.matches();
     }

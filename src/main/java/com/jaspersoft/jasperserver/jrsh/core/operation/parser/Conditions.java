@@ -9,7 +9,9 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.WrongOpe
  */
 public class Conditions {
     public static void checkOperation(Operation operation) {
-        if (operation == null) throw new OperationNotFoundException();
+        if (operation == null) {
+            throw new OperationNotFoundException();
+        }
     }
 
     public static void checkMatchedRulesFlag(boolean matchedRuleExist) {

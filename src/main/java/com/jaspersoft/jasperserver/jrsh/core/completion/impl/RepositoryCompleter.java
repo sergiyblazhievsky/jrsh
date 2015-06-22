@@ -6,12 +6,11 @@ import com.jaspersoft.jasperserver.jaxrs.client.core.exceptions.AuthenticationFa
 import com.jaspersoft.jasperserver.jaxrs.client.core.exceptions.ResourceNotFoundException;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
 import jline.console.completer.Completer;
-import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.nio.file.Paths;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,13 +19,15 @@ import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.Res
 import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter.RECURSIVE;
 
 /**
+ * This class is used to complete JRS repository path.
+ *
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
-@Log4j
 public class RepositoryCompleter implements Completer {
 
     public static int UNIQUE_ID = 0; // hash
-    public static List<CharSequence> BUFFERED_CANDIDATES = new ArrayList<>();
+    public static List<CharSequence> BUFFERED_CANDIDATES = new ArrayList<CharSequence>();
 
     @Override
     public int complete(String buffer, int cursor, List<CharSequence> candidates) {
@@ -44,7 +45,7 @@ public class RepositoryCompleter implements Completer {
                         candidates.add("/");
                         return buffer.length() + 1;
                     }
-                    filteredResources = filter(resources);
+                    filteredResources = reformatResources(resources);
                     candidates.addAll(filteredResources);
                     BUFFERED_CANDIDATES.clear();
                     BUFFERED_CANDIDATES.addAll(filteredResources);
@@ -52,17 +53,18 @@ public class RepositoryCompleter implements Completer {
                     String root = getPreviousPath(buffer);
                     try {
                         resources = Downloader.download(root);
-                        List<Pair<String, Boolean>> temp = new ArrayList<>();
+                        List<Pair<String, Boolean>> temp = new ArrayList<Pair<String, Boolean>>();
+
                         for (Pair<String, Boolean> pair : resources) {
                             String resource = pair.getKey();
                             Boolean isFolder = pair.getRight();
                             if (StringUtils.startsWith(resource, buffer)) {
                                 ImmutablePair<String, Boolean> newPair =
-                                        new ImmutablePair<>(resource, isFolder);
+                                        new ImmutablePair<String, Boolean>(resource, isFolder);
                                 temp.add(newPair);
                             }
                         }
-                        filteredResources = filter(temp);
+                        filteredResources = reformatResources(temp);
                         candidates.addAll(filteredResources);
                         BUFFERED_CANDIDATES.clear();
                         BUFFERED_CANDIDATES.addAll(filteredResources);
@@ -74,7 +76,7 @@ public class RepositoryCompleter implements Completer {
                     // If session has been expired then
                     // re-establish it
                     //
-                    reestablishSession();
+                    reopenSession();
                     complete(buffer, cursor, candidates);
                 }
                 if (candidates.size() == 1) {
@@ -82,7 +84,7 @@ public class RepositoryCompleter implements Completer {
                 }
                 if (candidates.size() > 1) {
                     String lastInput = getLastInput(buffer);
-                    if (compareCandidatesWithLast(lastInput, candidates)) {
+                    if (compareCandidatesWithLastInput(lastInput, candidates)) {
                         return buffer.length() - lastInput.length();
                     }
                 }
@@ -94,18 +96,20 @@ public class RepositoryCompleter implements Completer {
                     candidates.addAll(BUFFERED_CANDIDATES);
                     if (candidates.size() > 1) {
                         String lastInput = getLastInput(buffer);
-                        if (compareCandidatesWithLast(lastInput, candidates)) {
+                        if (compareCandidatesWithLastInput(lastInput, candidates)) {
                             return buffer.length() - lastInput.length();
                         }
                     }
                     String lastInput = getLastInput(buffer);
-                    if (compareCandidatesWithLast(lastInput, candidates)) {
+                    if (compareCandidatesWithLastInput(lastInput, candidates)) {
                         return buffer.length() - lastInput.length();
                     }
                     return buffer.length();
                 }
             }
-        } else {
+        }
+        // TODO: refactoring is needed
+        else {
             UNIQUE_ID = hashCode();
             if (buffer == null || buffer.isEmpty()) {
                 candidates.add("/");
@@ -119,7 +123,8 @@ public class RepositoryCompleter implements Completer {
                     candidates.add("/");
                     return buffer.length() + 1;
                 }
-                filteredResources = filter(resources);
+
+                filteredResources = reformatResources(resources);
                 candidates.addAll(filteredResources);
                 BUFFERED_CANDIDATES.clear();
                 BUFFERED_CANDIDATES.addAll(filteredResources);
@@ -127,17 +132,20 @@ public class RepositoryCompleter implements Completer {
                 String root = getPreviousPath(buffer);
                 try {
                     resources = Downloader.download(root);
-                    List<Pair<String, Boolean>> temp = new ArrayList<>();
+                    List<Pair<String, Boolean>> temp = new ArrayList<Pair<String, Boolean>>();
+
                     for (Pair<String, Boolean> pair : resources) {
                         String resource = pair.getKey();
                         Boolean isFolder = pair.getRight();
+
                         if (StringUtils.startsWith(resource, buffer)) {
-                            ImmutablePair<String, Boolean> newPair
-                                    = new ImmutablePair<>(resource, isFolder);
+                            ImmutablePair<String, Boolean> newPair =
+                                    new ImmutablePair<String, Boolean>(resource, isFolder);
                             temp.add(newPair);
                         }
                     }
-                    filteredResources = filter(temp);
+
+                    filteredResources = reformatResources(temp);
                     candidates.addAll(filteredResources);
                     BUFFERED_CANDIDATES.clear();
                     BUFFERED_CANDIDATES.addAll(filteredResources);
@@ -149,9 +157,9 @@ public class RepositoryCompleter implements Completer {
                 // If session has been expired
                 // then reestablish it
                 //
-                reestablishSession();
+                reopenSession();
                 //
-                // re-invoke complete method
+                // Re-invoke complete method
                 //
                 complete(buffer, cursor, candidates);
             }
@@ -160,7 +168,7 @@ public class RepositoryCompleter implements Completer {
             }
             if (candidates.size() > 1) {
                 String lastInput = getLastInput(buffer);
-                if (compareCandidatesWithLast(lastInput, candidates)) {
+                if (compareCandidatesWithLastInput(lastInput, candidates)) {
                     return buffer.length() - lastInput.length();
                 }
             }
@@ -168,7 +176,7 @@ public class RepositoryCompleter implements Completer {
         }
     }
 
-    private void reestablishSession() {
+    private void reopenSession() {
         Session session = SessionFactory.getSharedSession();
         if (session != null) {
             SessionStorage storage = session.getStorage();
@@ -188,7 +196,7 @@ public class RepositoryCompleter implements Completer {
         return s;
     }
 
-    private boolean compareCandidatesWithLast(String last, List<CharSequence> candidates) {
+    private boolean compareCandidatesWithLastInput(String last, List<CharSequence> candidates) {
         for (CharSequence candidate : candidates) {
             if (!candidate.toString().startsWith(last)) {
                 return false;
@@ -197,12 +205,25 @@ public class RepositoryCompleter implements Completer {
         return true;
     }
 
-    private List<String> filter(List<Pair<String, Boolean>> resources) {
-        List<String> list = new ArrayList<>();
+    /**
+     * Reformats resources: add slash to folder or
+     * leave as is if resource isn't a folder.
+     *
+     * @param resources resources
+     * @return list
+     */
+    private List<String> reformatResources(List<Pair<String, Boolean>> resources) {
+        List<String> list = new ArrayList<String>();
         for (Pair<String, Boolean> pair : resources) {
             String resource = pair.getLeft();
             Boolean isFolder = pair.getRight();
-            String last = isFolder ? last(resource) + "/" : last(resource);
+            String last;
+
+            if (isFolder) {
+                last = lastName(resource) + "/";
+            } else {
+                last = lastName(resource);
+            }
             list.add(last);
         }
         return list;
@@ -213,15 +234,23 @@ public class RepositoryCompleter implements Completer {
         return idx > 0 ? path.substring(0, idx) : path.substring(0, idx + 1);
     }
 
-    private String last(String path) {
-        return Paths.get(path).getFileName().toString();
+    private String lastName(String path) {
+        //return Paths.get(path).getFileName().toString(); // Java 1.7
+        return new File(path).getName();
     }
 
+    /**
+     * @author Alexander Krasnyanskiy
+     * @since 2.0
+     */
     private static class Downloader {
         public static List<Pair<String, Boolean>> download(String path) {
-            List<Pair<String, Boolean>> list = new ArrayList<>();
+            List<Pair<String, Boolean>> list = new ArrayList<Pair<String, Boolean>>();
             List<ClientResourceLookup> lookups;
             try {
+                //
+                // Try to retrieve the content of a current JRS folder
+                //
                 lookups = SessionFactory.getSharedSession()
                         .resourcesService()
                         .resources()
@@ -236,6 +265,7 @@ public class RepositoryCompleter implements Completer {
             for (ClientResourceLookup lookup : lookups) {
                 String uri = lookup.getUri();
                 String type = lookup.getResourceType();
+
                 if ("folder".equals(type)) {
                     list.add(new ImmutablePair<String, Boolean>(uri, true));
                 } else {

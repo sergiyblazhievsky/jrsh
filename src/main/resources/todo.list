@@ -1,0 +1,7 @@
+1. Add <MoveOperation> to move any resources on JRS
+   - with support of specifying files by file mask
+     [*Report, *Daily*]
+
+2. Add show resources as tree operation
+
+3. Write a script to show how to use <MoveOperation>

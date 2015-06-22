@@ -1,3 +1,3 @@
 #!/bin/bash
 # -Xint - disable JIT
-java -jar ../target/jrsh-poc-0.0.1-SNAPSHOT-jar-with-dependencies.jar superuser%superuser@http://50.19.168.209/jasperserver-pro
+java -jar ../target/jrsh-2.0.2-jar-with-dependencies.jar superuser%superuser@http://localhost:8080/jasperserver-pro

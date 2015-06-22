@@ -5,6 +5,7 @@ import org.jgrapht.graph.DefaultEdge;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public class TokenEdge<T extends Token> extends DefaultEdge {
 

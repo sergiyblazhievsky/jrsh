@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public class CompleterBuilder {
     private AggregateCompleter aggregator;

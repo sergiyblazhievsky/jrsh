@@ -9,6 +9,7 @@ import java.util.*;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public class JrshCompletionHandler implements CompletionHandler {
 
@@ -37,7 +38,7 @@ public class JrshCompletionHandler implements CompletionHandler {
     }
 
     public static void printCandidates(final ConsoleReader reader, Collection<CharSequence> candidates) throws IOException {
-        Set<CharSequence> distinct = new HashSet<>(candidates);
+        Set<CharSequence> distinct = new HashSet<CharSequence>(candidates);
         if (distinct.size() > reader.getAutoprintThreshold()) {
             reader.print(String.format("Display all %d possibilities? (y or n)", candidates.size()));
             reader.flush();
@@ -58,7 +59,7 @@ public class JrshCompletionHandler implements CompletionHandler {
             }
         }
         if (distinct.size() != candidates.size()) {
-            Collection<CharSequence> copy = new ArrayList<>();
+            Collection<CharSequence> copy = new ArrayList<CharSequence>();
             for (CharSequence next : candidates) {
                 if (!copy.contains(next)) {
                     copy.add(next);
@@ -68,12 +69,10 @@ public class JrshCompletionHandler implements CompletionHandler {
             candidates = copy;
         }
 
-
-        // skip new line
+        // Let's skip a new line
         if (candidates.size() > 1) {
             reader.println();
             reader.printColumns(candidates);
-            //reader.println();
         } else {
             reader.print("\r");
         }

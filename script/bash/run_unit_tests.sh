@@ -1,3 +1,3 @@
 #!/bin/bash
 cd ../..
-mvn install -DrunSuite=**/UnitTestSuite.class -DfailIfNoTests=false
+mvn test -DrunSuite=**/UnitTestSuite.class -DfailIfNoTests=false

@@ -4,7 +4,11 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * Basically, grammar is a set of production rules
+ * for strings in a formal language.
+ *
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public interface Grammar {
 

@@ -15,25 +15,26 @@ import static java.util.Collections.singletonList;
 import static org.apache.commons.io.FileUtils.readLines;
 
 /**
- * @author Alex Krasnyanskiy
+ * @author Alexander Krasnyanskiy
  */
 public class ArgumentConverter {
 
-    public static Data convertToData(String[] args) {
-        Data data;
-        // Parse arguments and convert them into
-        // ordered operations.
+    public static Script convertToScript(String[] args) {
+        Script script;
+        //
+        // Parse arguments and convert them into ordered operations
+        //
         switch (args.length) {
             case 0: {
-                data = new Data(singletonList("help"));
+                script = new Script(singletonList("help"));
                 break;
             }
             case 1: {
                 String line = args[0];
                 if (isConnectionString(line)) {
-                    data = new Data(singletonList("login " + line));
+                    script = new Script(singletonList("login " + line));
                 } else {
-                    data = new Data(singletonList(line));
+                    script = new Script(singletonList(line));
                 }
                 break;
             }
@@ -41,20 +42,33 @@ public class ArgumentConverter {
                 if ("--script".equals(args[0]) && isScriptFileName(args[1])) {
                     try {
                         List<String> lines = readLines(new File(args[1]));
-                        data = new Data(lines);
+                        script = new Script(lines);
                     } catch (IOException ignored) {
                         throw new CouldNotOpenScriptFileException(args[1]);
                     }
                 } else if (isConnectionString(args[0])) {
+                    //
+                    // Add operation name to make it consistent with
+                    // the correct Login format
+                    //
                     String loginLine = "login " + args[0];
+                    //
+                    // Separate next operation from Login
+                    //
                     String nextLine = Joiner.on(" ").join(copyOfRange(args, 1, args.length));
-                    data = new Data(asList(loginLine, nextLine));
+                    //
+                    // Build script of two lines (operations)
+                    //
+                    script = new Script(asList(loginLine, nextLine));
                 } else {
+                    //
+                    // Add single operation to the script
+                    //
                     String line = Joiner.on(" ").join(args);
-                    data = new Data(singletonList(line));
+                    script = new Script(singletonList(line));
                 }
             }
         }
-        return data;
+        return script;
     }
 }
