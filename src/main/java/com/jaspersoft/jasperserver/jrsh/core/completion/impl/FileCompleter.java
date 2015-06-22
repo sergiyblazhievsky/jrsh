@@ -13,7 +13,7 @@ import java.util.List;
  * This class is used for file name completion.
  *
  * @author Alexander Krasnyanskiy
- * @since 2.0.1
+ * @since 2.0
  */
 public class FileCompleter implements Completer {
     private String root;
@@ -26,6 +26,10 @@ public class FileCompleter implements Completer {
             return completeFileForUnix(buffer, candidates);
         }
     }
+
+    //---------------------------------------------------------------------
+    // Helper methods
+    //---------------------------------------------------------------------
 
     private int completeFileForWindows(String buffer, List<CharSequence> candidates) {
         if (buffer == null) {

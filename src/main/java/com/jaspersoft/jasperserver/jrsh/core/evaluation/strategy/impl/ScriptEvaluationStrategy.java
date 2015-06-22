@@ -22,6 +22,7 @@ import static java.lang.String.format;
  * one of which is explicit.
  *
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public class ScriptEvaluationStrategy extends AbstractEvaluationStrategy {
 

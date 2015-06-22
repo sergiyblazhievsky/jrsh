@@ -38,6 +38,10 @@ public class ZipUtil {
         }
     }
 
+    //---------------------------------------------------------------------
+    // Helper methods
+    //---------------------------------------------------------------------
+
     protected static void addFiles(ZipOutputStream zos, String folder, String baseFolder) throws Exception {
         File file = new File(folder);
         if (file.exists()) {

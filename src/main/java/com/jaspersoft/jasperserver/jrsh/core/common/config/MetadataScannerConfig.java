@@ -9,8 +9,7 @@ import java.util.List;
 @Getter
 @ToString
 public class MetadataScannerConfig {
-    @Setter
-    private List<String> classes;
+    @Setter private List<String> classes;
     private List<String> packagesToScan;
 
     public void setPackages(List<String> packages) {

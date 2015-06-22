@@ -9,6 +9,7 @@ import java.io.IOException;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public class ConsoleBuilder {
     private ConsoleReader console;

@@ -33,7 +33,7 @@ public class LL1OperationParser implements OperationParser {
     }
 
     /**
-     * Parsers the line into fully configured operation
+     * Parse the line into fully configured operation
      * with options.
      *
      * @param line input

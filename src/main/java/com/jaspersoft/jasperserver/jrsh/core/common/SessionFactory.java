@@ -22,16 +22,19 @@ public class SessionFactory {
         return SHARED_SESSION;
     }
 
-    public static Session createUnsharedSession(String url, String username, String password, String organization) {
+    public static Session createUnsharedSession(String url, String username,
+                                                String password, String organization) {
         return createSession(url, username, password, organization);
     }
 
-    public static Session createSharedSession(String url, String username, String password, String organization) {
+    public static Session createSharedSession(String url, String username, String password,
+                                              String organization) {
         SHARED_SESSION = createSession(url, username, password, organization);
         return SHARED_SESSION;
     }
 
-    protected static Session createSession(String url, String username, String password, String organization) {
+    protected static Session createSession(String url, String username, String password,
+                                           String organization) {
         username = (organization == null)
                 ? username
                 : username.concat("|").concat(organization);

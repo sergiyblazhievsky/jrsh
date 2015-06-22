@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public class SkippedInputCompleter implements Completer {
     @Override

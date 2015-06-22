@@ -27,11 +27,12 @@ import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.Re
 import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.INTERRUPTED;
 
 /**
- * This class represents an algorithm of the operation, representing
- * the interactive mode. User can execute only one command per line,
- * or exit by pressing Ctrl+C.
+ * This class represents an algorithm of the operation, which represents
+ * an interactive mode of application. In interactive mode user can
+ * execute only one command per line, or exit by pressing Ctrl+C.
  *
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -102,6 +103,10 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
             }
         }
     }
+
+    //---------------------------------------------------------------------
+    // Helper methods
+    //---------------------------------------------------------------------
 
     protected void print(String message) {
         try {

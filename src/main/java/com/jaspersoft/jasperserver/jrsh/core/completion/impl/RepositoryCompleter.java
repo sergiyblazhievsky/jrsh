@@ -26,7 +26,7 @@ import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.Res
  */
 public class RepositoryCompleter implements Completer {
 
-    public static int UNIQUE_ID = 0; // hash
+    public static int UNIQUE_ID = 0;
     public static List<CharSequence> BUFFERED_CANDIDATES = new ArrayList<CharSequence>();
 
     @Override
@@ -176,6 +176,10 @@ public class RepositoryCompleter implements Completer {
         }
     }
 
+    //---------------------------------------------------------------------
+    // Helper methods
+    //---------------------------------------------------------------------
+
     private void reopenSession() {
         Session session = SessionFactory.getSharedSession();
         if (session != null) {
@@ -206,8 +210,8 @@ public class RepositoryCompleter implements Completer {
     }
 
     /**
-     * Reformats resources: add slash to folder or
-     * leave as is if resource isn't a folder.
+     * Add slash to folder or leave it as is in case if
+     * resource isn't a folder
      *
      * @param resources resources
      * @return list
@@ -239,18 +243,16 @@ public class RepositoryCompleter implements Completer {
         return new File(path).getName();
     }
 
-    /**
-     * @author Alexander Krasnyanskiy
-     * @since 2.0
-     */
+    //---------------------------------------------------------------------
+    // Nested Classes
+    //---------------------------------------------------------------------
+
     private static class Downloader {
         public static List<Pair<String, Boolean>> download(String path) {
             List<Pair<String, Boolean>> list = new ArrayList<Pair<String, Boolean>>();
             List<ClientResourceLookup> lookups;
+
             try {
-                //
-                // Try to retrieve the content of a current JRS folder
-                //
                 lookups = SessionFactory.getSharedSession()
                         .resourcesService()
                         .resources()

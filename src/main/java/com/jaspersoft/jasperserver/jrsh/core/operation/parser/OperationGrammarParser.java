@@ -17,6 +17,7 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.WrongOpe
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.log4j.Log4j;
+import lombok.val;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jgrapht.Graph;
@@ -48,7 +49,7 @@ public class OperationGrammarParser {
     private static Token root;
 
     /**
-     * Parser operation grammar.
+     * Parse operation grammar
      *
      * @param operation operation instance
      * @return grammar
@@ -64,7 +65,7 @@ public class OperationGrammarParser {
         Class<?> clazz = operation.getClass();
         Master master = clazz.getAnnotation(Master.class);
         //
-        // Read annotation metadata and parse it to dependencies
+        // Read annotation metadata and parse it into dependencies
         //
         if (master != null) {
             root = createToken(master.tokenClass(), master.name(), master.name(), true, true);
@@ -150,11 +151,15 @@ public class OperationGrammarParser {
         return grammar;
     }
 
+    //---------------------------------------------------------------------
+    // Helper methods
+    //---------------------------------------------------------------------
+
     protected static Set<Rule> buildRules() {
         //
         // 2500 is a magic number
         //
-        KShortestPaths<Token, TokenEdge<Token>> paths = new KShortestPaths<Token, TokenEdge<Token>>(graph, root, 2500);
+        val paths = new KShortestPaths<Token, TokenEdge<Token>>(graph, root, 2500);
         Set<Token> vertexes = graph.vertexSet();
         Set<Rule> rules = new LinkedHashSet<Rule>();
         //
@@ -208,7 +213,7 @@ public class OperationGrammarParser {
     }
 
     protected static Rule convertPathToRule(GraphPath<Token, TokenEdge<Token>> path) {
-        List<TokenEdge<Token>> list = path.getEdgeList();
+        val list = path.getEdgeList();
         Rule rule = new DefaultRule();
         Set<Token> set = new LinkedHashSet<Token>();
         for (TokenEdge<Token> edge : list) {
@@ -223,17 +228,16 @@ public class OperationGrammarParser {
     }
 
     protected static void buildEdgesInGraph() {
-        for (Map.Entry<String, Pair<Token, String[]>> entry : dependencies.entrySet()) {
-            Pair<Token, String[]> tokenPair = entry.getValue();
+        for (val entry : dependencies.entrySet()) {
+            val tokenPair = entry.getValue();
             for (String dependencyName : tokenPair.getRight()) {
-                Pair<Token, String[]> dependency = dependencies.get(dependencyName);
+                val dependency = dependencies.get(dependencyName);
                 graph.addEdge(dependency.getLeft(), tokenPair.getLeft());
             }
         }
     }
 
-    protected static Token createToken(Class<? extends Token> tokenType, String tokenName, String tokenValue,
-                                       boolean mandatory, boolean tail) throws CannotCreateTokenException {
+    protected static Token createToken(Class<? extends Token> tokenType, String tokenName, String tokenValue, boolean mandatory, boolean tail) throws CannotCreateTokenException {
         try {
             return tokenType.getConstructor(String.class, String.class, boolean.class, boolean.class)
                     .newInstance(tokenName, tokenValue, mandatory, tail);
@@ -241,6 +245,10 @@ public class OperationGrammarParser {
             throw new CannotCreateTokenException(tokenType);
         }
     }
+
+    //---------------------------------------------------------------------
+    // Nested Classes
+    //---------------------------------------------------------------------
 
     protected static class DefaultGrammar implements Grammar {
         private List<Rule> rules = new ArrayList<Rule>();
