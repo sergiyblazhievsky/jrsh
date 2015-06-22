@@ -14,6 +14,7 @@ import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.Re
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public class ToolEvaluationStrategy extends AbstractEvaluationStrategy {
 
@@ -28,20 +29,13 @@ public class ToolEvaluationStrategy extends AbstractEvaluationStrategy {
                 operationInstance = parser.parse(operation);
                 OperationResult temp = result;
                 result = operationInstance.execute(session);
-
                 System.out.println(result.getResultMessage());
                 result.setPrevious(temp);
             }
         } catch (Exception error) {
             System.out.println(error.getMessage());
-            //
-            // Print help
-            //
             Operation help = createOperationByName("help");
             System.out.println(help.execute(null).getResultMessage());
-            //
-            // Prepare operation result
-            //
             if (result != null) {
                 result = new OperationResult(error.getMessage(), FAILED, operationInstance, result);
             } else {

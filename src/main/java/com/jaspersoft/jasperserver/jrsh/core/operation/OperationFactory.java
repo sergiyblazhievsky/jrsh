@@ -4,6 +4,7 @@ import com.jaspersoft.jasperserver.jrsh.core.common.config.MetadataScannerConfig
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationNotFoundException;
 import lombok.extern.log4j.Log4j;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
@@ -21,13 +22,18 @@ import java.util.*;
 @Log4j
 public class OperationFactory {
 
+    public static final  String BASE_PACKAGE = "com.jaspersoft.jasperserver.jrsh.core.operation.impl";
     private static final Map<String, Class<? extends Operation>> AVAILABLE_OPERATIONS;
-    public static final String BASE_PACKAGE = "com.jaspersoft.jasperserver.jrsh.core.operation.impl";
 
     static {
         AVAILABLE_OPERATIONS = new HashMap<String, Class<? extends Operation>>();
-        for (Class<? extends Operation> operationType : getOperationTypes()) {
+        val types = getOperationTypes();
+
+        for (val operationType : types) {
             Master annotation = operationType.getAnnotation(Master.class);
+            //
+            // Setup operation registry map
+            //
             if (annotation != null) {
                 String operationName = annotation.name();
                 AVAILABLE_OPERATIONS.put(operationName, operationType);
@@ -36,7 +42,7 @@ public class OperationFactory {
     }
 
     public static Operation createOperationByName(String operationName) {
-        Class<? extends Operation> operationType = AVAILABLE_OPERATIONS.get(operationName);
+        val operationType = AVAILABLE_OPERATIONS.get(operationName);
         if (operationType == null) {
             throw new OperationNotFoundException();
         }
@@ -44,8 +50,8 @@ public class OperationFactory {
     }
 
     public static Set<Operation> createOperationsByAvailableTypes() {
-        Set<Operation> set = new HashSet<Operation>();
-        for (Class<? extends Operation> type : AVAILABLE_OPERATIONS.values()) {
+        HashSet<Operation> set = new HashSet<Operation>();
+        for (val type : AVAILABLE_OPERATIONS.values()) {
             set.add(createInstance(type));
         }
         return set;
@@ -62,8 +68,10 @@ public class OperationFactory {
     }
 
     protected static Set<Class<? extends Operation>> getOperationTypes() {
-        Set<Class<? extends Operation>> operationTypes = new HashSet<Class<? extends Operation>>();
-
+        val operationTypes = new HashSet<Class<? extends Operation>>();
+        //
+        // Read YML scanner config
+        //
         Yaml yml = new Yaml();
         InputStream file = OperationFactory.class.getClassLoader().getResourceAsStream("scanner.yml");
         MetadataScannerConfig config = yml.loadAs(file, MetadataScannerConfig.class);
@@ -87,7 +95,6 @@ public class OperationFactory {
                         operationTypes.add(clz);
                     }
                 } catch (ClassNotFoundException ignored) {
-                    // NOP
                 }
             }
         }
@@ -95,7 +102,7 @@ public class OperationFactory {
         // Scan ClassPath to get operation types
         //
         Reflections ref = new Reflections(new SubTypesScanner(), filter);
-        for (Class<? extends Operation> subType : ref.getSubTypesOf(Operation.class)) {
+        for (val subType : ref.getSubTypesOf(Operation.class)) {
             if (!Modifier.isAbstract(subType.getModifiers())) {
                 operationTypes.add(subType);
             }

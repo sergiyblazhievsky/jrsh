@@ -5,14 +5,15 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Value;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Token;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.CannotFindSetterException;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationParseException;
+import lombok.val;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
 /**
- * Configures the state of operation - its options -
- * on the basis of tokens.
+ * Configures the state of operation based on
+ * provided tokens.
  *
  * @author Alexander Krasnyanskiy
  * @since 2.0
@@ -20,7 +21,7 @@ import java.util.List;
 public class OperationStateConfigurer {
 
     public static void configure(Operation operation, List<Token> ruleTokens, List<String> inputTokens) {
-        Class<? extends Operation> clazz = operation.getClass();
+        val clazz = operation.getClass();
         Field[] fields = clazz.getDeclaredFields();
         //
         // Go through all fields of operation and
@@ -34,12 +35,15 @@ public class OperationStateConfigurer {
                 for (Value value : values) {
                     String alias = value.tokenAlias();
                     int idx = getTokenIndex(ruleTokens, alias);
+
                     if (idx >= 0) {
                         field.setAccessible(true);
                         Method setter = findSetter(clazz.getMethods(), field.getName());
+
                         if (setter == null) {
                             throw new CannotFindSetterException(field.getName());
                         }
+
                         try {
                             setter.invoke(operation, inputTokens.get(idx));
                         } catch (Exception err) {

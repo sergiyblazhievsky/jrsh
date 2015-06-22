@@ -13,6 +13,8 @@ notifications:
     on_failure: always
 
 branches:
-  only: master
+  only:
+    - master
+    - develop
 
 after_success: mvn clean test

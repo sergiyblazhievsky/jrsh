@@ -16,12 +16,13 @@ import java.util.List;
 import static java.lang.String.format;
 
 /**
- * Represents an algorithm of script evaluation. These kind of script
- * is usually obtained from file with extension '*.jrs'. The file
- * contains one non explicit operation per line or two operations,
+ * Represents an algorithm of script evaluation. This kind of script
+ * is usually obtained from the file with extension '*.jrs'. The file
+ * contains one non-explicit operation per line or two operations,
  * one of which is explicit.
  *
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 public class ScriptEvaluationStrategy extends AbstractEvaluationStrategy {
 
