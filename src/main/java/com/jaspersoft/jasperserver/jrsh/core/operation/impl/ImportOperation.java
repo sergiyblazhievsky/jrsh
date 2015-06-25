@@ -26,6 +26,7 @@ import static java.lang.String.format;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 @Data
 @Log4j
@@ -76,58 +77,41 @@ public class ImportOperation implements Operation {
 
     @Override
     public OperationResult execute(Session session) {
-        //
-        // Import zip/directory
-        //
         OperationResult result;
         try {
+            if (path.startsWith("~")) {
+                path = path.replaceFirst("^~", System.getProperty("user.home"));
+            }
+
             File content = new File(path);
             if (content.isDirectory()) {
                 File importFile = ZipUtil.pack(path);
                 ImportTaskRequestAdapter task = session.importService().newTask();
-                //
-                // Add parameters
-                //
+
                 for (ImportParameter parameter : convertImportParameters()) {
                     task.parameter(parameter, true);
                 }
+
                 StateDto entity = task.create(importFile).getEntity();
                 String phase = wait(entity, session);
-                //
-                // Clean up zip file
-                //
+
                 if (importFile.exists()) {
-                    //
-                    // Delete temporary zip file
-                    //
                     boolean isDeleted = importFile.delete();
                     if (!isDeleted) {
                         log.info(IO_WARNING);
                     }
                 }
-                //
-                // Check task phase
-                //
                 if (phase.equals("finished")) {
                     result = new OperationResult(OK_MSG, SUCCESS, this, null);
                 } else {
                     result = new OperationResult(FAILURE_MSG, FAILED, this, null);
                 }
             } else if (content.isFile()) {
-                //
-                // Upload resources
-                //
                 ImportTaskRequestAdapter task = session.importService().newTask();
-                //
-                // Add parameters
-                //
                 for (ImportParameter parameter : convertImportParameters()) {
                     task.parameter(parameter, true);
                 }
                 StateDto entity = task.create(new File(path)).getEntity();
-                //
-                // Wait until execution is completed
-                //
                 wait(entity, session);
                 result = new OperationResult(OK_MSG, SUCCESS, this, null);
             } else {
@@ -147,9 +131,6 @@ public class ImportOperation implements Operation {
                 break;
             }
             try {
-                //
-                // Wait a quarter of second
-                //
                 TimeUnit.MILLISECONDS.sleep(250);
             } catch (InterruptedException ignored) {
                 break;

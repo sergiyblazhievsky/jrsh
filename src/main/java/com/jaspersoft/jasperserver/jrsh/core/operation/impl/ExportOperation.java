@@ -27,6 +27,7 @@ import static java.lang.String.format;
 
 /**
  * @author Alexander Krasnyanskiy
+ * @since 2.0
  */
 @Data
 @Master(name = "export",
@@ -86,16 +87,10 @@ public class ExportOperation implements Operation {
 
     @Override
     public OperationResult execute(Session session) {
-        //
-        // Perform export logic
-        //
         OperationResult result;
         try {
             ExportService exportService = session.exportService();
             ExportTaskAdapter task = exportService.newTask();
-            //
-            // Export specific repository
-            //
             if ("repository".equals(context)) {
                 if (repositoryPath != null) {
                     task.uri(repositoryPath);
@@ -113,21 +108,18 @@ public class ExportOperation implements Operation {
 
                 if (to != null) {
                     if (fileUri != null) {
+                        if (fileUri.startsWith("~")) {
+                            fileUri = fileUri.replaceFirst("^~", System.getProperty("user.home"));
+                        }
                         File target = new File(fileUri);
                         FileUtils.copyInputStreamToFile(entity, target);
                     }
                 } else {
                     File target = new File("export.zip");
                     FileUtils.copyInputStreamToFile(entity, target);
-                    //
-                    // Save path for operation result message
-                    //
                     fileUri = target.getAbsolutePath();
                 }
             }
-            //
-            // Export everything
-            //
             if (all != null && !all.isEmpty()) {
                 StateDto state = task
                         .parameter(ExportParameter.EVERYTHING)
