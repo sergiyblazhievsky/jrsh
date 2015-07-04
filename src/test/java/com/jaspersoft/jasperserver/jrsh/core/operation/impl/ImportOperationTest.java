@@ -36,8 +36,8 @@ public class ImportOperationTest {
             PowerMockito.whenNew(File.class).withArguments(file).thenReturn(fileMock);
             importOperation.setPath(file);
 
-            // Let's skip those checks to let method
-            // ignore unimportant logic of this test
+            // Let's skip those checks and let test
+            // ignore unimportant logic of `execute` method
             PowerMockito.doReturn(false).when(fileMock).isDirectory();
             PowerMockito.doReturn(false).when(fileMock).isFile();
 

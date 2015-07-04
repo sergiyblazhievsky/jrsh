@@ -1,6 +1,5 @@
-package com.jaspersoft.jasperserver.jrsh.core.operation.grammar;
+package com.jaspersoft.jasperserver.jrsh.core.operation.grammar.lexer;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,14 +19,4 @@ public interface Lexer {
      */
     List<String> convert(String line);
 
-    /**
-     * A naive implementation of {@link Lexer}
-     * interface.
-     */
-    class DefaultLexer implements Lexer {
-        @Override
-        public List<String> convert(String line) {
-            return Arrays.asList(line.split("\\s+"));
-        }
-    }
 }

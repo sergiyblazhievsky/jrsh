@@ -78,7 +78,7 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
                     if (result.getResultCode() == FAILED) {
 
                         // Check initial login
-                        if (operation instanceof LoginOperation){
+                        if (operation instanceof LoginOperation) {
                             return new OperationResult(result.getResultMessage(), FAILED, operation, null);
                         } else {
                             Master master = operation.getClass().getAnnotation(Master.class);
@@ -127,6 +127,9 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
     }
 
     protected void logout() {
-        SessionFactory.getSharedSession().logout();
+        try {
+            SessionFactory.getSharedSession().logout();
+        } catch (Exception ignored) {
+        }
     }
 }

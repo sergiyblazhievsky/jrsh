@@ -14,6 +14,7 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.FileNa
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.StringToken;
 import lombok.Data;
 import lombok.extern.log4j.Log4j;
+import org.apache.commons.lang3.SystemUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -83,6 +84,10 @@ public class ImportOperation implements Operation {
                 path = path.replaceFirst("^~", System.getProperty("user.home"));
             }
 
+            if (path.contains("\\") && !SystemUtils.IS_OS_WINDOWS) {
+                path = path.replaceAll("\\\\", "");
+            }
+
             File content = new File(path);
             if (content.isDirectory()) {
                 File importFile = ZipUtil.pack(path);
@@ -93,7 +98,7 @@ public class ImportOperation implements Operation {
                 }
 
                 StateDto entity = task.create(importFile).getEntity();
-                String phase = wait(entity, session);
+                String phase = waitAndGetStatus(entity, session);
 
                 if (importFile.exists()) {
                     boolean isDeleted = importFile.delete();
@@ -112,8 +117,12 @@ public class ImportOperation implements Operation {
                     task.parameter(parameter, true);
                 }
                 StateDto entity = task.create(new File(path)).getEntity();
-                wait(entity, session);
-                result = new OperationResult(OK_MSG, SUCCESS, this, null);
+                String status = waitAndGetStatus(entity, session);
+                if ("failed".equals(status)){
+                    result = new OperationResult(FAILURE_MSG, FAILED, this, null);
+                } else {
+                    result = new OperationResult(OK_MSG, SUCCESS, this, null);
+                }
             } else {
                 result = new OperationResult(UNKNOWN_CONTENT, FAILED, this, null);
             }
@@ -123,7 +132,7 @@ public class ImportOperation implements Operation {
         return result;
     }
 
-    protected String wait(StateDto state, Session session) {
+    protected String waitAndGetStatus(StateDto state, Session session) {
         String phase;
         while (true) {
             phase = getPhase(state, session);

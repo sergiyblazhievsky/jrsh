@@ -4,9 +4,9 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationFactory;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationStateConfigurer;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Grammar;
-import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Lexer;
-import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Lexer.DefaultLexer;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Rule;
+import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.lexer.Lexer;
+import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.lexer.PathIdentifyingLexer;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Token;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationParseException;
 import lombok.Setter;
@@ -29,7 +29,7 @@ public class LL1OperationParser implements OperationParser {
     private Lexer lexer;
 
     public LL1OperationParser() {
-        lexer = new DefaultLexer();
+        lexer = new PathIdentifyingLexer();
     }
 
     /**

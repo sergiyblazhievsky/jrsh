@@ -22,7 +22,7 @@ public class FileCompleter implements Completer {
         if (SystemUtils.IS_OS_WINDOWS) {
             return completeFileForWindows(buffer, candidates);
         } else {
-            // Linux/OSX/etc
+            // OSX/Linux/etc
             return completeFileForUnix(buffer, candidates);
         }
     }
@@ -55,22 +55,13 @@ public class FileCompleter implements Completer {
     private int completeFileForUnix(String buffer, List<CharSequence> candidates) {
         Preconditions.checkNotNull(candidates);
 
-        if (buffer == null) {
+        if (buffer == null)
             buffer = "";
-        }
 
         String translated = buffer;
         File homeDir = getUserHome();
 
-        if (translated.startsWith("~" + separator())) {
-            translated = homeDir.getPath() + translated.substring(1);
-        } else if (translated.startsWith("~")) {
-            translated = homeDir.getParentFile().getAbsolutePath();
-        } else if (!(new File(translated).isAbsolute())) {
-            String cwd = getUserDir().getAbsolutePath();
-            translated = cwd + separator() + translated;
-        }
-
+        translated = mapToUserHome(translated, homeDir);
         File file = new File(translated);
 
         File dir = translated.endsWith(separator())
@@ -82,6 +73,18 @@ public class FileCompleter implements Completer {
                 : dir.listFiles();
 
         return matchFiles(buffer, translated, entries, candidates);
+    }
+
+    private String mapToUserHome(String translated, File homeDir) {
+        if (translated.startsWith("~" + separator())) {
+            translated = homeDir.getPath() + translated.substring(1);
+        } else if (translated.startsWith("~")) {
+            translated = homeDir.getParentFile().getAbsolutePath();
+        } else if (!(new File(translated).isAbsolute())) {
+            String cwd = getUserDir().getAbsolutePath();
+            translated = cwd + separator() + translated;
+        }
+        return translated;
     }
 
     protected String separator() {
@@ -97,6 +100,7 @@ public class FileCompleter implements Completer {
     }
 
     protected int matchFiles(String buffer, String translated, File[] files, List<CharSequence> candidates) {
+
         if (files == null) {
             return -1;
         }
@@ -117,6 +121,7 @@ public class FileCompleter implements Completer {
                         name = file.getName() + (separator() + separator());
                     } else {
                         name = file.getName() + separator();
+                        name = addBackslashToPath(name.toString());
                     }
                 } else {
                     name = file.getName() + " ";
@@ -138,7 +143,7 @@ public class FileCompleter implements Completer {
         return name;
     }
 
-    public String getRoot() {
+    protected String getRoot() {
         // Path root = Paths.get(System.getProperty("user.dir")).getRoot();
         // String vol = root.normalize().toString();
         // TODO check on Win
@@ -147,4 +152,20 @@ public class FileCompleter implements Completer {
                 ? vol + separator()
                 : vol + separator() + separator();
     }
+
+    protected String addBackslashToPath(String path) {
+        StringBuilder builder = new StringBuilder();
+        String[] parts = path.split("\\s+");
+        int length = parts.length;
+
+        for (int i = 0; i < length; i++) {
+            String part = parts[i];
+            builder.append(part);
+            if (i < length - 1 && !builder.toString().endsWith("\\ ")) {
+                builder.append("\\ ");
+            }
+        }
+        return builder.toString();
+    }
+
 }
