@@ -25,13 +25,17 @@ public class PathIdentifyingLexerTest {
 
     @Test
     public void shouldRecognizePathWithOneSpaceAsSingleToken() {
+        // When
         int tokensAmount = lexer.convert(OPERATION_OF_THREE_TOKENS).size();
+        // Then
         Assert.assertSame(tokensAmount, 3);
     }
 
     @Test
     public void shouldRecognizePathWithFourSpacesAsSingleToken() {
+        // When
         int tokensAmount = lexer.convert(OPERATION_OF_TWO_TOKENS).size();
+        // Then
         Assert.assertSame(tokensAmount, 2);
     }
 }
