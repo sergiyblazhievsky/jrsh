@@ -5,8 +5,6 @@ import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.EvaluationStrat
 import lombok.val;
 
 /**
- * JRSH's entry point.
- *
  * @author Alexander Krasnyanskiy
  * @since 2.0
  */
