@@ -26,16 +26,19 @@ import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * This class is used for parsing the grammar of operation
- * based on the metadata of that operation.
- * <p/>
- * To parse the operation grammar we build a graph of tokens,
- * from which we obtain all possible paths. Each path forms
- * the rules of grammar. Basically, the grammar is just a
- * set of rules.
+ * This class is used for parsing purposes. It parses an operation
+ * grammar based on operation metadata.
  *
  * @author Alexander Krasnyanskiy
  * @since 2.0
@@ -96,19 +99,30 @@ public class OperationGrammarParser {
                     OperationParameter p2 = new OperationParameter();
 
                     for (Value v : values) {
-                        Token token = createToken(v.tokenClass(), v.tokenAlias(), v.tokenValue(), isMandatory, v.tail());
+                        Token token = createToken(
+                                v.tokenClass(),
+                                v.tokenAlias(),
+                                v.tokenValue(),
+                                isMandatory,
+                                v.tail());
                         graph.addVertex(token);
 
                         if (prefix != null) {
-                            Token prefixTkn = createToken(prefix.tokenClass(), prefix.value(), prefix.value(), isMandatory, false);
-                            dependencies.put(prefixTkn.getName(), new ImmutablePair<Token, String[]>(prefixTkn, param.dependsOn()));
-                            dependencies.put(token.getName(), new ImmutablePair<Token, String[]>(token, new String[]{
-                                    prefix.value()
-                            }));
+                            Token prefixTkn = createToken(
+                                    prefix.tokenClass(),
+                                    prefix.value(),
+                                    prefix.value(),
+                                    isMandatory,
+                                    false);
+                            dependencies.put(prefixTkn.getName(),
+                                    new ImmutablePair<Token, String[]>(prefixTkn, param.dependsOn()));
+                            dependencies.put(token.getName(),
+                                    new ImmutablePair<Token, String[]>(token, new String[]{prefix.value()}));
                             p2.getTokens().add(prefixTkn);
                             graph.addVertex(prefixTkn);
                         } else {
-                            dependencies.put(token.getName(), new ImmutablePair<Token, String[]>(token, param.dependsOn()));
+                            dependencies.put(token.getName(),
+                                    new ImmutablePair<Token, String[]>(token, param.dependsOn()));
                         }
 
                         p2.getTokens().add(token);
@@ -156,9 +170,6 @@ public class OperationGrammarParser {
     //---------------------------------------------------------------------
 
     protected static Set<Rule> buildRules() {
-        //
-        // 2500 is a magic number
-        //
         val paths = new KShortestPaths<Token, TokenEdge<Token>>(graph, root, 2500);
         Set<Token> vertexes = graph.vertexSet();
         Set<Rule> rules = new LinkedHashSet<Rule>();
@@ -237,7 +248,9 @@ public class OperationGrammarParser {
         }
     }
 
-    protected static Token createToken(Class<? extends Token> tokenType, String tokenName, String tokenValue, boolean mandatory, boolean tail) throws CannotCreateTokenException {
+    protected static Token createToken(Class<? extends Token> tokenType,
+                                       String tokenName, String tokenValue,
+                                       boolean mandatory, boolean tail) throws CannotCreateTokenException {
         try {
             return tokenType.getConstructor(String.class, String.class, boolean.class, boolean.class)
                     .newInstance(tokenName, tokenValue, mandatory, tail);
@@ -302,5 +315,4 @@ public class OperationGrammarParser {
             return mandatoryTokens;
         }
     }
-
 }

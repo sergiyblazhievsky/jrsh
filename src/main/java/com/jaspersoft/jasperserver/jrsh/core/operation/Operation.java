@@ -11,12 +11,12 @@ import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 public interface Operation {
 
     /**
-     * Executes an operation business logic that
-     * uses a session in case if it interacts
-     * with JRS.
+     * Executes an operation business
+     * logic.
      *
      * @param session REST client session
-     * @return result
+     *                (could be `null` if operation isn't interactive)
+     * @return operation result
      */
     OperationResult execute(Session session);
 

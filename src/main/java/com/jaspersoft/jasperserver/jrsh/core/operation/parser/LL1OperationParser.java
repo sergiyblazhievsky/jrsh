@@ -15,9 +15,9 @@ import lombok.extern.log4j.Log4j;
 import java.util.List;
 
 /**
- * It's a context-free language parser. which is used to parse an
- * input to the operation. For more details about LL(k) parser please
- * follow the link: https://en.wikipedia.org/?title=LL_parser
+ * It's context-free lang LL(1) parser, it used to parse an
+ * input. For more details about LL(k) parser please
+ * see <a href="https://en.wikipedia.org/?title=LL_parser">LL Parser</a>
  *
  * @author Alexander Krasnyanskiy
  * @since 2.0
@@ -32,14 +32,6 @@ public class LL1OperationParser implements OperationParser {
         lexer = new PathIdentifyingLexer();
     }
 
-    /**
-     * Parse the line into fully configured operation
-     * with options.
-     *
-     * @param line input
-     * @return operation
-     * @throws OperationParseException
-     */
     public Operation parse(String line) throws OperationParseException {
         List<String> inputTokens = lexer.convert(line);
         String operationName = inputTokens.get(0);
@@ -49,9 +41,6 @@ public class LL1OperationParser implements OperationParser {
         Grammar grammar = OperationGrammarParser.parse(operation);
         List<Rule> grammarRules = grammar.getRules();
         boolean matchedRuleExist = false;
-        //
-        // Match tokens and configure operation instance
-        //
         for (Rule rule : grammarRules) {
             List<Token> ruleTokens = rule.getTokens();
             if (match(ruleTokens, inputTokens)) {

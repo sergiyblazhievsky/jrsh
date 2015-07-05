@@ -19,7 +19,7 @@ public interface Rule {
     void addToken(Token token);
 
     /**
-     * Naive implementation.
+     * Simple {@link Rule} implementation.
      */
     class DefaultRule implements Rule {
         private List<Token> tokens;

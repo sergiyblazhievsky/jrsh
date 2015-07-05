@@ -28,12 +28,8 @@ public class OperationFactory {
     static {
         AVAILABLE_OPERATIONS = new HashMap<String, Class<? extends Operation>>();
         val types = getOperationTypes();
-
         for (val operationType : types) {
             Master annotation = operationType.getAnnotation(Master.class);
-            //
-            // Setup operation registry map
-            //
             if (annotation != null) {
                 String operationName = annotation.name();
                 AVAILABLE_OPERATIONS.put(operationName, operationType);
@@ -69,9 +65,6 @@ public class OperationFactory {
 
     protected static Set<Class<? extends Operation>> getOperationTypes() {
         val operationTypes = new HashSet<Class<? extends Operation>>();
-        //
-        // Read YML scanner config
-        //
         Yaml yml = new Yaml();
         InputStream file = OperationFactory.class.getClassLoader().getResourceAsStream("scanner.yml");
         MetadataScannerConfig config = yml.loadAs(file, MetadataScannerConfig.class);
@@ -86,7 +79,6 @@ public class OperationFactory {
                 filter.includePackage(aPackage);
             }
         }
-
         if (classes != null) {
             for (String aClass : classes) {
                 try {
@@ -98,9 +90,6 @@ public class OperationFactory {
                 }
             }
         }
-        //
-        // Scan ClassPath to get operation types
-        //
         Reflections ref = new Reflections(new SubTypesScanner(), filter);
         for (val subType : ref.getSubTypesOf(Operation.class)) {
             if (!Modifier.isAbstract(subType.getModifiers())) {

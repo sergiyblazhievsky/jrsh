@@ -23,27 +23,19 @@ public class OperationStateConfigurer {
     public static void configure(Operation operation, List<Token> ruleTokens, List<String> inputTokens) {
         val clazz = operation.getClass();
         Field[] fields = clazz.getDeclaredFields();
-        //
-        // Go through all fields of operation and
-        // set their parsed values
-        //
         for (Field field : fields) {
             Parameter param = field.getAnnotation(Parameter.class);
             if (param != null) {
                 Value[] values = param.values();
-
                 for (Value value : values) {
                     String alias = value.tokenAlias();
                     int idx = getTokenIndex(ruleTokens, alias);
-
                     if (idx >= 0) {
                         field.setAccessible(true);
                         Method setter = findSetter(clazz.getMethods(), field.getName());
-
                         if (setter == null) {
                             throw new CannotFindSetterException(field.getName());
                         }
-
                         try {
                             setter.invoke(operation, inputTokens.get(idx));
                         } catch (Exception err) {
