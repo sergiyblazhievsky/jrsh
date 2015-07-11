@@ -6,10 +6,6 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/**
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface Parameter {

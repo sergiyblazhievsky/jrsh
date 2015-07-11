@@ -1,32 +1,22 @@
+
 package com.jaspersoft.jasperserver.jrsh.core.operation.parser;
 
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationFactory;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationStateConfigurer;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Grammar;
-import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Rule;
+import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.rule.Rule;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.lexer.Lexer;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.lexer.PathIdentifyingLexer;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Token;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationParseException;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j;
 
 import java.util.List;
 
-/**
- * It's context-free lang LL(1) parser, it used to parse an
- * input. For more details about LL(k) parser please
- * see <a href="https://en.wikipedia.org/?title=LL_parser">LL Parser</a>
- *
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
-@Log4j
 public class LL1OperationParser implements OperationParser {
 
-    @Setter
-    private Lexer lexer;
+    @Setter private Lexer lexer;
 
     public LL1OperationParser() {
         lexer = new PathIdentifyingLexer();

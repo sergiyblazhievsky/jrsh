@@ -18,21 +18,16 @@ import java.util.List;
 import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter.FOLDER_URI;
 import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter.RECURSIVE;
 
-/**
- * This class is used to complete JRS repository path.
- *
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
+// FIXME: Need refactoring
 public class RepositoryCompleter implements Completer {
 
-    public static int UNIQUE_ID = 0;
-    public static List<CharSequence> BUFFERED_CANDIDATES = new ArrayList<CharSequence>();
+    public static int uniqueId = 0;
+    public static List<CharSequence> bufCandidates = new ArrayList<CharSequence>();
 
     @Override
     public int complete(String buffer, int cursor, List<CharSequence> candidates) {
-        if (UNIQUE_ID != 0) {
-            if (UNIQUE_ID == hashCode()) {
+        if (uniqueId != 0) {
+            if (uniqueId == hashCode()) {
                 if (buffer == null || buffer.isEmpty()) {
                     candidates.add("/");
                     return 0;
@@ -47,8 +42,8 @@ public class RepositoryCompleter implements Completer {
                     }
                     filteredResources = reformatResources(resources);
                     candidates.addAll(filteredResources);
-                    BUFFERED_CANDIDATES.clear();
-                    BUFFERED_CANDIDATES.addAll(filteredResources);
+                    bufCandidates.clear();
+                    bufCandidates.addAll(filteredResources);
                 } catch (ResourceNotFoundException e1) {
                     String root = getPreviousPath(buffer);
                     try {
@@ -66,16 +61,11 @@ public class RepositoryCompleter implements Completer {
                         }
                         filteredResources = reformatResources(temp);
                         candidates.addAll(filteredResources);
-                        BUFFERED_CANDIDATES.clear();
-                        BUFFERED_CANDIDATES.addAll(filteredResources);
+                        bufCandidates.clear();
+                        bufCandidates.addAll(filteredResources);
                     } catch (ResourceNotFoundException e2) {
-                        // NOP
                     }
                 } catch (AuthenticationFailedException e3) {
-                    //
-                    // If session has been expired then
-                    // re-establish it
-                    //
                     reopenSession();
                     complete(buffer, cursor, candidates);
                 }
@@ -93,7 +83,7 @@ public class RepositoryCompleter implements Completer {
                 if (buffer == null) {
                     return 0;
                 } else {
-                    candidates.addAll(BUFFERED_CANDIDATES);
+                    candidates.addAll(bufCandidates);
                     if (candidates.size() > 1) {
                         String lastInput = getLastInput(buffer);
                         if (compareCandidatesWithLastInput(lastInput, candidates)) {
@@ -110,7 +100,7 @@ public class RepositoryCompleter implements Completer {
         }
         // TODO: refactoring is needed
         else {
-            UNIQUE_ID = hashCode();
+            uniqueId = hashCode();
             if (buffer == null || buffer.isEmpty()) {
                 candidates.add("/");
                 return 0;
@@ -126,8 +116,8 @@ public class RepositoryCompleter implements Completer {
 
                 filteredResources = reformatResources(resources);
                 candidates.addAll(filteredResources);
-                BUFFERED_CANDIDATES.clear();
-                BUFFERED_CANDIDATES.addAll(filteredResources);
+                bufCandidates.clear();
+                bufCandidates.addAll(filteredResources);
             } catch (ResourceNotFoundException e1) {
                 String root = getPreviousPath(buffer);
                 try {
@@ -147,20 +137,13 @@ public class RepositoryCompleter implements Completer {
 
                     filteredResources = reformatResources(temp);
                     candidates.addAll(filteredResources);
-                    BUFFERED_CANDIDATES.clear();
-                    BUFFERED_CANDIDATES.addAll(filteredResources);
+                    bufCandidates.clear();
+                    bufCandidates.addAll(filteredResources);
                 } catch (ResourceNotFoundException e2) {
                     // NOP
                 }
             } catch (AuthenticationFailedException e3) {
-                //
-                // If session has been expired
-                // then reestablish it
-                //
                 reopenSession();
-                //
-                // Re-invoke complete method
-                //
                 complete(buffer, cursor, candidates);
             }
             if (candidates.size() == 1) {
@@ -209,13 +192,6 @@ public class RepositoryCompleter implements Completer {
         return true;
     }
 
-    /**
-     * Add slash to folder or leave it as is in case if
-     * resource isn't a folder
-     *
-     * @param resources resources
-     * @return list
-     */
     private List<String> reformatResources(List<Pair<String, Boolean>> resources) {
         List<String> list = new ArrayList<String>();
         for (Pair<String, Boolean> pair : resources) {
@@ -239,7 +215,7 @@ public class RepositoryCompleter implements Completer {
     }
 
     private String lastName(String path) {
-        //return Paths.get(path).getFileName().toString(); // Java 1.7
+        //return Paths.get(path).getFileName().toString(); // Java7
         return new File(path).getName();
     }
 

@@ -10,12 +10,8 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult;
 import java.util.Collection;
 
 import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationFactory.createOperationByName;
-import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.FAILED;
+import static com.jaspersoft.jasperserver.jrsh.core.operation.ResultCode.FAILED;
 
-/**
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
 public class ToolEvaluationStrategy extends AbstractEvaluationStrategy {
 
     @Override
@@ -37,9 +33,19 @@ public class ToolEvaluationStrategy extends AbstractEvaluationStrategy {
             Operation help = createOperationByName("help");
             System.out.println(help.execute(null).getResultMessage());
             if (result != null) {
-                result = new OperationResult(error.getMessage(), FAILED, operationInstance, result);
+                result = new OperationResult(
+                      error.getMessage(),
+                      FAILED,
+                      operationInstance,
+                      result
+                );
             } else {
-                result = new OperationResult(error.getMessage(), FAILED, operationInstance, null);
+                result = new OperationResult(
+                      error.getMessage(),
+                      FAILED,
+                      operationInstance,
+                      null
+                );
             }
         }
         return result;

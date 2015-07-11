@@ -4,23 +4,19 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Parameter;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Value;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Token;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.CannotFindSetterException;
-import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationParseException;
+import com.jaspersoft.jasperserver.jrsh
+.core.operation.parser.exception.OperationParseException;
 import lombok.val;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
-/**
- * Configures the state of operation based on
- * provided tokens.
- *
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
 public class OperationStateConfigurer {
 
-    public static void configure(Operation operation, List<Token> ruleTokens, List<String> inputTokens) {
+    public static void configure(Operation operation,
+                                 List<Token> ruleTokens,
+                                 List<String> inputTokens) {
         val clazz = operation.getClass();
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
@@ -30,6 +26,10 @@ public class OperationStateConfigurer {
                 for (Value value : values) {
                     String alias = value.tokenAlias();
                     int idx = getTokenIndex(ruleTokens, alias);
+                    //
+                    // It's a validation
+                    // FIXME: move it to somewhere else in separate class
+                    //
                     if (idx >= 0) {
                         field.setAccessible(true);
                         Method setter = findSetter(clazz.getMethods(), field.getName());
@@ -72,7 +72,8 @@ public class OperationStateConfigurer {
     protected static Method findSetter(Method[] methods, String name) {
         for (Method method : methods) {
             String methodName = method.getName();
-            if (methodName.startsWith("set") && methodName.toLowerCase().endsWith(name.toLowerCase())) {
+            if (methodName.startsWith("set")
+            && methodName.toLowerCase().endsWith(name.toLowerCase())) {
                 return method;
             }
         }

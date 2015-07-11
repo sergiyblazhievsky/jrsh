@@ -13,32 +13,33 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-/**
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
 @Log4j
 public class OperationFactory {
 
-    public static final  String BASE_PACKAGE = "com.jaspersoft.jasperserver.jrsh.core.operation.impl";
-    private static final Map<String, Class<? extends Operation>> AVAILABLE_OPERATIONS;
+    private static final Map<String, Class<? extends Operation>> OPERATIONS;
+    public static final String BASE_PACKAGE =
+            "com.jaspersoft.jasperserver.jrsh.core.operation.impl";
 
     static {
-        AVAILABLE_OPERATIONS = new HashMap<String, Class<? extends Operation>>();
+        OPERATIONS = new HashMap<String, Class<? extends Operation>>();
         val types = getOperationTypes();
         for (val operationType : types) {
             Master annotation = operationType.getAnnotation(Master.class);
             if (annotation != null) {
                 String operationName = annotation.name();
-                AVAILABLE_OPERATIONS.put(operationName, operationType);
+                OPERATIONS.put(operationName, operationType);
             }
         }
     }
 
     public static Operation createOperationByName(String operationName) {
-        val operationType = AVAILABLE_OPERATIONS.get(operationName);
+        val operationType = OPERATIONS.get(operationName);
         if (operationType == null) {
             throw new OperationNotFoundException();
         }
@@ -46,8 +47,8 @@ public class OperationFactory {
     }
 
     public static Set<Operation> createOperationsByAvailableTypes() {
-        HashSet<Operation> set = new HashSet<Operation>();
-        for (val type : AVAILABLE_OPERATIONS.values()) {
+        Set<Operation> set = new HashSet<Operation>();
+        for (val type : OPERATIONS.values()) {
             set.add(createInstance(type));
         }
         return set;
@@ -57,8 +58,8 @@ public class OperationFactory {
         Operation instance;
         try {
             instance = operationType.newInstance();
-        } catch (Exception e) {
-            throw new CouldNotCreateOperationInstance();
+        } catch (Exception err) {
+            throw new CouldNotCreateOperationInstance(err);
         }
         return instance;
     }
@@ -66,9 +67,10 @@ public class OperationFactory {
     protected static Set<Class<? extends Operation>> getOperationTypes() {
         val operationTypes = new HashSet<Class<? extends Operation>>();
         Yaml yml = new Yaml();
-        InputStream file = OperationFactory.class.getClassLoader().getResourceAsStream("scanner.yml");
-        MetadataScannerConfig config = yml.loadAs(file, MetadataScannerConfig.class);
 
+        InputStream file = OperationFactory.class.getClassLoader().getResourceAsStream("scanner.yml");
+
+        MetadataScannerConfig config = yml.loadAs(file, MetadataScannerConfig.class);
         List<String> packagesToScan = config.getPackagesToScan();
         List<String> classes = config.getClasses();
         FilterBuilder filter = new FilterBuilder().includePackage(BASE_PACKAGE);
@@ -79,6 +81,7 @@ public class OperationFactory {
                 filter.includePackage(aPackage);
             }
         }
+
         if (classes != null) {
             for (String aClass : classes) {
                 try {
@@ -90,6 +93,7 @@ public class OperationFactory {
                 }
             }
         }
+
         Reflections ref = new Reflections(new SubTypesScanner(), filter);
         for (val subType : ref.getSubTypesOf(Operation.class)) {
             if (!Modifier.isAbstract(subType.getModifiers())) {

@@ -5,10 +5,6 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.AbstractTok
 import jline.console.completer.Completer;
 import lombok.EqualsAndHashCode;
 
-/**
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
 @EqualsAndHashCode(callSuper = true)
 public class SkipInputToken extends AbstractToken {
 

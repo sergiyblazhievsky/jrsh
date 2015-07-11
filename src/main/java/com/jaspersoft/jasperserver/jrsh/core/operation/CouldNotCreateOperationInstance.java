@@ -1,11 +1,9 @@
-package com.jaspersoft.jasperserver.jrsh.core.operation;
+package com.jaspersoft.jasperserver.jrsh
 
-/**
- * @author Alexander Krasnyanskiy
- */
+.core.operation;
+
 public class CouldNotCreateOperationInstance extends RuntimeException {
-    public CouldNotCreateOperationInstance() {
-        super("Could not create an operation instance " +
-              "(you are probably trying to instantiate an instance of abstract class)");
+    public CouldNotCreateOperationInstance(Exception err) {
+        super(String.format("Could not create an operation instance (%s)", err.getMessage()));
     }
 }

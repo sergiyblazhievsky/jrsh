@@ -10,16 +10,10 @@ import lombok.Data;
 import java.lang.reflect.Field;
 import java.util.Set;
 
-import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.SUCCESS;
+import static com.jaspersoft.jasperserver.jrsh.core.operation.ResultCode.SUCCESS;
 
-/**
- * @author Alexander Krasnyanskiy
- */
 @Data
-@Master(name = "help",
-        tail = true,
-        usage = "help [operation]",
-        description = "Operation <help> demonstrates how you can use JRSH")
+@Master(name = "help", tail = true, usage = "help [operation]", description = "Operation <help> demonstrates how you can use cli")
 public class HelpOperation implements Operation {
 
     public static final String PREFIX = "   ";

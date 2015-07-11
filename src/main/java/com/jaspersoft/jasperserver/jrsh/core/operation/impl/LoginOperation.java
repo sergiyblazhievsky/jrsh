@@ -11,20 +11,14 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.TokenPrecon
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.WrongConnectionStringFormatException;
 import lombok.Data;
 
-import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.FAILED;
-import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.SUCCESS;
+import static com.jaspersoft.jasperserver.jrsh.core.operation.ResultCode.FAILED;
+import static com.jaspersoft.jasperserver.jrsh.core.operation.ResultCode.SUCCESS;
 import static java.lang.String.format;
 
-/**
- * @author Alexander Krasnyanskiy
- */
 @Data
-@Master(name = "login",
-        usage = "login [username]|[organization]%[password]@[url]",
-        description = "Operation <login> is used to login into JRS")
+@Master(name = "login", usage = "login [username]|[organization]%[password]@[url]", description = "Operation <login> is used to login into JRS")
 public class LoginOperation implements Operation {
 
-    //public static int counter = 0;
     public static final String OK_MSG = "You have logged in";
     public static final String FORMATTED_OK_MSG = "You have logged in as %s";
     public static final String FAILURE_MSG = "Login failed";
@@ -35,8 +29,7 @@ public class LoginOperation implements Operation {
     private String password;
     private String organization;
 
-    @Parameter(mandatory = true, dependsOn = "login", values =
-    @Value(tokenAlias = "CS", tail = true))
+    @Parameter(mandatory = true, dependsOn = "login", values = @Value(tokenAlias = "CS", tail = true))
     private String connectionString;
 
     @Override
@@ -45,10 +38,6 @@ public class LoginOperation implements Operation {
         try {
             SessionFactory.createSharedSession(server, username, password, organization);
             result = new OperationResult(format(FORMATTED_OK_MSG, username), SUCCESS, this, null);
-            //
-            // Counting only successful attempts
-            //
-            //counter++;
         } catch (Exception err) {
             result = new OperationResult(format(FORMATTED_FAILURE_MSG, err.getMessage()), FAILED, this, null);
         }

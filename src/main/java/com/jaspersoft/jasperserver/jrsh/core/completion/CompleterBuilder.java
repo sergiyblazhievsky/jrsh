@@ -1,7 +1,7 @@
 package com.jaspersoft.jasperserver.jrsh.core.completion;
 
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Grammar;
-import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Rule;
+import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.rule.Rule;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.Token;
 import jline.console.completer.AggregateCompleter;
 import jline.console.completer.ArgumentCompleter;
@@ -10,17 +10,17 @@ import jline.console.completer.NullCompleter;
 
 import java.util.List;
 
-/**
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
-public class CompleterBuilder {
+public class CompleterBuilder { // Builder? Really?
+
     private AggregateCompleter aggregator;
 
     public CompleterBuilder() {
         this.aggregator = new AggregateCompleter();
     }
 
+    //
+    // Need refactoring
+    //
     public CompleterBuilder withOperationGrammar(Grammar grammar) {
         List<Rule> rules = grammar.getRules();
         ArgumentCompleter ruleCompleter = new ArgumentCompleter();
@@ -30,7 +30,6 @@ public class CompleterBuilder {
                 Completer completer = token.getCompleter();
                 ruleCompleter.getCompleters().add(completer);
             }
-
             ruleCompleter.getCompleters().add(new NullCompleter());
             aggregator.getCompleters().add(ruleCompleter);
             ruleCompleter = new ArgumentCompleter();

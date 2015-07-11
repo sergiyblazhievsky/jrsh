@@ -9,20 +9,18 @@ import org.apache.commons.lang3.SystemUtils;
 import java.io.File;
 import java.util.List;
 
-/**
- * This class is used for file name completion.
- *
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
 public class FileCompleter implements Completer {
     private String root;
 
     public int complete(String buffer, final int cursor, final List<CharSequence> candidates) {
+
+        if (cursor < buffer.length()) {
+            return -1;
+        }
+
         if (SystemUtils.IS_OS_WINDOWS) {
             return completeFileForWindows(buffer, candidates);
         } else {
-            // OSX/Linux/etc
             return completeFileForUnix(buffer, candidates);
         }
     }
@@ -146,7 +144,7 @@ public class FileCompleter implements Completer {
     protected String getRoot() {
         // Path root = Paths.get(System.getProperty("user.dir")).getRoot();
         // String vol = root.normalize().toString();
-        // TODO check on Win
+        // TODO: check on Win7
         String vol = new File(FileUtils.getUserDirectoryPath()).getParent();
         return vol.endsWith(separator())
                 ? vol + separator()
@@ -154,6 +152,7 @@ public class FileCompleter implements Completer {
     }
 
     protected String addBackslashToPath(String path) {
+        // $> import /Users/alex/My\ Folder/Sun\ Folder/file.zip
         StringBuilder builder = new StringBuilder();
         String[] parts = path.split("\\s+");
         int length = parts.length;

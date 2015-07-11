@@ -5,10 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-/**
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
 @Getter
 @EqualsAndHashCode
 @AllArgsConstructor
@@ -19,10 +15,7 @@ public abstract class AbstractToken implements Token {
     protected boolean mandatory;
     protected boolean tailOfRule;
 
-    @Override
     public abstract Completer getCompleter();
-
-    @Override
     public abstract boolean match(String input);
 
 }

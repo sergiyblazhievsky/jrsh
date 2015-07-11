@@ -18,21 +18,18 @@ import java.io.File;
 @PrepareForTest({File.class, ImportOperation.class})
 public class ImportOperationTest {
 
-    @Mock
-    private File fileMock;
+    @Mock private File fileMock;
     private ImportOperation importOperation;
 
-    @Before
-    public void before() {
+    @Before public void before() {
         importOperation = new ImportOperation();
         MockitoAnnotations.initMocks(fileMock);
     }
 
-    @Test
-    public void shouldReplaceTildeCharacterWithUserHomeDirectoryIfPassAFileThatBeginsWithATilde() throws Exception {
+    @Test public void shouldReplaceTildeCharacterWithUserHomeDirectoryIfPassAFileThatBeginsWithATilde() throws Exception {
         if (!SystemUtils.IS_OS_WINDOWS) {
             // Given
-            final String file = "~/Downloads/jrsh/file.zip";
+            String file = "~/Downloads/jrsh/file.zip";
             PowerMockito.whenNew(File.class).withArguments(file).thenReturn(fileMock);
             importOperation.setPath(file);
 
@@ -50,16 +47,13 @@ public class ImportOperationTest {
         }
     }
 
-    @Test
-    public void shouldExecuteOperationWithoutReplacingTildeCharacterIfFileDoesNotBeginWithTilde() throws Exception {
+    @Test public void shouldExecuteOperationWithoutReplacingTildeCharacterIfFileDoesNotBeginWithTilde() throws Exception {
         if (!SystemUtils.IS_OS_WINDOWS) {
             // Given
-            final String file = "/Users/alex/Downloads/jrsh/file.zip";
+            String file = "/Users/alex/Downloads/jrsh/file.zip";
             PowerMockito.whenNew(File.class).withArguments(file).thenReturn(fileMock);
             importOperation.setPath(file);
 
-            // Let's skip those checks to let method
-            // ignore unimportant logic for this test
             PowerMockito.doReturn(false).when(fileMock).isDirectory();
             PowerMockito.doReturn(false).when(fileMock).isFile();
 
@@ -71,8 +65,7 @@ public class ImportOperationTest {
         }
     }
 
-    @After
-    public void after() {
+    @After public void after() {
         Mockito.reset(fileMock);
     }
 }

@@ -14,11 +14,7 @@ import static java.util.Arrays.copyOfRange;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.io.FileUtils.readLines;
 
-/**
- * @author Alexander Krasnyanskiy
- */
 public class ArgumentConverter {
-
     public static Script convertToScript(String[] args) {
         Script script;
         switch (args.length) {

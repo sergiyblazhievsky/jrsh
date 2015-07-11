@@ -13,9 +13,6 @@ import java.util.zip.ZipOutputStream;
 import static java.io.File.separator;
 import static java.io.File.separatorChar;
 
-/**
- * @author Alexander Krasnyanskiy
- */
 public class ZipUtil {
 
     public static File pack(String directory) {
@@ -42,12 +39,16 @@ public class ZipUtil {
     // Helper methods
     //---------------------------------------------------------------------
 
-    protected static void addFiles(ZipOutputStream zos, String folder, String baseFolder) throws Exception {
+    protected static void addFiles(
+    ZipOutputStream zos,
+    String folder,
+    String baseFolder) throws Exception {
         File file = new File(folder);
         if (file.exists()) {
             if (file.isDirectory()) {
                 if (!folder.equalsIgnoreCase(baseFolder)) {
-                    String entryName = folder.substring(baseFolder.length() + 1, folder.length())
+                    String entryName = folder.substring(
+                            baseFolder.length() + 1, folder.length())
                             + separatorChar;
                     ZipEntry zipEntry = new ZipEntry(entryName);
                     zos.putNextEntry(zipEntry);
@@ -59,7 +60,8 @@ public class ZipUtil {
                     }
                 }
             } else {
-                String entryName = folder.substring(baseFolder.length() + 1, folder.length());
+                String entryName = folder.substring(
+                baseFolder.length() + 1, folder.length());
                 ZipEntry zipEntry = new ZipEntry(entryName);
                 zos.putNextEntry(zipEntry);
                 FileInputStream in = new FileInputStream(folder);
@@ -77,5 +79,3 @@ public class ZipUtil {
         }
     }
 }
-
-

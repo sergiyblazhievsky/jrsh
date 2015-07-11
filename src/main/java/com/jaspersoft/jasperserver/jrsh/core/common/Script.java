@@ -5,13 +5,7 @@ import lombok.Getter;
 
 import java.util.List;
 
-/**
- * Used to hold stringified operations. Each line
- * should contain only one operation.
- *
- * @author Alexander Krasnyanskiy
- * @version 2.0
- */
+// Do we really need this class?
 @AllArgsConstructor
 public class Script {
     @Getter private List<String> source;
