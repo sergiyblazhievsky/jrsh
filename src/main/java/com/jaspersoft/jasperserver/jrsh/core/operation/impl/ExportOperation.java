@@ -15,74 +15,54 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.Reposi
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.StringToken;
 import lombok.Data;
 import org.apache.commons.io.FileUtils;
+import org.joda.time.DateTime;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.FAILED;
-import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode.SUCCESS;
+import static com.jaspersoft.jasperserver.jrsh.core.operation.ResultCode.FAILED;
+import static com.jaspersoft.jasperserver.jrsh.core.operation.ResultCode.SUCCESS;
 import static java.lang.String.format;
+import static org.joda.time.DateTimeZone.UTC;
 
-/**
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
 @Data
-@Master(name = "export",
-        usage = "export [context] [parameters]",
-        description = "Operation <export> is used to download JRS resources")
+@Master(name = "export", usage = "export [context] [parameters]", description = "Operation <export> is used to download JRS resources")
 public class ExportOperation implements Operation {
 
     public static final String FORMATTED_OK_MSG = "Export status: Success (File has been created: %s)";
     public static final String FAILURE_MSG = "Export failed";
     public static final String FORMATTED_FAILURE_MSG = "Export failed (%s)";
 
-    @Parameter(mandatory = true, dependsOn = "export", values = {
-            @Value(tokenAlias = "RE", tokenClass = StringToken.class, tokenValue = "repository")
-    })
+    @Parameter(mandatory = true, dependsOn = "export", values = {@Value(tokenAlias = "RE", tokenClass = StringToken.class, tokenValue = "repository")})
     private String context;
 
-    @Parameter(mandatory = true, dependsOn = "export", ruleGroups = "BRANCH", values =
-    @Value(tokenAlias = "OL", tokenClass = StringToken.class, tokenValue = "all", tail = true))
+    @Parameter(mandatory = true, dependsOn = "export", ruleGroups = "BRANCH", values = @Value(tokenAlias = "OL", tokenClass = StringToken.class, tokenValue = "all", tail = true))
     private String all;
 
-    @Parameter(mandatory = true, dependsOn = "RE", values =
-    @Value(tokenAlias = "RP", tokenClass = RepositoryToken.class, tail = true))
+    @Parameter(mandatory = true, dependsOn = "RE", values = @Value(tokenAlias = "RP", tokenClass = RepositoryToken.class, tail = true))
     private String repositoryPath;
 
-    @Parameter(dependsOn = "RP", values =
-    @Value(tokenAlias = "->", tokenClass = StringToken.class, tokenValue = "to"))
+    @Parameter(dependsOn = "RP", values = @Value(tokenAlias = "->", tokenClass = StringToken.class, tokenValue = "to"))
     private String to;
 
-    @Parameter(dependsOn = "->", values =
-    @Value(tokenAlias = "F", tokenClass = FileNameToken.class, tail = true))
+    @Parameter(dependsOn = "->", values = @Value(tokenAlias = "F", tokenClass = FileNameToken.class, tail = true))
     private String fileUri;
 
-    @Parameter(dependsOn = {"F", "RP", "IUR", "IME", "RPP", "IAE"}, values =
-    @Value(tokenAlias = "UR", tokenClass = StringToken.class,
-            tokenValue = "with-user-roles", tail = true))
+    @Parameter(dependsOn = {"F", "RP", "IUR", "IME", "RPP", "IAE"}, values = @Value(tokenAlias = "UR", tokenClass = StringToken.class, tokenValue = "with-user-roles", tail = true))
     private String withUserRoles;
 
-    @Parameter(dependsOn = {"F", "RP", "UR", "IME", "RPP", "IAE"}, values =
-    @Value(tokenAlias = "IUR", tokenClass = StringToken.class,
-            tokenValue = "with-include-audit-events", tail = true))
+    @Parameter(dependsOn = {"F", "RP", "UR", "IME", "RPP", "IAE"}, values = @Value(tokenAlias = "IUR", tokenClass = StringToken.class, tokenValue = "with-include-audit-events", tail = true))
     private String withIncludeAuditEvents;
 
-    @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "RPP", "IAE"}, values =
-    @Value(tokenAlias = "IME", tokenClass = StringToken.class,
-            tokenValue = "with-include-monitoring-events", tail = true))
+    @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "RPP", "IAE"}, values = @Value(tokenAlias = "IME", tokenClass = StringToken.class, tokenValue = "with-include-monitoring-events", tail = true))
     private String withIncludeMonitoringEvents;
 
-    @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "IME", "IAE"}, values =
-    @Value(tokenAlias = "RPP", tokenClass = StringToken.class,
-            tokenValue = "with-repository-permissions", tail = true))
+    @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "IME", "IAE"}, values = @Value(tokenAlias = "RPP", tokenClass = StringToken.class, tokenValue = "with-repository-permissions", tail = true))
     private String withRepositoryPermissions;
 
-    @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "RPP", "IME"}, values =
-    @Value(tokenAlias = "IAE", tokenClass = StringToken.class,
-            tokenValue = "with-include-access-events", tail = true))
+    @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "RPP", "IME"}, values = @Value(tokenAlias = "IAE", tokenClass = StringToken.class, tokenValue = "with-include-access-events", tail = true))
     private String withIncludeAccessEvents;
 
     @Override
@@ -115,7 +95,8 @@ public class ExportOperation implements Operation {
                         FileUtils.copyInputStreamToFile(entity, target);
                     }
                 } else {
-                    File target = new File("export.zip");
+                    DateTime dateTime = DateTime.now().toDateTime(UTC);
+                    File target = new File(String.format("export_%s.zip", dateTime));
                     FileUtils.copyInputStreamToFile(entity, target);
                     fileUri = target.getAbsolutePath();
                 }
@@ -131,7 +112,8 @@ public class ExportOperation implements Operation {
                         .fetch()
                         .getEntity();
 
-                File target = new File("export.zip");
+                DateTime dateTime = DateTime.now().toDateTime(UTC);
+                File target = new File(String.format("export_%s.zip", dateTime));
                 FileUtils.copyInputStreamToFile(entity, target);
                 fileUri = target.getAbsolutePath();
             }
