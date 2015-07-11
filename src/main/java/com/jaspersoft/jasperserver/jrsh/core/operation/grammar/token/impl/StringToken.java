@@ -1,8 +1,8 @@
 package com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl;
 
+import com.jaspersoft.jasperserver.jrsh.core.completion.impl.JrshStringCompleter;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.AbstractToken;
 import jline.console.completer.Completer;
-import jline.console.completer.StringsCompleter;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
@@ -19,7 +19,7 @@ public class StringToken extends AbstractToken {
 
     @Override
     public Completer getCompleter() {
-        return new StringsCompleter(value);
+        return new JrshStringCompleter(value);
     }
 
     @Override

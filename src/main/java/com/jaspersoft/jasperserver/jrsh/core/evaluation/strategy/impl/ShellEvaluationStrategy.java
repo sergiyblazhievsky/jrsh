@@ -4,7 +4,7 @@ import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jrsh.core.common.ConsoleBuilder;
 import com.jaspersoft.jasperserver.jrsh.core.common.Script;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
-import com.jaspersoft.jasperserver.jrsh.core.completion.CompleterBuilder;
+import com.jaspersoft.jasperserver.jrsh.core.completion.JrshCompleterBuilder;
 import com.jaspersoft.jasperserver.jrsh.core.completion.JrshCompletionHandler;
 import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.AbstractEvaluationStrategy;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
@@ -101,7 +101,7 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
     }
 
     protected Completer getCompleter() {
-        CompleterBuilder completerBuilder = new CompleterBuilder();
+        JrshCompleterBuilder completerBuilder = new JrshCompleterBuilder();
         for (Operation operation : OperationFactory.createOperationsByAvailableTypes()) {
             Grammar grammar = OperationGrammarParser.parse(operation);
             completerBuilder.withOperationGrammar(grammar);

@@ -10,18 +10,18 @@ import jline.console.completer.NullCompleter;
 
 import java.util.List;
 
-public class CompleterBuilder { // Builder? Really?
+public class JrshCompleterBuilder { // Builder... really?!
 
     private AggregateCompleter aggregator;
 
-    public CompleterBuilder() {
+    public JrshCompleterBuilder() {
         this.aggregator = new AggregateCompleter();
     }
 
     //
     // Need refactoring
     //
-    public CompleterBuilder withOperationGrammar(Grammar grammar) {
+    public JrshCompleterBuilder withOperationGrammar(Grammar grammar) {
         List<Rule> rules = grammar.getRules();
         ArgumentCompleter ruleCompleter = new ArgumentCompleter();
         for (Rule rule : rules) {

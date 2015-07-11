@@ -3,19 +3,22 @@ package com.jaspersoft.jasperserver.jrsh.core.completion.impl;
 import com.google.common.base.Preconditions;
 import jline.console.completer.Completer;
 import jline.internal.Configuration;
+import lombok.extern.log4j.Log4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.io.File;
 import java.util.List;
 
-public class FileCompleter implements Completer {
+@Log4j
+public class JrshFileCompleter implements Completer {
     private String root;
 
-    public int complete(String buffer, final int cursor, final List<CharSequence> candidates) {
+    public int complete(String buffer, int cursor, List<CharSequence> candidates) {
 
-        if (cursor < buffer.length()) {
-            return -1;
+        if (buffer != null && cursor < buffer.length()) {
+            candidates.add("");
+            return buffer.length();
         }
 
         if (SystemUtils.IS_OS_WINDOWS) {

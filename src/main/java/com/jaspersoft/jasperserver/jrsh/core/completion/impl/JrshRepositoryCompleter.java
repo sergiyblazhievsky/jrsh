@@ -19,13 +19,22 @@ import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.Res
 import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter.RECURSIVE;
 
 // FIXME: Need refactoring
-public class RepositoryCompleter implements Completer {
+public class JrshRepositoryCompleter implements Completer {
 
     public static int uniqueId = 0;
     public static List<CharSequence> bufCandidates = new ArrayList<CharSequence>();
 
     @Override
     public int complete(String buffer, int cursor, List<CharSequence> candidates) {
+        //
+        // prevent completion when user move cursor back
+        // and press Tab key
+        //
+        if (buffer != null && cursor < buffer.length()) {
+            candidates.add("");
+            return buffer.length();
+        }
+
         if (uniqueId != 0) {
             if (uniqueId == hashCode()) {
                 if (buffer == null || buffer.isEmpty()) {
