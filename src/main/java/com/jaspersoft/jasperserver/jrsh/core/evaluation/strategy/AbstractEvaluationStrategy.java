@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public abstract class AbstractEvaluationStrategy implements EvaluationStrategy {
-
     protected OperationParser parser;
 
     public AbstractEvaluationStrategy() {

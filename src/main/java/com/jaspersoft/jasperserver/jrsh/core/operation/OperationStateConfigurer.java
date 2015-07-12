@@ -14,11 +14,10 @@ import java.util.List;
 
 public class OperationStateConfigurer {
 
-    public static void configure(Operation operation,
-                                 List<Token> ruleTokens,
-                                 List<String> inputTokens) {
+    public static void configure(Operation operation, List<Token> ruleTokens, List<String> inputTokens) {
         val clazz = operation.getClass();
         Field[] fields = clazz.getDeclaredFields();
+
         for (Field field : fields) {
             Parameter param = field.getAnnotation(Parameter.class);
             if (param != null) {
@@ -27,8 +26,7 @@ public class OperationStateConfigurer {
                     String alias = value.tokenAlias();
                     int idx = getTokenIndex(ruleTokens, alias);
                     //
-                    // It's a validation
-                    // FIXME: move it to somewhere else in separate class
+                    // In fact it is actually a validation. FIXME: move it to the separate class!
                     //
                     if (idx >= 0) {
                         field.setAccessible(true);
@@ -39,11 +37,9 @@ public class OperationStateConfigurer {
                         try {
                             setter.invoke(operation, inputTokens.get(idx));
                         } catch (Exception err) {
-                            //
                             // Reflection wraps any custom exceptions,
                             // however we can get them through the cause
-                            //
-                            checkErrorType(err);
+                            rethrowIfExceptionHasProperType(err);
                         }
                         field.setAccessible(false);
                     }
@@ -52,7 +48,11 @@ public class OperationStateConfigurer {
         }
     }
 
-    protected static void checkErrorType(Exception err) {
+    //---------------------------------------------------------------------
+    // Helper methods
+    //---------------------------------------------------------------------
+
+    protected static void rethrowIfExceptionHasProperType(Exception err) {
         Throwable cause = err.getCause();
         if (OperationParseException.class.isAssignableFrom(cause.getClass())) {
             throw (RuntimeException) cause;

@@ -38,13 +38,6 @@ public class ConsoleBuilder {
         return this;
     }
 
-    /*
-    public ConsoleBuilder withHistory(PersistentHistory history) {
-        console.setHistory(history);
-        return this;
-    }
-    */
-
     public ConsoleReader build() {
         return console;
     }

@@ -2,14 +2,13 @@ package com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.impl;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jrsh.core.common.ConsoleBuilder;
-import com.jaspersoft.jasperserver.jrsh.core.common.Script;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
 import com.jaspersoft.jasperserver.jrsh.core.completion.JrshCompleterBuilder;
 import com.jaspersoft.jasperserver.jrsh.core.completion.JrshCompletionHandler;
 import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.AbstractEvaluationStrategy;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.OperationFactory;
-import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult;
+import com.jaspersoft.jasperserver.jrsh.core.operation.result.OperationResult;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Grammar;
 import com.jaspersoft.jasperserver.jrsh.core.operation.impl.LoginOperation;
@@ -22,9 +21,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.IOException;
+import java.util.List;
 
-import static com.jaspersoft.jasperserver.jrsh.core.operation.ResultCode.FAILED;
-import static com.jaspersoft.jasperserver.jrsh.core.operation.ResultCode.INTERRUPTED;
+import static com.jaspersoft.jasperserver.jrsh.core.operation.result.ResultCode.FAILED;
+import static com.jaspersoft.jasperserver.jrsh.core.operation.result.ResultCode.INTERRUPTED;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -42,8 +42,8 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
     }
 
     @Override
-    public OperationResult eval(Script script) {
-        String line = script.getSource().get(0);
+    public OperationResult eval(List<String> source) {
+        String line = source.get(0);
         Operation operation = null;
         OperationResult result = null;
         while (true) {
@@ -60,9 +60,14 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
                     result = operation.execute(session);
                     result.setPrevious(temp);
                     print(result.getResultMessage());
+
                     if (result.getResultCode() == FAILED) {
                         if (operation instanceof LoginOperation) {
-                            return new OperationResult(result.getResultMessage(), FAILED, operation, null);
+                            return new OperationResult(
+                                    result.getResultMessage(),
+                                    FAILED,
+                                    operation,
+                                    null);
                         } else {
                             Master master = operation.getClass().getAnnotation(Master.class);
                             String usage = master.usage();
@@ -73,7 +78,11 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
                 line = null;
             } catch (UserInterruptException unimportant) {
                 logout();
-                return new OperationResult("Interrupted by user", INTERRUPTED, operation, null);
+                return new OperationResult(
+                        "Interrupted by user",
+                        INTERRUPTED,
+                        operation,
+                        null);
             } catch (OperationParseException err) {
                 try {
                     print(err.getMessage());

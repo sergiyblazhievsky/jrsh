@@ -1,5 +1,6 @@
-package com.jaspersoft.jasperserver.jrsh.core.operation;
+package com.jaspersoft.jasperserver.jrsh.core.operation.result;
 
+import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.Accessors;

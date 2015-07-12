@@ -6,7 +6,7 @@ import com.jaspersoft.jasperserver.jaxrs.client.apiadapters.importexport.exports
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.dto.importexport.StateDto;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
-import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult;
+import com.jaspersoft.jasperserver.jrsh.core.operation.result.OperationResult;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Parameter;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Value;
@@ -22,8 +22,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.jaspersoft.jasperserver.jrsh.core.operation.ResultCode.FAILED;
-import static com.jaspersoft.jasperserver.jrsh.core.operation.ResultCode.SUCCESS;
+import static com.jaspersoft.jasperserver.jrsh.core.operation.result.ResultCode.FAILED;
+import static com.jaspersoft.jasperserver.jrsh.core.operation.result.ResultCode.SUCCESS;
 import static java.lang.String.format;
 import static org.joda.time.DateTimeZone.UTC;
 

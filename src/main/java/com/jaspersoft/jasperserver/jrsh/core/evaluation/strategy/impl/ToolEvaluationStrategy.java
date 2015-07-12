@@ -1,26 +1,25 @@
 package com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.impl;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
-import com.jaspersoft.jasperserver.jrsh.core.common.Script;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
 import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.AbstractEvaluationStrategy;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
-import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult;
+import com.jaspersoft.jasperserver.jrsh.core.operation.result.OperationResult;
 
-import java.util.Collection;
+import java.util.List;
 
 import static com.jaspersoft.jasperserver.jrsh.core.operation.OperationFactory.createOperationByName;
-import static com.jaspersoft.jasperserver.jrsh.core.operation.ResultCode.FAILED;
+import static com.jaspersoft.jasperserver.jrsh.core.operation.result.ResultCode.FAILED;
 
 public class ToolEvaluationStrategy extends AbstractEvaluationStrategy {
 
     @Override
-    public OperationResult eval(Script script) {
-        Collection<String> operations = script.getSource();
+    public OperationResult eval(List<String> source) {
         Operation operationInstance = null;
         OperationResult result = null;
+
         try {
-            for (String operation : operations) {
+            for (String operation : source) {
                 Session session = SessionFactory.getSharedSession();
                 operationInstance = parser.parse(operation);
                 OperationResult temp = result;
@@ -50,5 +49,4 @@ public class ToolEvaluationStrategy extends AbstractEvaluationStrategy {
         }
         return result;
     }
-
 }

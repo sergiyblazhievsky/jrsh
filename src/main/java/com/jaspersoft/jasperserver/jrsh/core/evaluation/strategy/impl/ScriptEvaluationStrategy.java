@@ -2,12 +2,11 @@ package com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.impl;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jrsh.core.common.ConsoleBuilder;
-import com.jaspersoft.jasperserver.jrsh.core.common.Script;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
 import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.AbstractEvaluationStrategy;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
-import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult;
-import com.jaspersoft.jasperserver.jrsh.core.operation.ResultCode;
+import com.jaspersoft.jasperserver.jrsh.core.operation.result.OperationResult;
+import com.jaspersoft.jasperserver.jrsh.core.operation.result.ResultCode;
 import jline.console.ConsoleReader;
 
 import java.io.IOException;
@@ -26,8 +25,7 @@ public class ScriptEvaluationStrategy extends AbstractEvaluationStrategy {
     }
 
     @Override
-    public OperationResult eval(Script script) {
-        List<String> source = script.getSource();
+    public OperationResult eval(List<String> source) {
         OperationResult result = null;
         Operation operation = null;
         try {

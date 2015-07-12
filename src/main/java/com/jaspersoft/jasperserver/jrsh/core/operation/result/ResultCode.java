@@ -1,4 +1,4 @@
-package com.jaspersoft.jasperserver.jrsh.core.operation;
+package com.jaspersoft.jasperserver.jrsh.core.operation.result;
 
 public enum ResultCode {
     SUCCESS(0),

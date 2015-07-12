@@ -4,14 +4,8 @@ import com.jaspersoft.jasperserver.jaxrs.client.core.AuthenticationCredentials;
 import com.jaspersoft.jasperserver.jaxrs.client.core.RestClientConfiguration;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.core.SessionStorage;
-import com.jaspersoft.jasperserver.jrsh.core.common.config.ClientConnectionConfig;
-import com.jaspersoft.jasperserver.jrsh.core.common.config.Timeout;
-import org.yaml.snakeyaml.Yaml;
-
-import java.io.InputStream;
 
 public class SessionFactory {
-
     private static Session SHARED_SESSION;
 
     public static Session getSharedSession() {
@@ -36,11 +30,6 @@ public class SessionFactory {
                 ? url
                 : "http://".concat(url);
 
-        Yaml yml = new Yaml();
-        InputStream file = SessionFactory.class.getClassLoader().getResourceAsStream("client.yml");
-        ClientConnectionConfig config = yml.loadAs(file, ClientConnectionConfig.class);
-        Timeout timeout = config.getTimeout();
-
         SHARED_SESSION = new Session(
                 new SessionStorage(
                         new RestClientConfiguration(url),
@@ -49,12 +38,12 @@ public class SessionFactory {
         SHARED_SESSION
                 .getStorage()
                 .getConfiguration()
-                .setConnectionTimeout(timeout.getConnectionTimeout());
+                .setConnectionTimeout(4500);
 
         SHARED_SESSION
                 .getStorage()
                 .getConfiguration()
-                .setReadTimeout(timeout.getReadTimeout());
+                .setReadTimeout(4500);
 
         return SHARED_SESSION;
     }
