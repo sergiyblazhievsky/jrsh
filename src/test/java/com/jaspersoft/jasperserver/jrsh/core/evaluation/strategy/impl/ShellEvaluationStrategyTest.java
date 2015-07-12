@@ -1,16 +1,18 @@
 package com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.impl;
 
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
-import com.jaspersoft.jasperserver.jrsh.core.common.Script;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
-import com.jaspersoft.jasperserver.jrsh.core.operation.result.OperationResult;
-import com.jaspersoft.jasperserver.jrsh.core.operation.result.ResultCode;
 import com.jaspersoft.jasperserver.jrsh.core.operation.impl.ExportOperation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.impl.LoginOperation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.OperationParser;
+import com.jaspersoft.jasperserver.jrsh.core.operation.result.OperationResult;
+import com.jaspersoft.jasperserver.jrsh.core.operation.result.ResultCode;
 import jline.console.ConsoleReader;
 import jline.console.UserInterruptException;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -18,6 +20,7 @@ import org.mockito.Spy;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 public class ShellEvaluationStrategyTest {
 
@@ -41,7 +44,7 @@ public class ShellEvaluationStrategyTest {
     @Test public void shouldExecuteTwoOperationsInShellModeAndInterruptItDueToTheExitKeyBeenPressed() throws Exception {
 
         // Given
-        Script script = new Script(Collections.singletonList("login superuser%superuser@localhost:8080/jrs-test"));
+        List<String> script = Collections.singletonList("login superuser%superuser@localhost:8080/jrs-test");
         Mockito.doReturn("export all")
                 .doThrow(new UserInterruptException("Let's pretend that we've pressed `Ctrl+C` key"))
                 .when(consoleReaderMock)
@@ -80,7 +83,7 @@ public class ShellEvaluationStrategyTest {
     @Test public void shouldExitShellModeIfLoginFailed() throws IOException {
 
         // Given
-        Script script = new Script(Collections.singletonList("login wrong%credentials@localhost:8080/jrs-test"));
+        List<String> script = Collections.singletonList("login wrong%credentials@localhost:8080/jrs-test");
 
         Mockito.doReturn(loginOperationMock).when(operationParserMock).parse("login wrong%credentials@localhost:8080/jrs-test");
         Mockito.doReturn(failedLoginOperationResultMock).when(loginOperationMock).execute(sessionMock);
