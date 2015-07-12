@@ -47,11 +47,11 @@ public class OperationFactory {
     }
 
     public static Set<Operation> createOperationsByAvailableTypes() {
-        val setOfOpearation = new HashSet<Operation>();
+        val setOfOperations = new HashSet<Operation>();
         for (val type : operations.values()) {
-            setOfOpearation.add(createInstance(type));
+            setOfOperations.add(createInstance(type));
         }
-        return setOfOpearation;
+        return setOfOperations;
     }
 
     protected static Operation createInstance(Class<? extends Operation> operationType) {
@@ -67,7 +67,6 @@ public class OperationFactory {
         Yaml yml = new Yaml();
 
         InputStream scanner = OperationFactory.class.getClassLoader().getResourceAsStream("scanner.yml");
-
         MetadataScannerConfig config = yml.loadAs(scanner, MetadataScannerConfig.class);
         List<String> packagesToScan = config.getPackagesToScan();
         List<String> classes = config.getClasses();

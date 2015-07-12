@@ -3,17 +3,14 @@ package com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.impl;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jrsh.core.common.ConsoleBuilder;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
-import com.jaspersoft.jasperserver.jrsh.core.completion.JrshCompleterBuilder;
+import com.jaspersoft.jasperserver.jrsh.core.completion.JrshCompleterFactory;
 import com.jaspersoft.jasperserver.jrsh.core.completion.JrshCompletionHandler;
 import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.AbstractEvaluationStrategy;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
-import com.jaspersoft.jasperserver.jrsh.core.operation.OperationFactory;
-import com.jaspersoft.jasperserver.jrsh.core.operation.result.OperationResult;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
-import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.Grammar;
 import com.jaspersoft.jasperserver.jrsh.core.operation.impl.LoginOperation;
-import com.jaspersoft.jasperserver.jrsh.core.operation.parser.OperationGrammarParser;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationParseException;
+import com.jaspersoft.jasperserver.jrsh.core.operation.result.OperationResult;
 import jline.console.ConsoleReader;
 import jline.console.UserInterruptException;
 import jline.console.completer.Completer;
@@ -104,18 +101,12 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
         try {
             console.println(message);
             console.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 
     protected Completer getCompleter() {
-        JrshCompleterBuilder completerBuilder = new JrshCompleterBuilder();
-        for (Operation operation : OperationFactory.createOperationsByAvailableTypes()) {
-            Grammar grammar = OperationGrammarParser.parse(operation);
-            completerBuilder.withOperationGrammar(grammar);
-        }
-        return completerBuilder.build();
+        return JrshCompleterFactory.create();
     }
 
     protected void logout() {

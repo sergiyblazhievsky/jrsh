@@ -28,40 +28,33 @@ import static java.lang.String.format;
 import static org.joda.time.DateTimeZone.UTC;
 
 @Data
-@Master(name = "export", usage = "export [context] [parameters]", description = "Operation <export> is used to download JRS resources")
+@Master(name = "export",
+        usage = "export [context] [parameters]",
+        description = "Operation <export> is used to download JRS resources")
 public class ExportOperation implements Operation {
 
-    public static final String FORMATTED_OK_MSG = "Export status: Success (File has been created: %s)";
-    public static final String FAILURE_MSG = "Export failed";
-    public static final String FORMATTED_FAILURE_MSG = "Export failed (%s)";
+    private static final String FORMATTED_OK_MSG = "Export status: Success (File has been created: %s)";
+    private static final String FAILURE_MSG = "Export failed";
+    private static final String FORMATTED_FAILURE_MSG = "Export failed (%s)";
 
     @Parameter(mandatory = true, dependsOn = "export", values = {@Value(tokenAlias = "RE", tokenClass = StringToken.class, tokenValue = "repository")})
     private String context;
-
     @Parameter(mandatory = true, dependsOn = "export", ruleGroups = "BRANCH", values = @Value(tokenAlias = "OL", tokenClass = StringToken.class, tokenValue = "all", tail = true))
     private String all;
-
     @Parameter(mandatory = true, dependsOn = "RE", values = @Value(tokenAlias = "RP", tokenClass = RepositoryToken.class, tail = true))
     private String repositoryPath;
-
     @Parameter(dependsOn = "RP", values = @Value(tokenAlias = "->", tokenClass = StringToken.class, tokenValue = "to"))
     private String to;
-
     @Parameter(dependsOn = "->", values = @Value(tokenAlias = "F", tokenClass = FileNameToken.class, tail = true))
     private String fileUri;
-
     @Parameter(dependsOn = {"F", "RP", "IUR", "IME", "RPP", "IAE"}, values = @Value(tokenAlias = "UR", tokenClass = StringToken.class, tokenValue = "with-user-roles", tail = true))
     private String withUserRoles;
-
     @Parameter(dependsOn = {"F", "RP", "UR", "IME", "RPP", "IAE"}, values = @Value(tokenAlias = "IUR", tokenClass = StringToken.class, tokenValue = "with-include-audit-events", tail = true))
     private String withIncludeAuditEvents;
-
     @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "RPP", "IAE"}, values = @Value(tokenAlias = "IME", tokenClass = StringToken.class, tokenValue = "with-include-monitoring-events", tail = true))
     private String withIncludeMonitoringEvents;
-
     @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "IME", "IAE"}, values = @Value(tokenAlias = "RPP", tokenClass = StringToken.class, tokenValue = "with-repository-permissions", tail = true))
     private String withRepositoryPermissions;
-
     @Parameter(dependsOn = {"F", "RP", "UR", "IUR", "RPP", "IME"}, values = @Value(tokenAlias = "IAE", tokenClass = StringToken.class, tokenValue = "with-include-access-events", tail = true))
     private String withIncludeAccessEvents;
 

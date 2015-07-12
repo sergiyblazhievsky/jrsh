@@ -16,13 +16,15 @@ import static com.jaspersoft.jasperserver.jrsh.core.operation.result.ResultCode.
 import static java.lang.String.format;
 
 @Data
-@Master(name = "login", usage = "login [username]|[organization]%[password]@[url]", description = "Operation <login> is used to login into JRS")
+@Master(name = "login",
+        usage = "login [username]|[organization]%[password]@[url]",
+        description = "Operation <login> is used to login into JRS")
 public class LoginOperation implements Operation {
 
-    public static final String OK_MSG = "You have logged in";
-    public static final String FORMATTED_OK_MSG = "You have logged in as %s";
-    public static final String FAILURE_MSG = "Login failed";
-    public static final String FORMATTED_FAILURE_MSG = "Login failed (%s)";
+    private static final String OK_MSG = "You have logged in";
+    private static final String FORMATTED_OK_MSG = "You have logged in as %s";
+    private static final String FAILURE_MSG = "Login failed";
+    private static final String FORMATTED_FAILURE_MSG = "Login failed (%s)";
 
     private String server;
     private String username;

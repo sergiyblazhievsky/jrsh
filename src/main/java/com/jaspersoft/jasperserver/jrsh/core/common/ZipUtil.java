@@ -13,6 +13,10 @@ import java.util.zip.ZipOutputStream;
 import static java.io.File.separator;
 import static java.io.File.separatorChar;
 
+/**
+ * Use org.zeroturnaround.zip.ZipUtil instead.
+ */
+@Deprecated
 public class ZipUtil {
 
     public static File pack(String directory) {

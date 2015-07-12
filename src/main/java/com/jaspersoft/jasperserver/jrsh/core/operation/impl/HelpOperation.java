@@ -6,6 +6,7 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.OperationFactory;
 import com.jaspersoft.jasperserver.jrsh.core.operation.result.OperationResult;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.Set;
@@ -13,17 +14,20 @@ import java.util.Set;
 import static com.jaspersoft.jasperserver.jrsh.core.operation.result.ResultCode.SUCCESS;
 
 @Data
-@Master(name = "help", tail = true, usage = "help [operation]", description = "Operation <help> demonstrates how you can use cli")
+@Master(name = "help", tail = true,
+        usage = "help [operation]",
+        description = "Operation <help> demonstrates how you can use cli")
 public class HelpOperation implements Operation {
 
-    public static final String PREFIX = "   ";
+    private static final String PREFIX = StringUtils.repeat(" ", 3);
 
     @Override
     public OperationResult execute(Session session) {
         StringBuilder builder = new StringBuilder("\nHow to use\n");
-        Set<Operation> operations = OperationFactory.createOperationsByAvailableTypes();
-        for (Operation operation : operations) {
+        Set<Operation> operations = OperationFactory
+                .createOperationsByAvailableTypes();
 
+        for (Operation operation : operations) {
             Master master = operation.getClass().getAnnotation(Master.class);
 
             Field field;
@@ -44,6 +48,10 @@ public class HelpOperation implements Operation {
             }
         }
 
-        return new OperationResult(builder.toString(), SUCCESS, this, null);
+        return new OperationResult(
+                builder.toString(),
+                SUCCESS,
+                this,
+                null);
     }
 }
