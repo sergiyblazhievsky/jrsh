@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.jaspersoft</groupId>
     <artifactId>jrsh</artifactId>
-    <version>2.0.3-SNAPSHOT</version>
+    <version>2.0.4-SNAPSHOT</version>
 
     <properties>
         <!-- default
@@ -27,6 +27,11 @@
             <id>jaspersoft</id>
             <name>jaspersoft-releases</name>
             <url>http://jaspersoft.artifactoryonline.com/jaspersoft/simple/jrs-ce-releases/</url>
+        </repository>
+        <repository>
+            <id>jline</id>
+            <name>JLine</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
     </repositories>
 
@@ -62,7 +67,7 @@
         <dependency>
             <groupId>jline</groupId>
             <artifactId>jline</artifactId>
-            <version>2.12</version>
+            <version>2.13-SNAPSHOT</version>
         </dependency>
 
         <!-- lombok -->
