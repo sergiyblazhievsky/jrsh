@@ -7,10 +7,6 @@ import jline.console.completer.CompletionHandler;
 
 import java.io.IOException;
 
-/**
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
 public class ConsoleBuilder {
     private ConsoleReader console;
 
@@ -41,13 +37,6 @@ public class ConsoleBuilder {
         console.setHandleUserInterrupt(true);
         return this;
     }
-
-    /*
-    public ConsoleBuilder withHistory(PersistentHistory history) {
-        console.setHistory(history);
-        return this;
-    }
-    */
 
     public ConsoleReader build() {
         return console;

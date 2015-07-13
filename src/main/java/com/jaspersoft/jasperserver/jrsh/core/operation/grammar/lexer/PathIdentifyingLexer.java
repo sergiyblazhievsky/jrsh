@@ -3,20 +3,8 @@ package com.jaspersoft.jasperserver.jrsh.core.operation.grammar.lexer;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Alexander Krasnyanskiy
- */
 public class PathIdentifyingLexer implements Lexer {
 
-    /**
-     * Converts a line into tokens considering spaces
-     * in file path.
-     *
-     * Example: $> export repository "/public" to "/Users/alex/My\ folder/file.zip"
-     *
-     * @param line characters
-     * @return tokens
-     */
     @Override
     public List<String> convert(String line) {
         ArrayList<String> tokens = new ArrayList<String>();

@@ -1,17 +1,13 @@
 package com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl;
 
 import com.google.common.io.Files;
-import com.jaspersoft.jasperserver.jrsh.core.completion.impl.FileCompleter;
+import com.jaspersoft.jasperserver.jrsh.core.completion.impl.JrshFileCompleter;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.AbstractToken;
 import jline.console.completer.Completer;
 import lombok.EqualsAndHashCode;
 
 import java.io.File;
 
-/**
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
 @EqualsAndHashCode(callSuper = true)
 public class FileNameToken extends AbstractToken {
 
@@ -21,7 +17,7 @@ public class FileNameToken extends AbstractToken {
 
     @Override
     public Completer getCompleter() {
-        return new FileCompleter();
+        return new JrshFileCompleter();
     }
 
     @Override

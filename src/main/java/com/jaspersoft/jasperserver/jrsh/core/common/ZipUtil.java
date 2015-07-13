@@ -14,8 +14,9 @@ import static java.io.File.separator;
 import static java.io.File.separatorChar;
 
 /**
- * @author Alexander Krasnyanskiy
+ * Use org.zeroturnaround.zip.ZipUtil instead.
  */
+@Deprecated
 public class ZipUtil {
 
     public static File pack(String directory) {
@@ -47,8 +48,7 @@ public class ZipUtil {
         if (file.exists()) {
             if (file.isDirectory()) {
                 if (!folder.equalsIgnoreCase(baseFolder)) {
-                    String entryName = folder.substring(baseFolder.length() + 1, folder.length())
-                            + separatorChar;
+                    String entryName = folder.substring(baseFolder.length() + 1, folder.length()) + separatorChar;
                     ZipEntry zipEntry = new ZipEntry(entryName);
                     zos.putNextEntry(zipEntry);
                 }
@@ -77,5 +77,3 @@ public class ZipUtil {
         }
     }
 }
-
-

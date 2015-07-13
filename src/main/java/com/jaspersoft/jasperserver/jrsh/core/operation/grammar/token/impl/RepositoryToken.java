@@ -1,14 +1,10 @@
 package com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl;
 
-import com.jaspersoft.jasperserver.jrsh.core.completion.impl.RepositoryCompleter;
+import com.jaspersoft.jasperserver.jrsh.core.completion.impl.JrshRepositoryCompleter;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.AbstractToken;
 import jline.console.completer.Completer;
 import lombok.EqualsAndHashCode;
 
-/**
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
 @EqualsAndHashCode(callSuper = true)
 public class RepositoryToken extends AbstractToken {
 
@@ -18,7 +14,7 @@ public class RepositoryToken extends AbstractToken {
 
     @Override
     public Completer getCompleter() {
-        return new RepositoryCompleter();
+        return new JrshRepositoryCompleter();
     }
 
     @Override

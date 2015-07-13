@@ -3,8 +3,8 @@ package com.jaspersoft.jasperserver.jrsh.core.operation.impl;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jaxrs.client.core.exceptions.AuthenticationFailedException;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
-import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult;
-import com.jaspersoft.jasperserver.jrsh.core.operation.OperationResult.ResultCode;
+import com.jaspersoft.jasperserver.jrsh.core.operation.result.OperationResult;
+import com.jaspersoft.jasperserver.jrsh.core.operation.result.ResultCode;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,17 +25,15 @@ public class LoginOperationTest {
 
     private LoginOperation login;
 
-    @Mock
-    private Session sessionMock;
+    @Mock private Session sessionMock;
 
-    @Before
-    public void before() {
+    @Before public void before() {
         MockitoAnnotations.initMocks(this);
         login = new LoginOperation();
     }
 
-    @Test
-    public void shouldLoginAndReturnCorrectOperationResult() {
+    @Test public void shouldLoginAndReturnCorrectOperationResult() {
+
         // Given
         login.setUsername("superuser");
         login.setPassword("superuser");
@@ -48,7 +46,6 @@ public class LoginOperationTest {
         // When
         OperationResult result = login.execute(null);
 
-
         // Then
         // Verify that the createSharedSession method was actually called
         PowerMockito.verifyStatic();
@@ -59,8 +56,8 @@ public class LoginOperationTest {
         Assert.assertEquals(login, result.getContext());
     }
 
-    @Test
-    public void shouldFailLoginDueToTheWrongCredentials() {
+    @Test public void shouldFailLoginDueToTheWrongCredentials() {
+
         // Given
         login.setUsername("wrongUsername");
         login.setPassword("wrongPassword");
@@ -82,8 +79,7 @@ public class LoginOperationTest {
         Assert.assertEquals(login, result.getContext());
     }
 
-    @Test
-    public void shouldFailWithProcessingExceptionAndReturnCorrectOperationResult() {
+    @Test public void shouldFailWithProcessingExceptionAndReturnCorrectOperationResult() {
         // Given
         login.setUsername("superuser");
         login.setPassword("superuser");
@@ -105,8 +101,7 @@ public class LoginOperationTest {
         Assert.assertEquals(login, result.getContext());
     }
 
-    @After
-    public void after() {
+    @After public void after() {
         Mockito.reset(sessionMock);
         login = null;
     }

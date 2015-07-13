@@ -1,17 +1,23 @@
 package com.jaspersoft.jasperserver.jrsh.runner;
 
-import com.jaspersoft.jasperserver.jrsh.core.common.ArgumentConverter;
+import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.EvaluationStrategy;
 import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.EvaluationStrategyFactory;
-import lombok.val;
+import com.jaspersoft.jasperserver.jrsh.core.operation.result.OperationResult;
 
-/**
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
+import static com.jaspersoft.jasperserver.jrsh.core.common.ArgumentUtil.convertToScript;
+
 public class App {
     public static void main(String[] args) {
-        val script = ArgumentConverter.convertToScript(args);
-        val strategy = EvaluationStrategyFactory.getStrategy(args);
-        strategy.eval(script);
+        EvaluationStrategy strategy = EvaluationStrategyFactory
+                .getStrategy(args);
+
+        OperationResult result = strategy.eval(
+                convertToScript(args)
+        );
+
+        System.exit(result
+                        .getResultCode()
+                        .getValue()
+        );
     }
 }

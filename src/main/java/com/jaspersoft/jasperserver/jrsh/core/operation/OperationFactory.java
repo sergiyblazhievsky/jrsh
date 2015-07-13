@@ -1,6 +1,6 @@
 package com.jaspersoft.jasperserver.jrsh.core.operation;
 
-import com.jaspersoft.jasperserver.jrsh.core.common.config.MetadataScannerConfig;
+import com.jaspersoft.jasperserver.jrsh.core.common.MetadataScannerConfig;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
 import com.jaspersoft.jasperserver.jrsh.core.operation.parser.exception.OperationNotFoundException;
 import lombok.extern.log4j.Log4j;
@@ -13,36 +13,33 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-/**
- * @author Alexander Krasnyanskiy
- * @since 2.0
- */
+import static java.lang.String.format;
+
 @Log4j
 public class OperationFactory {
 
-    public static final  String BASE_PACKAGE = "com.jaspersoft.jasperserver.jrsh.core.operation.impl";
-    private static final Map<String, Class<? extends Operation>> AVAILABLE_OPERATIONS;
+    private static final Map<String, Class<? extends Operation>> operations;
+    public static final String basePackage = "com.jaspersoft.jasperserver.jrsh.core.operation.impl";
 
     static {
-        AVAILABLE_OPERATIONS = new HashMap<String, Class<? extends Operation>>();
-        val types = getOperationTypes();
-
-        for (val operationType : types) {
+        operations = new HashMap<String, Class<? extends Operation>>();
+        for (val operationType : getOperationTypes()) {
             Master annotation = operationType.getAnnotation(Master.class);
-            //
-            // Setup operation registry map
-            //
             if (annotation != null) {
                 String operationName = annotation.name();
-                AVAILABLE_OPERATIONS.put(operationName, operationType);
+                operations.put(operationName, operationType);
             }
         }
     }
 
     public static Operation createOperationByName(String operationName) {
-        val operationType = AVAILABLE_OPERATIONS.get(operationName);
+        val operationType = operations.get(operationName);
         if (operationType == null) {
             throw new OperationNotFoundException();
         }
@@ -50,35 +47,30 @@ public class OperationFactory {
     }
 
     public static Set<Operation> createOperationsByAvailableTypes() {
-        HashSet<Operation> set = new HashSet<Operation>();
-        for (val type : AVAILABLE_OPERATIONS.values()) {
-            set.add(createInstance(type));
+        val setOfOperations = new HashSet<Operation>();
+        for (val type : operations.values()) {
+            setOfOperations.add(createInstance(type));
         }
-        return set;
+        return setOfOperations;
     }
 
     protected static Operation createInstance(Class<? extends Operation> operationType) {
-        Operation instance;
         try {
-            instance = operationType.newInstance();
-        } catch (Exception e) {
-            throw new CouldNotCreateOperationInstance();
+            return operationType.newInstance();
+        } catch (Exception err) {
+            throw new CouldNotCreateOperationInstance(err);
         }
-        return instance;
     }
 
     protected static Set<Class<? extends Operation>> getOperationTypes() {
         val operationTypes = new HashSet<Class<? extends Operation>>();
-        //
-        // Read YML scanner config
-        //
         Yaml yml = new Yaml();
-        InputStream file = OperationFactory.class.getClassLoader().getResourceAsStream("scanner.yml");
-        MetadataScannerConfig config = yml.loadAs(file, MetadataScannerConfig.class);
 
+        InputStream scanner = OperationFactory.class.getClassLoader().getResourceAsStream("scanner.yml");
+        MetadataScannerConfig config = yml.loadAs(scanner, MetadataScannerConfig.class);
         List<String> packagesToScan = config.getPackagesToScan();
         List<String> classes = config.getClasses();
-        FilterBuilder filter = new FilterBuilder().includePackage(BASE_PACKAGE);
+        FilterBuilder filter = new FilterBuilder().includePackage(basePackage);
 
         if (packagesToScan != null) {
             for (String aPackage : packagesToScan) {
@@ -91,16 +83,15 @@ public class OperationFactory {
             for (String aClass : classes) {
                 try {
                     Class clz = Class.forName(aClass);
-                    if (!Modifier.isAbstract(clz.getModifiers()) && Operation.class.isAssignableFrom(clz)) {
+                    if (!Modifier.isAbstract(clz.getModifiers())
+                            && Operation.class.isAssignableFrom(clz)) {
                         operationTypes.add(clz);
                     }
                 } catch (ClassNotFoundException ignored) {
                 }
             }
         }
-        //
-        // Scan ClassPath to get operation types
-        //
+
         Reflections ref = new Reflections(new SubTypesScanner(), filter);
         for (val subType : ref.getSubTypesOf(Operation.class)) {
             if (!Modifier.isAbstract(subType.getModifiers())) {
@@ -108,5 +99,11 @@ public class OperationFactory {
             }
         }
         return operationTypes;
+    }
+
+    private static class CouldNotCreateOperationInstance extends RuntimeException {
+        public CouldNotCreateOperationInstance(Exception err) {
+            super(format("Could not create an operation instance (%s)", err.getMessage()));
+        }
     }
 }
