@@ -8,16 +8,8 @@ import static com.jaspersoft.jasperserver.jrsh.core.common.ArgumentUtil.convertT
 
 public class App {
     public static void main(String[] args) {
-        EvaluationStrategy strategy = EvaluationStrategyFactory
-                .getStrategy(args);
-
-        OperationResult result = strategy.eval(
-                convertToScript(args)
-        );
-
-        System.exit(result
-                        .getResultCode()
-                        .getValue()
-        );
+        EvaluationStrategy strategy = EvaluationStrategyFactory.getStrategy(args);
+        OperationResult result = strategy.eval(convertToScript(args));
+        System.exit(result.getResultCode().getValue());
     }
 }
