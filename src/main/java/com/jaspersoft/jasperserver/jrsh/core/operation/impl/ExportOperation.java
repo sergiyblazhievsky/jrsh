@@ -15,6 +15,7 @@ import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.Reposi
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl.StringToken;
 import lombok.Data;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.joda.time.DateTime;
 
 import java.io.File;
@@ -83,6 +84,11 @@ public class ExportOperation implements Operation {
                     if (fileUri != null) {
                         if (fileUri.startsWith("~")) {
                             fileUri = fileUri.replaceFirst("^~", System.getProperty("user.home"));
+
+                            // issue #165 fix
+                            if (!SystemUtils.IS_OS_WINDOWS) {
+                                fileUri = fileUri.replaceAll("\\\\", "");
+                            }
                         }
                         File target = new File(fileUri);
                         FileUtils.copyInputStreamToFile(entity, target);
