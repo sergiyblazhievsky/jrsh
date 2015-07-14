@@ -3,8 +3,8 @@ package com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.impl;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
 import com.jaspersoft.jasperserver.jrsh.core.common.ConsoleBuilder;
 import com.jaspersoft.jasperserver.jrsh.core.common.SessionFactory;
-import com.jaspersoft.jasperserver.jrsh.core.completion.JrshCompleterFactory;
-import com.jaspersoft.jasperserver.jrsh.core.completion.JrshCompletionHandler;
+import com.jaspersoft.jasperserver.jrsh.core.completion.CompleterFactory;
+import com.jaspersoft.jasperserver.jrsh.core.completion.CustomCompletionHandler;
 import com.jaspersoft.jasperserver.jrsh.core.evaluation.strategy.AbstractEvaluationStrategy;
 import com.jaspersoft.jasperserver.jrsh.core.operation.Operation;
 import com.jaspersoft.jasperserver.jrsh.core.operation.annotation.Master;
@@ -32,7 +32,7 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
     public ShellEvaluationStrategy() {
         this.console = new ConsoleBuilder()
                 .withPrompt("$> ")
-                .withHandler(new JrshCompletionHandler())
+                .withHandler(new CustomCompletionHandler())
                 .withInterruptHandling()
                 .withCompleter(getCompleter())
                 .build();
@@ -106,7 +106,7 @@ public class ShellEvaluationStrategy extends AbstractEvaluationStrategy {
     }
 
     protected Completer getCompleter() {
-        return JrshCompleterFactory.create();
+        return CompleterFactory.create();
     }
 
     protected void logout() {

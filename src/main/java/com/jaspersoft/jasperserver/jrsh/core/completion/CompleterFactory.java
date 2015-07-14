@@ -14,7 +14,7 @@ import jline.console.completer.NullCompleter;
 import java.util.List;
 import java.util.Set;
 
-public class JrshCompleterFactory {
+public class CompleterFactory {
 
     public static Completer create() {
         Set<Operation> operations = OperationFactory.createOperationsByAvailableTypes();

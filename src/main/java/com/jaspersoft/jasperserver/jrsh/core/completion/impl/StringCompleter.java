@@ -10,19 +10,19 @@ import java.util.TreeSet;
 
 import static jline.internal.Preconditions.checkNotNull;
 
-public class JrshStringCompleter implements Completer {
+public class StringCompleter implements Completer {
     private final SortedSet<String> strings = new TreeSet<String>();
 
-    public JrshStringCompleter() {
+    public StringCompleter() {
         // empty
     }
 
-    public JrshStringCompleter(final Collection<String> strings) {
+    public StringCompleter(final Collection<String> strings) {
         checkNotNull(strings);
         getStrings().addAll(strings);
     }
 
-    public JrshStringCompleter(final String... strings) {
+    public StringCompleter(final String... strings) {
         this(Arrays.asList(strings));
     }
 

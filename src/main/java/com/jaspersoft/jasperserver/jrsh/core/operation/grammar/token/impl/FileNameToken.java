@@ -1,7 +1,7 @@
 package com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl;
 
 import com.google.common.io.Files;
-import com.jaspersoft.jasperserver.jrsh.core.completion.impl.JrshFileCompleter;
+import com.jaspersoft.jasperserver.jrsh.core.completion.impl.FileCompleter;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.AbstractToken;
 import jline.console.completer.Completer;
 import lombok.EqualsAndHashCode;
@@ -17,7 +17,7 @@ public class FileNameToken extends AbstractToken {
 
     @Override
     public Completer getCompleter() {
-        return new JrshFileCompleter();
+        return new FileCompleter();
     }
 
     @Override

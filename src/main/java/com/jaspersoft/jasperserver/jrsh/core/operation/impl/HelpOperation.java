@@ -14,18 +14,27 @@ import java.util.Set;
 import static com.jaspersoft.jasperserver.jrsh.core.operation.result.ResultCode.SUCCESS;
 
 @Data
-@Master(name = "help", tail = true,
+@Master(name = "help",
+        tail = true,
         usage = "help [operation]",
-        description = "Operation <help> demonstrates how you can use cli")
+        description = "Operation <help> demonstrates how to use cli")
 public class HelpOperation implements Operation {
 
     private static final String PREFIX = StringUtils.repeat(" ", 3);
+    private static final String LF = "\n\n";
 
     @Override
     public OperationResult execute(Session session) {
-        StringBuilder builder = new StringBuilder("\nHow to use\n");
-        Set<Operation> operations = OperationFactory
-                .createOperationsByAvailableTypes();
+        Set<Operation> operations = OperationFactory.createOperationsByAvailableTypes();
+
+        StringBuilder builder = new StringBuilder("*** HOW TO USE ***")
+                .append(LF)
+                .append("To start work with 'jrsh' in shell mode you need to specify server: ")
+                .append(LF)
+                .append("   $ jrsh username%password@url")
+                .append(LF)
+                .append("Available operations:")
+                .append(LF);
 
         for (Operation operation : operations) {
             Master master = operation.getClass().getAnnotation(Master.class);
@@ -44,7 +53,7 @@ public class HelpOperation implements Operation {
                         .append(PREFIX)
                         .append("usage: ")
                         .append(usage)
-                        .append("\n\n");
+                        .append(LF);
             }
         }
 

@@ -11,7 +11,7 @@ import java.io.File;
 import java.util.List;
 
 @Log4j
-public class JrshFileCompleter implements Completer {
+public class FileCompleter implements Completer {
     private String root;
 
     public int complete(String buffer, int cursor, List<CharSequence> candidates) {

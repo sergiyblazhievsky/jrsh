@@ -2,12 +2,15 @@ package com.jaspersoft.jasperserver.jrsh.core.completion;
 
 import jline.console.ConsoleReader;
 import jline.console.CursorBuffer;
-import jline.console.completer.CompletionHandler;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-public class JrshCompletionHandler implements CompletionHandler {
+public class CustomCompletionHandler implements jline.console.completer.CompletionHandler {
 
     public boolean complete(final ConsoleReader reader, final List<CharSequence> candidates, final int pos) throws IOException {
         CursorBuffer buf = reader.getCursorBuffer();

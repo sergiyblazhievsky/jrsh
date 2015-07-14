@@ -19,7 +19,7 @@ import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.Res
 import static com.jaspersoft.jasperserver.jaxrs.client.apiadapters.resources.ResourceSearchParameter.RECURSIVE;
 
 // FIXME: Need refactoring
-public class JrshRepositoryCompleter implements Completer {
+public class RepositoryCompleter implements Completer {
 
     public static int uniqueId = 0;
     public static List<CharSequence> bufCandidates = new ArrayList<CharSequence>();

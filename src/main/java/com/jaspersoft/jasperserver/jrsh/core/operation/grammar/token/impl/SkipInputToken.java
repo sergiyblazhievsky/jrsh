@@ -1,6 +1,6 @@
 package com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.impl;
 
-import com.jaspersoft.jasperserver.jrsh.core.completion.impl.JrshSkippedInputCompleter;
+import com.jaspersoft.jasperserver.jrsh.core.completion.impl.SkippedInputCompleter;
 import com.jaspersoft.jasperserver.jrsh.core.operation.grammar.token.AbstractToken;
 import jline.console.completer.Completer;
 import lombok.EqualsAndHashCode;
@@ -19,7 +19,7 @@ public class SkipInputToken extends AbstractToken {
 
     @Override
     public Completer getCompleter() {
-        return new JrshSkippedInputCompleter();
+        return new SkippedInputCompleter();
     }
 
     @Override
