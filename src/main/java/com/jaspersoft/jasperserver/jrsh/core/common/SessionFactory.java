@@ -1,5 +1,6 @@
 package com.jaspersoft.jasperserver.jrsh.core.common;
 
+import com.google.common.base.Preconditions;
 import com.jaspersoft.jasperserver.jaxrs.client.core.AuthenticationCredentials;
 import com.jaspersoft.jasperserver.jaxrs.client.core.RestClientConfiguration;
 import com.jaspersoft.jasperserver.jaxrs.client.core.Session;
@@ -22,6 +23,10 @@ public class SessionFactory {
     }
 
     protected static Session createSession(String url, String username, String password, String organization) {
+        Preconditions.checkNotNull(username, "Username shouldn't be 'null'");
+        Preconditions.checkNotNull(password, "Password shouldn't be 'null'");
+        Preconditions.checkNotNull(url, "URL shouldn't be 'null'");
+
         username = (organization == null)
                 ? username
                 : username.concat("|").concat(organization);
@@ -30,22 +35,20 @@ public class SessionFactory {
                 ? url
                 : "http://".concat(url);
 
-        SHARED_SESSION = new Session(
+        Session session = new Session(
                 new SessionStorage(
                         new RestClientConfiguration(url),
                         new AuthenticationCredentials(username, password)));
 
-        SHARED_SESSION
-                .getStorage()
+        session.getStorage()
                 .getConfiguration()
                 .setConnectionTimeout(4500);
 
-        SHARED_SESSION
-                .getStorage()
+        session.getStorage()
                 .getConfiguration()
                 .setReadTimeout(4500);
 
-        return SHARED_SESSION;
+        return session;
     }
 
     public static void updateSharedSession(Session session) {
