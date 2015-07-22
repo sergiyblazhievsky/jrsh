@@ -40,7 +40,7 @@ public class ZipUtil {
     }
 
     //---------------------------------------------------------------------
-    // Helper methods
+    //                           Helper methods
     //---------------------------------------------------------------------
 
     protected static void addFiles(ZipOutputStream zos, String folder, String baseFolder) throws Exception {
