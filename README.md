@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/Jaspersoft/jrsh.png?label=ready&title=Ready)](https://waffle.io/Jaspersoft/jrsh)
 JasperReports Server Shell (JRSH)
 =================================
 [![Join the chat at https://gitter.im/Jaspersoft/jrsh](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Jaspersoft/jrsh?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
