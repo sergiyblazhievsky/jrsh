@@ -1,9 +1,9 @@
-[![Stories in Ready](https://badge.waffle.io/Jaspersoft/jrsh.png?label=ready&title=Ready)](https://waffle.io/Jaspersoft/jrsh)
 JasperReports Server Shell (JRSH)
 =================================
 [![Join the chat at https://gitter.im/Jaspersoft/jrsh](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Jaspersoft/jrsh?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![Build Status](https://travis-ci.org/Jaspersoft/jrsh.svg?branch=master)](https://travis-ci.org/Jaspersoft/jrsh) [![GitHub Release](https://img.shields.io/github/release/Jaspersoft/jrsh.svg)](https://github.com/Jaspersoft/jrsh/releases)
+[![Stories in Ready](https://badge.waffle.io/Jaspersoft/jrsh.png?label=ready&title=Ready)](https://waffle.io/Jaspersoft/jrsh)
 
 JRSH is a Command Line Interface for JasperReports Server. It's designed for fast and easy interaction with JasperReports Server.
 
