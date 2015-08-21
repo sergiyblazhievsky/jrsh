@@ -19,6 +19,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.joda.time.DateTime;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,10 +95,7 @@ public class ExportOperation implements Operation {
                         FileUtils.copyInputStreamToFile(entity, target);
                     }
                 } else {
-                    DateTime dateTime = DateTime.now().toDateTime(UTC);
-                    File target = new File(String.format("export_%s.zip", dateTime));
-                    FileUtils.copyInputStreamToFile(entity, target);
-                    fileUri = target.getAbsolutePath();
+                    writeToFile(entity);
                 }
             }
             if (all != null && !all.isEmpty()) {
@@ -111,10 +109,7 @@ public class ExportOperation implements Operation {
                         .fetch()
                         .getEntity();
 
-                DateTime dateTime = DateTime.now().toDateTime(UTC);
-                File target = new File(String.format("export_%s.zip", dateTime));
-                FileUtils.copyInputStreamToFile(entity, target);
-                fileUri = target.getAbsolutePath();
+                writeToFile(entity);
             }
             result = new OperationResult(format(FORMATTED_OK_MSG, fileUri), SUCCESS, this, null);
         } catch (Exception err) {
@@ -122,6 +117,13 @@ public class ExportOperation implements Operation {
         }
 
         return result;
+    }
+
+    public void writeToFile(InputStream entity) throws IOException {
+        DateTime dateTime = DateTime.now().toDateTime(UTC);
+        File target = new File(String.format("export_%s.zip", dateTime).replaceAll(":", "_"));
+        FileUtils.copyInputStreamToFile(entity, target);
+        fileUri = target.getAbsolutePath();
     }
 
     protected List<ExportParameter> convertExportParameters() {
