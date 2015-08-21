@@ -40,6 +40,7 @@ public class RepositoryCompleter implements Completer {
             uniqueId = hashCode();
         }
         if (buffer == null) {
+            candidates.add("/");
             return 0;
         } else {
             if (uniqueId == hashCode()) {
