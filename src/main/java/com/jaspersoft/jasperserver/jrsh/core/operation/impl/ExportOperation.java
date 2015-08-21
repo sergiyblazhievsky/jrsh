@@ -112,7 +112,7 @@ public class ExportOperation implements Operation {
                         .getEntity();
 
                 DateTime dateTime = DateTime.now().toDateTime(UTC);
-                File target = new File(String.format("export_%s.zip", dateTime));
+                File target = new File(String.format("export_%s.zip", dateTime).replaceAll(":", "_"));
                 FileUtils.copyInputStreamToFile(entity, target);
                 fileUri = target.getAbsolutePath();
             }
