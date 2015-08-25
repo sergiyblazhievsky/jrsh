@@ -57,7 +57,10 @@ public class ExportOperationTest {
 
             // Then
             assertNotNull(fileUri);
-            assertTrue(new File(fileUri).exists());
+            File testFile = new File(fileUri);
+            assertTrue(testFile.exists());
+
+            testFile.delete();
         }
     }
 

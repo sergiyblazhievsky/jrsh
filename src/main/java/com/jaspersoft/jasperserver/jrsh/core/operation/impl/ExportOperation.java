@@ -119,7 +119,7 @@ public class ExportOperation implements Operation {
         return result;
     }
 
-    public void writeToFile(InputStream entity) throws IOException {
+    protected void writeToFile(InputStream entity) throws IOException {
         DateTime dateTime = DateTime.now().toDateTime(UTC);
         File target = new File(String.format("export_%s.zip", dateTime).replaceAll(":", "_"));
         FileUtils.copyInputStreamToFile(entity, target);
